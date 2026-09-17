@@ -1,4 +1,0 @@
-allowBuilds:
-  unrs-resolver: true
-minimumReleaseAgeExclude:
-  - prettier@3.9.7
