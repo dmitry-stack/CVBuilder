@@ -7,8 +7,7 @@ export type Incremental<T> =
   | {
       [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
     };
-type DocumentNode = any;
-
+import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
 export type AuthInput = {
   email: string;
   password: string;
