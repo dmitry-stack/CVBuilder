@@ -1,1 +1,13 @@
-npx lint-staged
+#!/bin/sh
+
+# Run lint-staged for cv-frontend if any frontend files are staged
+if git diff --cached --name-only | grep -q "^cv-frontend/"; then
+  echo "Running pre-commit checks in cv-frontend..."
+  (cd cv-frontend && npx lint-staged --max-arg-length 2000 --relative) || exit 1
+fi
+
+# Run lint-staged for cv-backend if any backend files are staged
+if git diff --cached --name-only | grep -q "^cv-backend/"; then
+  echo "Running pre-commit checks in cv-backend..."
+  (cd cv-backend && npx lint-staged --max-arg-length 2000 --relative) || exit 1
+fi
