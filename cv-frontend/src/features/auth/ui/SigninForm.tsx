@@ -12,6 +12,10 @@ import { Button } from "@/components/ui/button";
 import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
 import { authStorage } from "@/lib/auth-storage";
 import { gql } from "@/graphql/__generated__";
+import type {
+  LoginMutation,
+  LoginMutationVariables,
+} from "@/graphql/__generated__/graphql";
 
 const LOGIN_MUTATION = gql(`
   mutation Login($auth: AuthInput!) {
@@ -33,7 +37,10 @@ export default function SigninForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
 
-  const [loginMutation, { loading }] = useMutation(LOGIN_MUTATION);
+  const [loginMutation, { loading }] = useMutation<
+    LoginMutation,
+    LoginMutationVariables
+  >(LOGIN_MUTATION);
 
   const {
     register,

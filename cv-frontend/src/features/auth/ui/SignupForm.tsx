@@ -11,7 +11,11 @@ import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { signupSchema, type SignupFormData } from "../schemas/auth.schema";
 import { authStorage } from "@/lib/auth-storage";
-import { SignupDocument } from "@/graphql/__generated__/graphql";
+import {
+  SignupDocument,
+  SignupMutation,
+  SignupMutationVariables,
+} from "@/graphql/__generated__/graphql";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -21,7 +25,10 @@ export default function SignupForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
 
-  const [signupMutation, { loading }] = useMutation(SignupDocument);
+  const [signupMutation, { loading }] = useMutation<
+    SignupMutation,
+    SignupMutationVariables
+  >(SignupDocument);
 
   const {
     register,
