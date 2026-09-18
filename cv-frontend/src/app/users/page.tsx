@@ -1,4 +1,4 @@
-import { LogoutButton } from "@/features/users/ui/LogoutButton";
+import { LogoutButton } from "@/features/auth/ui/LogoutButton";
 export default function UsersPage() {
   return (
     <main className="flex items-center justify-center md:h-screen">
