@@ -1,11 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { MockedProvider } from "@apollo/client/testing/react";
-
-import { SignupDocument } from "@/graphql/__generated__/graphql";
-import { authStorage } from "@/lib/auth-storage";
 import SignupForm from "./SignupForm";
+import { signupAction } from "../actions/signup.action";
 
 const mockPush = vi.fn();
 const mockRefresh = vi.fn();
@@ -20,10 +17,8 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
-vi.mock("@/lib/auth-storage", () => ({
-  authStorage: {
-    setTokens: vi.fn(),
-  },
+vi.mock("../actions/signup.action", () => ({
+  signupAction: vi.fn(),
 }));
 
 describe("SignupForm Component", () => {
@@ -32,11 +27,7 @@ describe("SignupForm Component", () => {
   });
 
   it("should display input fields and a sign-up button", () => {
-    render(
-      <MockedProvider mocks={[]}>
-        <SignupForm />
-      </MockedProvider>,
-    );
+    render(<SignupForm />);
 
     expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Password")).toBeInTheDocument();
@@ -51,11 +42,7 @@ describe("SignupForm Component", () => {
   it("should display validation errors when submitting an empty form", async () => {
     const user = userEvent.setup();
 
-    render(
-      <MockedProvider mocks={[]}>
-        <SignupForm />
-      </MockedProvider>,
-    );
+    render(<SignupForm />);
 
     const submitBtn = screen.getByRole("button", {
       name: /CREATE AN ACCOUNT/i,
@@ -67,17 +54,13 @@ describe("SignupForm Component", () => {
         screen.getByText(/please enter a valid email/i),
       ).toBeInTheDocument();
     });
-    expect(authStorage.setTokens).not.toHaveBeenCalled();
+    expect(signupAction).not.toHaveBeenCalled();
   });
 
   it("should display a validation error when passwords do not match", async () => {
     const user = userEvent.setup();
 
-    render(
-      <MockedProvider mocks={[]}>
-        <SignupForm />
-      </MockedProvider>,
-    );
+    render(<SignupForm />);
 
     await user.type(screen.getByPlaceholderText(/email/i), "test@example.com");
     await user.type(screen.getByPlaceholderText("Password"), "password123");
@@ -96,42 +79,14 @@ describe("SignupForm Component", () => {
       ).toBeInTheDocument();
     });
 
-    expect(authStorage.setTokens).not.toHaveBeenCalled();
+    expect(signupAction).not.toHaveBeenCalled();
   });
 
-  it("should successfully register a user, save tokens, and redirect", async () => {
+  it("should successfully call signupAction and redirect", async () => {
     const user = userEvent.setup();
+    vi.mocked(signupAction).mockResolvedValueOnce({ success: true });
 
-    const signupMock = {
-      request: {
-        query: SignupDocument,
-        variables: {
-          auth: {
-            email: "test@example.com",
-            password: "password123",
-            confirmPassword: "password123",
-          },
-        },
-      },
-      result: {
-        data: {
-          signup: {
-            access_token: "mock-signup-access",
-            refresh_token: "mock-signup-refresh",
-            user: {
-              id: "2",
-              email: "test@example.com",
-            },
-          },
-        },
-      },
-    };
-
-    render(
-      <MockedProvider mocks={[signupMock]}>
-        <SignupForm />
-      </MockedProvider>,
-    );
+    render(<SignupForm />);
 
     await user.type(screen.getByPlaceholderText(/email/i), "test@example.com");
     await user.type(screen.getByPlaceholderText("Password"), "password123");
@@ -145,36 +100,23 @@ describe("SignupForm Component", () => {
     );
 
     await waitFor(() => {
-      expect(authStorage.setTokens).toHaveBeenCalledWith(
-        "mock-signup-access",
-        "mock-signup-refresh",
-      );
+      expect(signupAction).toHaveBeenCalledWith({
+        email: "test@example.com",
+        password: "password123",
+        confirmPassword: "password123",
+      });
       expect(mockPush).toHaveBeenCalledWith("/users");
     });
   });
 
   it("should display a backend error when registration fails", async () => {
     const user = userEvent.setup();
+    vi.mocked(signupAction).mockResolvedValueOnce({
+      serverError:
+        "An account with this email already exists. Please sign in instead.",
+    });
 
-    const errorMock = {
-      request: {
-        query: SignupDocument,
-        variables: {
-          auth: {
-            email: "exists@example.com",
-            password: "password123",
-            confirmPassword: "password123",
-          },
-        },
-      },
-      error: new Error("User already exists"),
-    };
-
-    render(
-      <MockedProvider mocks={[errorMock]}>
-        <SignupForm />
-      </MockedProvider>,
-    );
+    render(<SignupForm />);
 
     await user.type(
       screen.getByPlaceholderText(/email/i),
@@ -191,10 +133,11 @@ describe("SignupForm Component", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/user already exists/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/an account with this email already exists/i),
+      ).toBeInTheDocument();
     });
 
-    expect(authStorage.setTokens).not.toHaveBeenCalled();
     expect(mockPush).not.toHaveBeenCalled();
   });
 });

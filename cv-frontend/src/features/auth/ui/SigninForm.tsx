@@ -1,46 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@apollo/client/react";
 import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
-import { authStorage } from "@/lib/auth-storage";
-import { gql } from "@/graphql/__generated__";
-import type {
-  LoginMutation,
-  LoginMutationVariables,
-} from "@/graphql/__generated__/graphql";
-
-const LOGIN_MUTATION = gql(`
-  mutation Login($auth: AuthInput!) {
-    login(auth: $auth) {
-      access_token
-      refresh_token
-      user {
-        id
-        email
-      }
-    }
-  }
-`);
+import { loginAction } from "../actions/login.action";
 
 export default function SigninForm() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
-
-  const [loginMutation, { loading }] = useMutation<
-    LoginMutation,
-    LoginMutationVariables
-  >(LOGIN_MUTATION);
 
   const {
     register,
@@ -54,33 +32,19 @@ export default function SigninForm() {
     },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = (data: LoginFormData) => {
     setServerError(null);
 
-    try {
-      const response = await loginMutation({
-        variables: {
-          auth: {
-            email: data.email,
-            password: data.password,
-          },
-        },
-      });
+    startTransition(async () => {
+      const result = await loginAction(data);
 
-      const authData = response.data?.login;
-
-      if (authData?.access_token && authData?.refresh_token) {
-        authStorage.setTokens(authData.access_token, authData.refresh_token);
+      if (result.serverError) {
+        setServerError(result.serverError);
+      } else if (result.success) {
         router.push(callbackUrl || "/users");
         router.refresh();
       }
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setServerError(err.message);
-      } else {
-        setServerError("Failed to sign in. Please try again.");
-      }
-    }
+    });
   };
 
   return (
@@ -96,14 +60,14 @@ export default function SigninForm() {
         <div className="w-full">
           <div>
             <div className="relative">
-              <input
+              <Input
                 {...register("email")}
-                className="peer block w-full border border-gray-200 py-2.25 px-3 text-sm outline-2 placeholder:text-gray-500 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950"
                 id="email"
                 type="email"
                 autoComplete="email"
                 placeholder="Email"
-                disabled={loading}
+                disabled={isPending}
+                aria-invalid={errors.email ? "true" : undefined}
               />
             </div>
             {errors.email && (
@@ -115,14 +79,15 @@ export default function SigninForm() {
 
           <div className="mt-4">
             <div className="relative">
-              <input
+              <Input
                 {...register("password")}
-                className="peer block w-full border border-gray-200 py-2.25 px-3 pr-10 text-sm outline-2 placeholder:text-gray-500 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950"
                 id="password"
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 placeholder="Password"
-                disabled={loading}
+                disabled={isPending}
+                aria-invalid={errors.password ? "true" : undefined}
+                className="pr-10"
               />
 
               <button
@@ -151,9 +116,9 @@ export default function SigninForm() {
           <Button
             type="submit"
             className="w-55 rounded-4xl h-12 bg-[#C63031] text-white hover:bg-[#b52a2b]"
-            disabled={loading}
+            disabled={isPending}
           >
-            {loading ? (
+            {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Signing in...

@@ -1,34 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@apollo/client/react";
 import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { signupSchema, type SignupFormData } from "../schemas/auth.schema";
-import { authStorage } from "@/lib/auth-storage";
-import {
-  SignupDocument,
-  SignupMutation,
-  SignupMutationVariables,
-} from "@/graphql/__generated__/graphql";
+import { signupAction } from "../actions/signup.action";
 
 export default function SignupForm() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
-
-  const [signupMutation, { loading }] = useMutation<
-    SignupMutation,
-    SignupMutationVariables
-  >(SignupDocument);
 
   const {
     register,
@@ -43,53 +34,24 @@ export default function SignupForm() {
     },
   });
 
-  const getErrorMessage = (error: unknown): string => {
-    if (error instanceof Error) {
-      if (error.message.includes("userAlreadyExists")) {
-        return "An account with this email already exists. Please sign in instead.";
-      }
-      if (error.message.includes("failedToSendEmail")) {
-        console.error(
-          "Account created, but failed to send verification email. Please contact support or try signing in.",
-        );
-      }
-      if (error.message.includes("confirmPasswordMismatch")) {
-        return "Passwords do not match.";
-      }
-      return error.message;
-    }
-    return "Failed to sign up. Please try again.";
-  };
-
-  const onSubmit = async (data: SignupFormData) => {
+  const onSubmit = (data: SignupFormData) => {
     setServerError(null);
 
-    try {
-      const response = await signupMutation({
-        variables: {
-          auth: {
-            email: data.email,
-            password: data.password,
-            confirmPassword: data.confirmPassword,
-          },
-        },
-      });
+    startTransition(async () => {
+      const result = await signupAction(data);
 
-      const authData = response.data?.signup;
-
-      if (authData?.access_token && authData?.refresh_token) {
-        authStorage.setTokens(authData.access_token, authData.refresh_token);
+      if (result.serverError) {
+        setServerError(result.serverError);
+      } else if (result.success) {
         router.push(callbackUrl || "/users");
         router.refresh();
       }
-    } catch (err: unknown) {
-      setServerError(getErrorMessage(err));
-    }
+    });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-      <div className="flex-1 rounded-lg  px-6 pb-4 pt-8 dark:bg-zinc-900">
+      <div className="flex-1 rounded-lg px-6 pb-4 pt-8 dark:bg-zinc-900">
         {serverError && (
           <div className="mb-4 flex items-center gap-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
             <AlertCircle className="h-4 w-4 shrink-0" />
@@ -100,14 +62,14 @@ export default function SignupForm() {
         <div className="w-full">
           <div>
             <div className="relative">
-              <input
+              <Input
                 {...register("email")}
-                className="peer block w-full  border border-gray-200 py-2.25 px-3 text-sm outline-2 placeholder:text-gray-500 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950"
                 id="email"
                 type="email"
                 autoComplete="email"
                 placeholder="Email"
-                disabled={loading}
+                disabled={isPending}
+                aria-invalid={errors.email ? "true" : undefined}
               />
             </div>
             {errors.email && (
@@ -119,14 +81,15 @@ export default function SignupForm() {
 
           <div className="mt-4">
             <div className="relative">
-              <input
+              <Input
                 {...register("password")}
-                className="peer block w-full  border border-gray-200 py-2.25 px-3 text-sm outline-2 placeholder:text-gray-500 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950"
                 id="password"
                 type={showPassword ? "text" : "password"}
                 autoComplete="new-password"
                 placeholder="Password"
-                disabled={loading}
+                disabled={isPending}
+                aria-invalid={errors.password ? "true" : undefined}
+                className="pr-10"
               />
 
               <button
@@ -152,14 +115,15 @@ export default function SignupForm() {
 
           <div className="mt-4">
             <div className="relative">
-              <input
+              <Input
                 {...register("confirmPassword")}
-                className="peer block w-full  border border-gray-200 py-2.25 px-3 text-sm outline-2 placeholder:text-gray-500 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950"
                 id="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 autoComplete="new-password"
                 placeholder="Confirm Password"
-                disabled={loading}
+                disabled={isPending}
+                aria-invalid={errors.confirmPassword ? "true" : undefined}
+                className="pr-10"
               />
 
               <button
@@ -190,9 +154,9 @@ export default function SignupForm() {
           <Button
             type="submit"
             className="w-55 rounded-4xl h-12 bg-[#C63031] text-white hover:bg-[#b52a2b]"
-            disabled={loading}
+            disabled={isPending}
           >
-            {loading ? (
+            {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Creating account...
@@ -203,7 +167,7 @@ export default function SignupForm() {
           </Button>
         </div>
 
-        <div className="mt-4  pt-4 text-center text-sm text-gray-600 dark:border-zinc-800 dark:text-zinc-400">
+        <div className="mt-4 pt-4 text-center text-sm text-gray-600 dark:border-zinc-800 dark:text-zinc-400">
           <Link
             href="/signin"
             className="font-medium text-primary underline-offset-4 hover:underline"

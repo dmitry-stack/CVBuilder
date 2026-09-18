@@ -14,7 +14,7 @@ export function LogoutButton() {
 
     await client.clearStore();
 
-    router.push("/login");
+    router.push("/signin");
     router.refresh();
   };
 
