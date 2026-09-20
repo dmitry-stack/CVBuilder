@@ -1,6 +1,6 @@
 /* eslint-disable */
-import * as types from './graphql';
-import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+import * as types from "./graphql";
+import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
 
 /**
  * Map of all GraphQL operations in the project.
@@ -14,12 +14,14 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "mutation Login($auth: AuthInput!) {\n  login(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation Signup($auth: SignupInput!) {\n  signup(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation UpdateToken {\n  updateToken {\n    access_token\n    refresh_token\n  }\n}": typeof types.LoginDocument,
-    "\n  mutation Login($auth: AuthInput!) {\n    login(auth: $auth) {\n      access_token\n      refresh_token\n      user {\n        id\n        email\n      }\n    }\n  }\n": typeof types.LoginDocument,
+  "mutation Login($auth: AuthInput!) {\n  login(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation Signup($auth: SignupInput!) {\n  signup(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation UpdateToken {\n  updateToken {\n    access_token\n    refresh_token\n  }\n}": typeof types.LoginDocument;
+  "query Users($params: SearchPaginationInput) {\n  users(params: $params) {\n    items {\n      id\n      email\n      profile {\n        id\n        first_name\n        last_name\n        avatar\n      }\n      department {\n        id\n        name\n      }\n      position {\n        id\n        name\n      }\n    }\n    total\n    page\n    limit\n    total_pages\n  }\n}": typeof types.UsersDocument;
 };
 const documents: Documents = {
-    "mutation Login($auth: AuthInput!) {\n  login(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation Signup($auth: SignupInput!) {\n  signup(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation UpdateToken {\n  updateToken {\n    access_token\n    refresh_token\n  }\n}": types.LoginDocument,
-    "\n  mutation Login($auth: AuthInput!) {\n    login(auth: $auth) {\n      access_token\n      refresh_token\n      user {\n        id\n        email\n      }\n    }\n  }\n": types.LoginDocument,
+  "mutation Login($auth: AuthInput!) {\n  login(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation Signup($auth: SignupInput!) {\n  signup(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation UpdateToken {\n  updateToken {\n    access_token\n    refresh_token\n  }\n}":
+    types.LoginDocument,
+  "query Users($params: SearchPaginationInput) {\n  users(params: $params) {\n    items {\n      id\n      email\n      profile {\n        id\n        first_name\n        last_name\n        avatar\n      }\n      department {\n        id\n        name\n      }\n      position {\n        id\n        name\n      }\n    }\n    total\n    page\n    limit\n    total_pages\n  }\n}":
+    types.UsersDocument,
 };
 
 /**
@@ -39,14 +41,19 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "mutation Login($auth: AuthInput!) {\n  login(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation Signup($auth: SignupInput!) {\n  signup(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation UpdateToken {\n  updateToken {\n    access_token\n    refresh_token\n  }\n}"): (typeof documents)["mutation Login($auth: AuthInput!) {\n  login(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation Signup($auth: SignupInput!) {\n  signup(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation UpdateToken {\n  updateToken {\n    access_token\n    refresh_token\n  }\n}"];
+export function gql(
+  source: "mutation Login($auth: AuthInput!) {\n  login(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation Signup($auth: SignupInput!) {\n  signup(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation UpdateToken {\n  updateToken {\n    access_token\n    refresh_token\n  }\n}",
+): (typeof documents)["mutation Login($auth: AuthInput!) {\n  login(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation Signup($auth: SignupInput!) {\n  signup(auth: $auth) {\n    access_token\n    refresh_token\n    user {\n      id\n      email\n    }\n  }\n}\n\nmutation UpdateToken {\n  updateToken {\n    access_token\n    refresh_token\n  }\n}"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation Login($auth: AuthInput!) {\n    login(auth: $auth) {\n      access_token\n      refresh_token\n      user {\n        id\n        email\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation Login($auth: AuthInput!) {\n    login(auth: $auth) {\n      access_token\n      refresh_token\n      user {\n        id\n        email\n      }\n    }\n  }\n"];
+export function gql(
+  source: "query Users($params: SearchPaginationInput) {\n  users(params: $params) {\n    items {\n      id\n      email\n      profile {\n        id\n        first_name\n        last_name\n        avatar\n      }\n      department {\n        id\n        name\n      }\n      position {\n        id\n        name\n      }\n    }\n    total\n    page\n    limit\n    total_pages\n  }\n}",
+): (typeof documents)["query Users($params: SearchPaginationInput) {\n  users(params: $params) {\n    items {\n      id\n      email\n      profile {\n        id\n        first_name\n        last_name\n        avatar\n      }\n      department {\n        id\n        name\n      }\n      position {\n        id\n        name\n      }\n    }\n    total\n    page\n    limit\n    total_pages\n  }\n}"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
 }
 
-export type DocumentType<TDocumentNode extends DocumentNode<any, any>> = TDocumentNode extends DocumentNode<  infer TType,  any>  ? TType  : never;
+export type DocumentType<TDocumentNode extends DocumentNode<any, any>> =
+  TDocumentNode extends DocumentNode<infer TType, any> ? TType : never;

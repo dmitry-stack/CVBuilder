@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 /** Internal type. DO NOT USE DIRECTLY. */
 type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** Internal type. DO NOT USE DIRECTLY. */
@@ -11,6 +11,14 @@ import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-
 export type AuthInput = {
   email: string;
   password: string;
+};
+
+export type SearchPaginationInput = {
+  limit?: number | null | undefined;
+  page?: number | null | undefined;
+  search?: string | null | undefined;
+  sort_by?: string | null | undefined;
+  sort_order?: string | null | undefined;
 };
 
 export type SignupInput = {
@@ -47,6 +55,31 @@ export type UpdateTokenMutationVariables = Exact<{ [key: string]: never }>;
 
 export type UpdateTokenMutation = {
   updateToken: { access_token: string; refresh_token: string };
+};
+
+export type UsersQueryVariables = Exact<{
+  params?: SearchPaginationInput | null | undefined;
+}>;
+
+export type UsersQuery = {
+  users: {
+    total: number;
+    page: number;
+    limit: number;
+    total_pages: number;
+    items: Array<{
+      id: string;
+      email: string;
+      profile: {
+        id: string;
+        first_name: string | null;
+        last_name: string | null;
+        avatar: string | null;
+      };
+      department: { id: string; name: string } | null;
+      position: { id: string; name: string } | null;
+    }>;
+  };
 };
 
 export const LoginDocument = {
@@ -213,3 +246,124 @@ export const UpdateTokenDocument = {
     },
   ],
 } as unknown as DocumentNode<UpdateTokenMutation, UpdateTokenMutationVariables>;
+export const UsersDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Users" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "params" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "SearchPaginationInput" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "users" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "params" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "params" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "items" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "email" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "profile" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "first_name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "last_name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "avatar" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "department" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "position" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "total" } },
+                { kind: "Field", name: { kind: "Name", value: "page" } },
+                { kind: "Field", name: { kind: "Name", value: "limit" } },
+                { kind: "Field", name: { kind: "Name", value: "total_pages" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UsersQuery, UsersQueryVariables>;
