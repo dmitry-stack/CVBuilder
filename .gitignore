@@ -10,9 +10,6 @@ out/
 build/
 dist/
 
-# Antigravity CLI
-.antigravity/
-.antigravity
 
 # Environment variables
 .env
