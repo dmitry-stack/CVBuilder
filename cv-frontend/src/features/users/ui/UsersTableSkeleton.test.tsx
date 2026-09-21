@@ -4,10 +4,9 @@ import { UsersTableSkeleton } from "./UsersTableSkeleton";
 import { UsersTableRowSkeleton } from "./UsersTableRowSkeleton";
 
 describe("UsersTableSkeleton component", () => {
-  it("renders page header and disabled search input", () => {
+  it("renders disabled search input", () => {
     render(<UsersTableSkeleton />);
 
-    expect(screen.getByText("Employees")).toBeInTheDocument();
     const searchInput = screen.getByRole("textbox", {
       name: /search employees/i,
     });

@@ -89,10 +89,10 @@ describe("UsersTable component", () => {
     } as unknown as ReturnType<typeof useQuery>);
   });
 
-  it("renders the Employees breadcrumb header", () => {
-    render(<UsersTable />);
+  it("renders the users table container", () => {
+    const { container } = render(<UsersTable />);
 
-    expect(screen.getByText("Employees")).toBeInTheDocument();
+    expect(container.querySelector("table")).toBeInTheDocument();
   });
 
   it("renders the Search input with placeholder", () => {

@@ -11,12 +11,6 @@ export function UsersTableSkeleton({ rowCount = 5 }: UsersTableSkeletonProps) {
       data-slot="users-table-skeleton"
       className="w-full max-w-content mx-auto space-y-6"
     >
-      <div className="h-14 px-6 flex items-center">
-        <span className="font-roboto text-base leading-6 tracking-cv capitalize text-cv-muted dark:text-zinc-400">
-          Employees
-        </span>
-      </div>
-
       <div className="px-1">
         <div className="relative w-full max-w-search">
           <Search
