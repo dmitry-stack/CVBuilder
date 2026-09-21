@@ -1,13 +1,19 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { loginAction } from "./login.action";
 import { signupAction } from "./signup.action";
+import { logoutAction } from "./logout.action";
+import { refreshAction } from "./refresh.action";
 
 const mockCookieSet = vi.fn();
+const mockCookieDelete = vi.fn();
+const mockCookieGet = vi.fn();
 
 vi.mock("next/headers", () => ({
   cookies: () =>
     Promise.resolve({
       set: mockCookieSet,
+      delete: mockCookieDelete,
+      get: mockCookieGet,
     }),
 }));
 
@@ -57,7 +63,7 @@ describe("Auth Server Actions", () => {
       expect(mockCookieSet).toHaveBeenCalledWith(
         "access_token",
         "action-access-token",
-        expect.objectContaining({ httpOnly: false }),
+        expect.objectContaining({ httpOnly: true }),
       );
       expect(mockCookieSet).toHaveBeenCalledWith(
         "refresh_token",
@@ -122,7 +128,7 @@ describe("Auth Server Actions", () => {
       expect(mockCookieSet).toHaveBeenCalledWith(
         "access_token",
         "signup-access-token",
-        expect.objectContaining({ httpOnly: false }),
+        expect.objectContaining({ httpOnly: true }),
       );
       expect(mockCookieSet).toHaveBeenCalledWith(
         "refresh_token",
@@ -148,6 +154,54 @@ describe("Auth Server Actions", () => {
 
       expect(result.serverError).toContain("already exists");
       expect(mockCookieSet).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("logoutAction", () => {
+    it("clears auth cookies and returns success", async () => {
+      const result = await logoutAction();
+      expect(result.success).toBe(true);
+      expect(mockCookieDelete).toHaveBeenCalledWith("access_token");
+      expect(mockCookieDelete).toHaveBeenCalledWith("refresh_token");
+    });
+  });
+
+  describe("refreshAction", () => {
+    it("throws error and clears cookies if no refresh token is present", async () => {
+      mockCookieGet.mockReturnValue(undefined);
+
+      await expect(refreshAction()).rejects.toThrow(/session expired/i);
+      expect(mockCookieDelete).toHaveBeenCalledWith("access_token");
+      expect(mockCookieDelete).toHaveBeenCalledWith("refresh_token");
+    });
+
+    it("refreshes tokens and sets new cookies when valid refresh token is present", async () => {
+      mockCookieGet.mockReturnValue({ value: "valid-refresh-token" });
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            data: {
+              updateToken: {
+                access_token: "new-access-token",
+                refresh_token: "new-refresh-token",
+              },
+            },
+          }),
+      });
+
+      const result = await refreshAction();
+      expect(result.success).toBe(true);
+      expect(mockCookieSet).toHaveBeenCalledWith(
+        "access_token",
+        "new-access-token",
+        expect.objectContaining({ httpOnly: true }),
+      );
+      expect(mockCookieSet).toHaveBeenCalledWith(
+        "refresh_token",
+        "new-refresh-token",
+        expect.objectContaining({ httpOnly: true }),
+      );
     });
   });
 });

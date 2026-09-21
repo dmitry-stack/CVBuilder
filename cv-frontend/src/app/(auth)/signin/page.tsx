@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import SigninForm from "@/features/auth/ui/SigninForm";
+import LoginForm from "@/features/auth/ui/LoginForm";
 
 export default function SigninPage() {
   return (
@@ -13,7 +13,7 @@ export default function SigninPage() {
           </p>
         </div>
         <Suspense>
-          <SigninForm />
+          <LoginForm />
         </Suspense>
       </div>
     </main>

@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
 import { loginAction } from "../actions/login.action";
 
-export default function SigninForm() {
+export default function LoginForm() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);

@@ -14,9 +14,9 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { useApolloClient } from "@apollo/client/react";
-import { authStorage } from "@/lib/auth-storage";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.svg";
+import { logoutAction } from "@/features/auth/actions/logout.action";
 
 interface NavItem {
   label: string;
@@ -84,7 +84,7 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
     try {
-      authStorage.clearTokens();
+      await logoutAction();
       await client.clearStore();
       router.push("/signin");
       router.refresh();

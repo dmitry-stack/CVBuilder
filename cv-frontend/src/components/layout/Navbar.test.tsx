@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Navbar } from "./Navbar";
-import { authStorage } from "@/lib/auth-storage";
+import { logoutAction } from "@/features/auth/actions/logout.action";
 
 const mockPush = vi.fn();
 const mockRefresh = vi.fn();
@@ -22,10 +22,8 @@ vi.mock("@apollo/client/react", () => ({
   }),
 }));
 
-vi.mock("@/lib/auth-storage", () => ({
-  authStorage: {
-    clearTokens: vi.fn(),
-  },
+vi.mock("@/features/auth/actions/logout.action", () => ({
+  logoutAction: vi.fn().mockResolvedValue({ success: true }),
 }));
 
 describe("Navbar / Aside Sidebar", () => {
@@ -87,7 +85,7 @@ describe("Navbar / Aside Sidebar", () => {
     fireEvent.click(logoutBtn);
 
     await waitFor(() => {
-      expect(authStorage.clearTokens).toHaveBeenCalledTimes(1);
+      expect(logoutAction).toHaveBeenCalledTimes(1);
       expect(mockClearStore).toHaveBeenCalledTimes(1);
       expect(mockPush).toHaveBeenCalledWith("/signin");
       expect(mockRefresh).toHaveBeenCalledTimes(1);

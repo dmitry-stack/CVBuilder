@@ -1,94 +1,94 @@
 "use client";
 
-import { HttpLink, Observable } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
+import { HttpLink, Observable, type ApolloLink } from "@apollo/client";
 import { ErrorLink } from "@apollo/client/link/error";
 import { CombinedGraphQLErrors } from "@apollo/client/errors";
 import {
   ApolloNextAppProvider,
   ApolloClient,
   InMemoryCache,
-} from "@apollo/experimental-nextjs-app-support";
+} from "@apollo/client-integration-nextjs";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, type ReactNode } from "react";
-import { authStorage } from "./auth-storage";
+import { refreshAction } from "@/features/auth/actions/refresh.action";
+
+let isRefreshing = false;
+let pendingRequests: {
+  resolve: () => void;
+  reject: (err: unknown) => void;
+}[] = [];
+
+function isAuthError(error: unknown): boolean {
+  if (CombinedGraphQLErrors.is(error)) {
+    return error.errors.some(
+      (e) =>
+        e.extensions?.code === "UNAUTHENTICATED" ||
+        e.message?.toLowerCase().includes("unauthorized"),
+    );
+  }
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "statusCode" in error &&
+    (error as { statusCode?: number }).statusCode === 401
+  );
+}
+
+function waitForFreshToken(onUnauthorized?: () => void): Promise<void> {
+  if (isRefreshing) {
+    return new Promise((resolve, reject) => {
+      pendingRequests.push({ resolve, reject });
+    });
+  }
+
+  isRefreshing = true;
+
+  return refreshAction()
+    .then(() => {
+      pendingRequests.forEach((req) => req.resolve());
+      pendingRequests = [];
+    })
+    .catch((err) => {
+      pendingRequests.forEach((req) => req.reject(err));
+      pendingRequests = [];
+      onUnauthorized?.();
+      throw err;
+    })
+    .finally(() => {
+      isRefreshing = false;
+    });
+}
 
 function makeClient(onUnauthorized?: () => void) {
   const httpLink = new HttpLink({
-    uri:
-      process.env.NEXT_PUBLIC_GRAPHQL_URL ||
-      "http://localhost:3001/api/graphql",
-  });
-
-  const authLink = setContext((_, { headers }) => {
-    const token = authStorage.getAccessToken();
-    return {
-      headers: {
-        ...headers,
-        authorization: token ? `Bearer ${token}` : "",
-      },
-    };
+    uri: "/api/graphql",
+    credentials: "same-origin",
   });
 
   const errorLink = new ErrorLink(({ error, operation, forward }) => {
-    const opName = operation.operationName;
-    if (opName === "UpdateToken" || opName === "Login" || opName === "Signup") {
-      return;
-    }
+    if (!isAuthError(error)) return;
 
-    const isUnauthorized =
-      (CombinedGraphQLErrors.is(error) &&
-        error.errors.some(
-          (e) =>
-            e.message?.toLowerCase().includes("unauthorized") ||
-            e.extensions?.code === "UNAUTHENTICATED" ||
-            (e.extensions?.originalError as { statusCode?: number })
-              ?.statusCode === 401,
-        )) ||
-      (typeof error === "object" &&
-        error !== null &&
-        "statusCode" in error &&
-        (error as { statusCode?: number }).statusCode === 401);
+    return new Observable<ApolloLink.Result>((observer) => {
+      let subscription:
+        ReturnType<Observable<ApolloLink.Result>["subscribe"]> | undefined;
 
-    if (!isUnauthorized) {
-      return;
-    }
-
-    return new Observable((observer) => {
-      authStorage
-        .refreshTokens()
-        .then((newToken) => {
-          if (!newToken) {
-            onUnauthorized?.();
-            observer.error(error);
-            return;
+      waitForFreshToken(onUnauthorized)
+        .then(() => {
+          if (!observer.closed) {
+            subscription = forward(operation).subscribe(observer);
           }
-
-          operation.setContext(({ headers = {} }) => ({
-            headers: {
-              ...headers,
-              authorization: `Bearer ${newToken}`,
-            },
-          }));
-
-          const subscriber = {
-            next: observer.next.bind(observer),
-            error: observer.error.bind(observer),
-            complete: observer.complete.bind(observer),
-          };
-
-          forward(operation).subscribe(subscriber);
         })
         .catch((err) => {
-          onUnauthorized?.();
-          observer.error(err);
+          if (!observer.closed) observer.error(err);
         });
+
+      return () => subscription?.unsubscribe();
     });
   });
 
   return new ApolloClient({
     cache: new InMemoryCache(),
-    link: errorLink.concat(authLink).concat(httpLink),
+    link: errorLink.concat(httpLink),
   });
 }
 

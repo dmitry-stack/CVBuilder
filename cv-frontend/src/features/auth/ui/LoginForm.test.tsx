@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import SigninForm from "./SigninForm";
+import LoginForm from "./LoginForm";
 import { loginAction } from "../actions/login.action";
 
 const mockPush = vi.fn();
@@ -21,13 +21,13 @@ vi.mock("../actions/login.action", () => ({
   loginAction: vi.fn(),
 }));
 
-describe("SigninForm Component", () => {
+describe("LoginForm Component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("should display input fields and a sign-in button", () => {
-    render(<SigninForm />);
+    render(<LoginForm />);
 
     expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
@@ -37,7 +37,7 @@ describe("SigninForm Component", () => {
   it("should display validation errors when submitting an empty form", async () => {
     const user = userEvent.setup();
 
-    render(<SigninForm />);
+    render(<LoginForm />);
 
     const submitBtn = screen.getByRole("button", { name: /log in/i });
     await user.click(submitBtn);
@@ -54,7 +54,7 @@ describe("SigninForm Component", () => {
     const user = userEvent.setup();
     vi.mocked(loginAction).mockResolvedValueOnce({ success: true });
 
-    render(<SigninForm />);
+    render(<LoginForm />);
 
     await user.type(screen.getByPlaceholderText(/email/i), "test@example.com");
     await user.type(screen.getByPlaceholderText(/password/i), "password123");
@@ -75,7 +75,7 @@ describe("SigninForm Component", () => {
       serverError: "Invalid credentials",
     });
 
-    render(<SigninForm />);
+    render(<LoginForm />);
 
     await user.type(screen.getByPlaceholderText(/email/i), "wrong@example.com");
     await user.type(screen.getByPlaceholderText(/password/i), "wrongpassword");
