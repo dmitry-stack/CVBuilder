@@ -96,9 +96,10 @@ cv-frontend/
   - `LoginForm.test.tsx`: 4 component tests (rendering, validation errors, server action submission, error display).
   - `SignupForm.test.tsx`: 5 component tests (rendering, validation, password mismatch, server action submission, error display).
   - `Navbar.test.tsx`: 6 component tests (brand logo, 4 nav links, active route highlight, user profile pill, logout flow, responsive drawer toggle).
-  - `UsersTable.test.tsx`: 8 component tests (Employees breadcrumb, search input, sortable headers, mock employee data rows, avatar initial fallback, search filter, empty state, column sorting).
+  - `UsersTable.test.tsx`: 9 component tests (Employees breadcrumb, search input, sortable headers, mock employee data rows, avatar initial fallback, search filter, empty state, column sorting, loading skeleton rows).
+  - `UsersTableSkeleton.test.tsx`: 4 unit tests (shell header, disabled search input, column headers, customizable row count).
   - `AuthTabs.test.tsx`: 3 component tests (tab rendering, active tab indicator for /signin and /signup).
-  - Vitest suite passes 100% (50/50 tests passing across 9 test suites).
+  - Vitest suite passes 100% (55/55 tests passing across 10 test suites).
 - [x] **Employees / Users Directory (`/users`):**
   - Implemented GraphQL query `src/features/users/api/users.graphql` (`query Users($params: SearchPaginationInput)`).
   - Executed `graphql-codegen` generating `UsersDocument` and typed response models.
