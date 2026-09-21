@@ -2,19 +2,15 @@
 
 import { useState, useMemo } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import {
-  Search,
-  ChevronDown,
-  ArrowUpDown,
-  MoreVertical,
-  User as UserIcon,
-} from "lucide-react";
+
+import { Search, ChevronDown, User as UserIcon } from "lucide-react";
 import { useQuery } from "@apollo/client/react";
 import {
   UsersDocument,
   type UsersQuery,
 } from "@/graphql/__generated__/graphql";
+import { UsersTableRowSkeleton } from "./UsersTableRowSkeleton";
+import { DropdownMenuButton } from "./DropDownButton";
 
 export interface UserItem {
   id: string;
@@ -25,67 +21,6 @@ export interface UserItem {
   position?: string | null;
   avatar?: string | null;
 }
-
-const FIGMA_MOCK_USERS: UserItem[] = [
-  {
-    id: "1",
-    first_name: "Rostislav",
-    last_name: "Harlanov",
-    email: "thorn_pear@icloud.com",
-    department: "React",
-    position: "Software Engineer",
-    avatar: null,
-  },
-  {
-    id: "2",
-    first_name: "Vanf",
-    last_name: "Darkholme",
-    email: "tomgar9@outlook.com",
-    department: ".NET",
-    position: "Network Engineer",
-    avatar:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "3",
-    first_name: "Christopher",
-    last_name: "Nolan",
-    email: "christophernolan@gmail.com",
-    department: "Blockchain",
-    position: "DevOps Engineer",
-    avatar: null,
-  },
-  {
-    id: "4",
-    first_name: "Марина",
-    last_name: "",
-    email: "persempre1+1@yandex.ru",
-    department: "DevOps",
-    position: "Data Analyst",
-    avatar:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "5",
-    first_name: "Maksim",
-    last_name: "Hancharou",
-    email: "maxim.goncharov@gmail.com",
-    department: "Global",
-    position: "Data Analyst",
-    avatar:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "6",
-    first_name: "Artem",
-    last_name: "Lopatin",
-    email: "artsem.lapatsin@innowise.com",
-    department: "Global",
-    position: "Project Manager",
-    avatar:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80",
-  },
-];
 
 type SortField =
   "first_name" | "last_name" | "email" | "department" | "position";
@@ -109,7 +44,7 @@ export function UsersTable() {
     errorPolicy: "ignore",
   });
 
-  const rawUsers: UserItem[] = useMemo(() => {
+  const rawUsers: UserItem[] | undefined = useMemo(() => {
     if (data?.users?.items && data.users.items.length > 0) {
       return data.users.items.map(
         (u: UsersQuery["users"]["items"][number]) => ({
@@ -123,10 +58,10 @@ export function UsersTable() {
         }),
       );
     }
-    return FIGMA_MOCK_USERS;
   }, [data]);
 
   const filteredUsers = useMemo(() => {
+    if (!rawUsers) return [];
     let result = [...rawUsers];
 
     if (search.trim()) {
@@ -134,15 +69,11 @@ export function UsersTable() {
       result = result.filter((user) => {
         const fn = (user.first_name || "").toLowerCase();
         const ln = (user.last_name || "").toLowerCase();
-        const em = user.email.toLowerCase();
+
         const dep = (user.department || "").toLowerCase();
         const pos = (user.position || "").toLowerCase();
         return (
-          fn.includes(q) ||
-          ln.includes(q) ||
-          em.includes(q) ||
-          dep.includes(q) ||
-          pos.includes(q)
+          fn.includes(q) || ln.includes(q) || dep.includes(q) || pos.includes(q)
         );
       });
     }
@@ -176,7 +107,7 @@ export function UsersTable() {
 
   return (
     <div className="w-full max-w-content mx-auto space-y-6">
-      <div className="h-14 bg-cv-background dark:bg-zinc-900 rounded-md px-6 flex items-center">
+      <div className="h-14 px-6 flex items-center">
         <span className="font-roboto text-base leading-6 tracking-cv capitalize text-cv-muted dark:text-zinc-400">
           Employees
         </span>
@@ -199,7 +130,7 @@ export function UsersTable() {
         </div>
       </div>
 
-      <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs overflow-x-auto">
+      <div className=" overflow-x-auto">
         <table className="w-full border-collapse text-left">
           <thead>
             <tr className="h-table-header border-b border-zinc-200 dark:border-zinc-800 bg-transparent">
@@ -212,7 +143,7 @@ export function UsersTable() {
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden"
                 >
                   <span>First Name</span>
-                  <ArrowUpDown className="h-3.5 w-3.5 opacity-60" />
+                  <ChevronDown className="h-4 w-4 text-cv-muted" />
                 </button>
               </th>
 
@@ -223,18 +154,17 @@ export function UsersTable() {
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden"
                 >
                   <span>Last Name</span>
-                  <ArrowUpDown className="h-3.5 w-3.5 opacity-60" />
+                  <ChevronDown className="h-4 w-4 text-cv-muted" />
                 </button>
               </th>
 
               <th className="px-4 text-sm font-medium leading-6 tracking-cv text-cv-text dark:text-zinc-100">
                 <button
                   type="button"
-                  onClick={() => handleSort("email")}
+
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden"
                 >
                   <span>Email</span>
-                  <ArrowUpDown className="h-3.5 w-3.5 opacity-60" />
                 </button>
               </th>
 
@@ -256,7 +186,7 @@ export function UsersTable() {
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden"
                 >
                   <span>Position</span>
-                  <ArrowUpDown className="h-3.5 w-3.5 opacity-60" />
+                  <ChevronDown className="h-4 w-4 text-cv-muted" />
                 </button>
               </th>
 
@@ -265,34 +195,9 @@ export function UsersTable() {
           </thead>
 
           <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
-            {loading && filteredUsers.length === 0 ? (
+            {loading ? (
               Array.from({ length: 5 }).map((_, idx) => (
-                <tr
-                  key={`skeleton-${idx}`}
-                  className="h-table-row animate-pulse"
-                >
-                  <td className="px-4">
-                    <div className="h-10 w-10 rounded-full bg-zinc-200 dark:bg-zinc-800" />
-                  </td>
-                  <td className="px-4">
-                    <div className="h-4 w-24 rounded bg-zinc-200 dark:bg-zinc-800" />
-                  </td>
-                  <td className="px-4">
-                    <div className="h-4 w-24 rounded bg-zinc-200 dark:bg-zinc-800" />
-                  </td>
-                  <td className="px-4">
-                    <div className="h-4 w-40 rounded bg-zinc-200 dark:bg-zinc-800" />
-                  </td>
-                  <td className="px-4">
-                    <div className="h-4 w-20 rounded bg-zinc-200 dark:bg-zinc-800" />
-                  </td>
-                  <td className="px-4">
-                    <div className="h-4 w-28 rounded bg-zinc-200 dark:bg-zinc-800" />
-                  </td>
-                  <td className="px-4 text-right">
-                    <div className="h-10 w-10 rounded-full bg-zinc-200 dark:bg-zinc-800 ml-auto" />
-                  </td>
-                </tr>
+                <UsersTableRowSkeleton key={`skeleton-${idx}`} />
               ))
             ) : filteredUsers.length === 0 ? (
               <tr>
@@ -339,34 +244,27 @@ export function UsersTable() {
                   </td>
 
                   <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100">
-                    {user.first_name || "—"}
+                    {user.first_name || ""}
                   </td>
 
                   <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100">
-                    {user.last_name || "—"}
+                    {user.last_name || ""}
                   </td>
 
-                  <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100 truncate max-w-70">
+                  <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100 truncate max-w-email">
                     {user.email}
                   </td>
 
                   <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100">
-                    {user.department || "—"}
+                    {user.department || ""}
                   </td>
 
                   <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100">
-                    {user.position || "—"}
+                    {user.position || ""}
                   </td>
 
                   <td className="px-4 text-right">
-                    <Link
-                      href={`/users/${user.id}`}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                      title="View employee profile"
-                      aria-label={`View profile of ${user.first_name || user.email}`}
-                    >
-                      <MoreVertical className="h-5 w-5" />
-                    </Link>
+                    <DropdownMenuButton userId={user.id} />
                   </td>
                 </tr>
               ))

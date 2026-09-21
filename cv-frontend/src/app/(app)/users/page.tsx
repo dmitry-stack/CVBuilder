@@ -1,4 +1,6 @@
 import { UsersTable } from "@/features/users/ui/UsersTable";
+import { Suspense } from "react";
+import { UsersTableSkeleton } from "@/features/users/ui/UsersTableSkeleton";
 
 export const metadata = {
   title: "Employees | CV Builder",
@@ -6,5 +8,9 @@ export const metadata = {
 };
 
 export default function UsersPage() {
-  return <UsersTable />;
+  return (
+    <Suspense fallback={<UsersTableSkeleton />}>
+      <UsersTable />
+    </Suspense>
+  );
 }

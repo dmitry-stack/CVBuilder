@@ -1,10 +1,79 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { useQuery } from "@apollo/client/react";
 import { UsersTable } from "./UsersTable";
+
+const { MOCK_GRAPHQL_USERS } = vi.hoisted(() => ({
+  MOCK_GRAPHQL_USERS: {
+    users: {
+      items: [
+        {
+          id: "1",
+          email: "thorn_pear@icloud.com",
+          profile: {
+            first_name: "Rostislav",
+            last_name: "Harlanov",
+            avatar: null,
+          },
+          department: { name: "React" },
+          position: { name: "Software Engineer" },
+        },
+        {
+          id: "2",
+          email: "tomgar9@outlook.com",
+          profile: {
+            first_name: "Vanf",
+            last_name: "Darkholme",
+            avatar:
+              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80",
+          },
+          department: { name: ".NET" },
+          position: { name: "Network Engineer" },
+        },
+        {
+          id: "3",
+          email: "christophernolan@gmail.com",
+          profile: {
+            first_name: "Christopher",
+            last_name: "Nolan",
+            avatar: null,
+          },
+          department: { name: "Blockchain" },
+          position: { name: "DevOps Engineer" },
+        },
+        {
+          id: "4",
+          email: "persempre1+1@yandex.ru",
+          profile: { first_name: "Марина", last_name: "", avatar: null },
+          department: { name: "DevOps" },
+          position: { name: "Data Analyst" },
+        },
+        {
+          id: "5",
+          email: "maxim.goncharov@gmail.com",
+          profile: {
+            first_name: "Maksim",
+            last_name: "Hancharou",
+            avatar: null,
+          },
+          department: { name: "Global" },
+          position: { name: "Data Analyst" },
+        },
+        {
+          id: "6",
+          email: "artsem.lapatsin@innowise.com",
+          profile: { first_name: "Artem", last_name: "Lopatin", avatar: null },
+          department: { name: "Global" },
+          position: { name: "Project Manager" },
+        },
+      ],
+    },
+  },
+}));
 
 vi.mock("@apollo/client/react", () => ({
   useQuery: vi.fn().mockReturnValue({
-    data: null,
+    data: MOCK_GRAPHQL_USERS,
     loading: false,
     error: null,
   }),
@@ -13,6 +82,11 @@ vi.mock("@apollo/client/react", () => ({
 describe("UsersTable component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useQuery).mockReturnValue({
+      data: MOCK_GRAPHQL_USERS,
+      loading: false,
+      error: null,
+    } as unknown as ReturnType<typeof useQuery>);
   });
 
   it("renders the Employees breadcrumb header", () => {
@@ -100,5 +174,20 @@ describe("UsersTable component", () => {
 
     fireEvent.click(firstNameHeader);
     expect(screen.getByText("Artem")).toBeInTheDocument();
+  });
+
+  it("renders 5 skeleton rows when query is in loading state", () => {
+    vi.mocked(useQuery).mockReturnValueOnce({
+      data: null,
+      loading: true,
+      error: null,
+    } as unknown as ReturnType<typeof useQuery>);
+
+    const { container } = render(<UsersTable />);
+
+    const skeletonRows = container.querySelectorAll(
+      '[data-slot="users-table-row-skeleton"]',
+    );
+    expect(skeletonRows.length).toBe(5);
   });
 });
