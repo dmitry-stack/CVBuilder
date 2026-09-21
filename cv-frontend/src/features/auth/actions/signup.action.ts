@@ -48,6 +48,12 @@ export async function signupAction(
       if (message.includes("confirmPasswordMismatch")) {
         return { serverError: "Passwords do not match." };
       }
+      if (message.includes("failedToSendEmail")) {
+        return {
+          serverError:
+            "Unable to send verification email. Please check your email address or try again.",
+        };
+      }
 
       return { serverError: message };
     }

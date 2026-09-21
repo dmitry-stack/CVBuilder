@@ -31,7 +31,9 @@ describe("LoginForm Component", () => {
 
     expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /log in/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /sign in/i }),
+    ).toBeInTheDocument();
   });
 
   it("should display validation errors when submitting an empty form", async () => {
@@ -39,7 +41,7 @@ describe("LoginForm Component", () => {
 
     render(<LoginForm />);
 
-    const submitBtn = screen.getByRole("button", { name: /log in/i });
+    const submitBtn = screen.getByRole("button", { name: /sign in/i });
     await user.click(submitBtn);
 
     await waitFor(() => {
@@ -58,7 +60,7 @@ describe("LoginForm Component", () => {
 
     await user.type(screen.getByPlaceholderText(/email/i), "test@example.com");
     await user.type(screen.getByPlaceholderText(/password/i), "password123");
-    await user.click(screen.getByRole("button", { name: /log in/i }));
+    await user.click(screen.getByRole("button", { name: /sign in/i }));
 
     await waitFor(() => {
       expect(loginAction).toHaveBeenCalledWith({
@@ -79,7 +81,7 @@ describe("LoginForm Component", () => {
 
     await user.type(screen.getByPlaceholderText(/email/i), "wrong@example.com");
     await user.type(screen.getByPlaceholderText(/password/i), "wrongpassword");
-    await user.click(screen.getByRole("button", { name: /log in/i }));
+    await user.click(screen.getByRole("button", { name: /sign in/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument();

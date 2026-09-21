@@ -3,18 +3,18 @@ import SignupForm from "@/features/auth/ui/SignupForm";
 
 export default function SignupPage() {
   return (
-    <main className="flex items-center justify-center md:h-screen">
-      <div className="relative mx-auto flex w-full max-w-100 flex-col space-y-2.5 p-4 md:-mt-32">
-        <div className="text-center">
-          <h1 className="text-4xl font-semibold">Sign up now</h1>
-          <p className="text-md text-gray-500 dark:text-zinc-400 mt-1">
-            Welcome! Sign up to continue
-          </p>
-        </div>
-        <Suspense>
-          <SignupForm />
-        </Suspense>
+    <main className="w-full max-w-140">
+      <div className="mb-10 text-center">
+        <h1 className="font-roboto text-cv-title font-normal tracking-cv-tight text-cv-text dark:text-zinc-100">
+          Sign up now
+        </h1>
+        <p className="mt-6 font-roboto text-base font-normal leading-6 tracking-cv text-cv-text dark:text-zinc-300">
+          Welcome! Sign up to continue
+        </p>
       </div>
+      <Suspense>
+        <SignupForm />
+      </Suspense>
     </main>
   );
 }

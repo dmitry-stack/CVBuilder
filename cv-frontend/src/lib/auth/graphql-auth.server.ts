@@ -41,7 +41,7 @@ export async function setAuthCookies({ access_token, refresh_token }: Tokens) {
     secure: isProduction,
     sameSite: "lax",
     path: "/",
-    maxAge: 10 * 60, // 10 minutes
+    maxAge: 10 * 60,
   });
 
   cookieStore.set("refresh_token", refresh_token, {
@@ -49,7 +49,7 @@ export async function setAuthCookies({ access_token, refresh_token }: Tokens) {
     secure: isProduction,
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7,
   });
 }
 

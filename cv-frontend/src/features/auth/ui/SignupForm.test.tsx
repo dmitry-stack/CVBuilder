@@ -35,7 +35,7 @@ describe("SignupForm Component", () => {
       screen.getByPlaceholderText(/confirm password/i),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /CREATE AN ACCOUNT/i }),
+      screen.getByRole("button", { name: /CREATE ACCOUNT/i }),
     ).toBeInTheDocument();
   });
 
@@ -45,7 +45,7 @@ describe("SignupForm Component", () => {
     render(<SignupForm />);
 
     const submitBtn = screen.getByRole("button", {
-      name: /CREATE AN ACCOUNT/i,
+      name: /CREATE ACCOUNT/i,
     });
     await user.click(submitBtn);
 
@@ -69,9 +69,7 @@ describe("SignupForm Component", () => {
       "differentpassword",
     );
 
-    await user.click(
-      screen.getByRole("button", { name: /CREATE AN ACCOUNT/i }),
-    );
+    await user.click(screen.getByRole("button", { name: /CREATE ACCOUNT/i }));
 
     await waitFor(() => {
       expect(
@@ -95,9 +93,7 @@ describe("SignupForm Component", () => {
       "password123",
     );
 
-    await user.click(
-      screen.getByRole("button", { name: /CREATE AN ACCOUNT/i }),
-    );
+    await user.click(screen.getByRole("button", { name: /CREATE ACCOUNT/i }));
 
     await waitFor(() => {
       expect(signupAction).toHaveBeenCalledWith({
@@ -128,9 +124,7 @@ describe("SignupForm Component", () => {
       "password123",
     );
 
-    await user.click(
-      screen.getByRole("button", { name: /CREATE AN ACCOUNT/i }),
-    );
+    await user.click(screen.getByRole("button", { name: /CREATE ACCOUNT/i }));
 
     await waitFor(() => {
       expect(

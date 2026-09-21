@@ -62,7 +62,7 @@ describe("Navbar / Aside Sidebar", () => {
       current: "page",
     });
     expect(activeLink).toBeInTheDocument();
-    expect(activeLink.className).toContain("bg-[#E2E2E4]");
+    expect(activeLink.className).toMatch(/bg-cv-surface|bg-\[#E2E2E4\]/);
   });
 
   it("renders user avatar with initial and full name", () => {
@@ -75,7 +75,6 @@ describe("Navbar / Aside Sidebar", () => {
   it("handles logout click by clearing tokens and routing to /signin", async () => {
     render(<Navbar />);
 
-    // Open profile menu first
     const profileBtn = screen.getByRole("button", {
       name: /user profile for/i,
     });

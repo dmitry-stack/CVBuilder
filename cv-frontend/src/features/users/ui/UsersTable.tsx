@@ -11,8 +11,10 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { useQuery } from "@apollo/client/react";
-import { UsersDocument } from "@/graphql/__generated__/graphql";
-import { cn } from "@/lib/utils";
+import {
+  UsersDocument,
+  type UsersQuery,
+} from "@/graphql/__generated__/graphql";
 
 export interface UserItem {
   id: string;
@@ -94,7 +96,7 @@ export function UsersTable() {
   const [sortField, setSortField] = useState<SortField>("first_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
-  const { data, loading } = useQuery(UsersDocument, {
+  const { data, loading } = useQuery<UsersQuery>(UsersDocument, {
     variables: {
       params: {
         search: search || undefined,
@@ -109,15 +111,17 @@ export function UsersTable() {
 
   const rawUsers: UserItem[] = useMemo(() => {
     if (data?.users?.items && data.users.items.length > 0) {
-      return data.users.items.map((u) => ({
-        id: u.id,
-        first_name: u.profile?.first_name || null,
-        last_name: u.profile?.last_name || null,
-        email: u.email,
-        department: u.department?.name || null,
-        position: u.position?.name || null,
-        avatar: u.profile?.avatar || null,
-      }));
+      return data.users.items.map(
+        (u: UsersQuery["users"]["items"][number]) => ({
+          id: u.id,
+          first_name: u.profile?.first_name || null,
+          last_name: u.profile?.last_name || null,
+          email: u.email,
+          department: u.department?.name || null,
+          position: u.position?.name || null,
+          avatar: u.profile?.avatar || null,
+        }),
+      );
     }
     return FIGMA_MOCK_USERS;
   }, [data]);
@@ -171,19 +175,17 @@ export function UsersTable() {
   };
 
   return (
-    <div className="w-full max-w-[1238px] mx-auto space-y-6">
-      {/* Top Header / Breadcrumb matching Figma: height 56px, background #F5F5F7 */}
-      <div className="h-14 bg-[#F5F5F7] dark:bg-zinc-900 rounded-md px-6 flex items-center">
-        <span className="font-roboto text-[16px] leading-[24px] tracking-[0.15px] capitalize text-[#626262] dark:text-zinc-400">
+    <div className="w-full max-w-content mx-auto space-y-6">
+      <div className="h-14 bg-cv-background dark:bg-zinc-900 rounded-md px-6 flex items-center">
+        <span className="font-roboto text-base leading-6 tracking-cv capitalize text-cv-muted dark:text-zinc-400">
           Employees
         </span>
       </div>
 
-      {/* Search Input matching Figma: height 40px, rounded 40px, border #AEAEAE, placeholder #C4C4C6 */}
       <div className="px-1">
-        <div className="relative w-full max-w-[388px]">
+        <div className="relative w-full max-w-search">
           <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#626262] dark:text-zinc-400 pointer-events-none"
+            className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-cv-muted dark:text-zinc-400 pointer-events-none"
             aria-hidden="true"
           />
           <input
@@ -191,23 +193,19 @@ export function UsersTable() {
             placeholder="Search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full h-10 pl-10 pr-4 rounded-[40px] border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-[16px] leading-[23px] text-[#2E2E2E] dark:text-zinc-100 placeholder:text-[#C4C4C6] focus:outline-hidden focus:border-[#2E2E2E] dark:focus:border-zinc-400 transition-colors"
+            className="w-full h-10 pl-10 pr-4 rounded-full border border-cv-border dark:border-zinc-700 bg-transparent text-base leading-cv-input text-cv-text dark:text-zinc-100 placeholder:text-cv-placeholder focus:outline-hidden focus:border-cv-text dark:focus:border-zinc-400 transition-colors"
             aria-label="Search employees"
           />
         </div>
       </div>
 
-      {/* Table Container */}
       <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs overflow-x-auto">
         <table className="w-full border-collapse text-left">
-          {/* Header Row: height 58px, font 500 14px #2E2E2E */}
           <thead>
-            <tr className="h-[58px] border-b border-zinc-200 dark:border-zinc-800 bg-transparent">
-              {/* Avatar column */}
-              <th className="w-[72px] px-4" aria-label="Avatar" />
+            <tr className="h-table-header border-b border-zinc-200 dark:border-zinc-800 bg-transparent">
+              <th className="w-18 px-4" aria-label="Avatar" />
 
-              {/* First Name */}
-              <th className="px-4 text-[14px] font-medium leading-[24px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100">
+              <th className="px-4 text-sm font-medium leading-6 tracking-cv text-cv-text dark:text-zinc-100">
                 <button
                   type="button"
                   onClick={() => handleSort("first_name")}
@@ -218,8 +216,7 @@ export function UsersTable() {
                 </button>
               </th>
 
-              {/* Last Name */}
-              <th className="px-4 text-[14px] font-medium leading-[24px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100">
+              <th className="px-4 text-sm font-medium leading-6 tracking-cv text-cv-text dark:text-zinc-100">
                 <button
                   type="button"
                   onClick={() => handleSort("last_name")}
@@ -230,8 +227,7 @@ export function UsersTable() {
                 </button>
               </th>
 
-              {/* Email */}
-              <th className="px-4 text-[14px] font-medium leading-[24px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100">
+              <th className="px-4 text-sm font-medium leading-6 tracking-cv text-cv-text dark:text-zinc-100">
                 <button
                   type="button"
                   onClick={() => handleSort("email")}
@@ -242,20 +238,18 @@ export function UsersTable() {
                 </button>
               </th>
 
-              {/* Department */}
-              <th className="px-4 text-[14px] font-medium leading-[24px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100">
+              <th className="px-4 text-sm font-medium leading-6 tracking-cv text-cv-text dark:text-zinc-100">
                 <button
                   type="button"
                   onClick={() => handleSort("department")}
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden"
                 >
                   <span>Department</span>
-                  <ChevronDown className="h-4 w-4 text-[#626262]" />
+                  <ChevronDown className="h-4 w-4 text-cv-muted" />
                 </button>
               </th>
 
-              {/* Position */}
-              <th className="px-4 text-[14px] font-medium leading-[24px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100">
+              <th className="px-4 text-sm font-medium leading-6 tracking-cv text-cv-text dark:text-zinc-100">
                 <button
                   type="button"
                   onClick={() => handleSort("position")}
@@ -266,17 +260,17 @@ export function UsersTable() {
                 </button>
               </th>
 
-              {/* Action column */}
-              <th className="w-[72px] px-4" aria-label="Actions" />
+              <th className="w-18 px-4" aria-label="Actions" />
             </tr>
           </thead>
 
-          {/* Body Rows: height 73px, text 14px 400 #2E2E2E */}
           <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
             {loading && filteredUsers.length === 0 ? (
-              // Loading skeleton rows
               Array.from({ length: 5 }).map((_, idx) => (
-                <tr key={`skeleton-${idx}`} className="h-[73px] animate-pulse">
+                <tr
+                  key={`skeleton-${idx}`}
+                  className="h-table-row animate-pulse"
+                >
                   <td className="px-4">
                     <div className="h-10 w-10 rounded-full bg-zinc-200 dark:bg-zinc-800" />
                   </td>
@@ -301,15 +295,14 @@ export function UsersTable() {
                 </tr>
               ))
             ) : filteredUsers.length === 0 ? (
-              // Empty search state
               <tr>
                 <td
                   colSpan={7}
-                  className="h-48 text-center text-[#626262] dark:text-zinc-400"
+                  className="h-48 text-center text-cv-muted dark:text-zinc-400"
                 >
                   <div className="flex flex-col items-center justify-center gap-2">
                     <UserIcon className="h-8 w-8 text-zinc-400" />
-                    <p className="font-roboto text-[16px]">
+                    <p className="font-roboto text-base">
                       No employees found matching &quot;{search}&quot;
                     </p>
                   </div>
@@ -319,9 +312,8 @@ export function UsersTable() {
               filteredUsers.map((user) => (
                 <tr
                   key={user.id}
-                  className="h-[73px] hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
+                  className="h-table-row hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
                 >
-                  {/* Avatar: 40px circle, background #AEAEAE or image, letter 20px #F5F5F7 */}
                   <td className="px-4">
                     {user.avatar ? (
                       <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
@@ -336,46 +328,40 @@ export function UsersTable() {
                       </div>
                     ) : (
                       <div
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#AEAEAE] text-[#F5F5F7]"
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cv-border text-cv-on-accent"
                         aria-hidden="true"
                       >
-                        <span className="font-roboto text-[20px] font-normal leading-[20px] uppercase">
+                        <span className="font-roboto text-xl font-normal leading-5 uppercase">
                           {getInitial(user)}
                         </span>
                       </div>
                     )}
                   </td>
 
-                  {/* First Name */}
-                  <td className="px-4 font-roboto text-[14px] leading-[20px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100">
+                  <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100">
                     {user.first_name || "—"}
                   </td>
 
-                  {/* Last Name */}
-                  <td className="px-4 font-roboto text-[14px] leading-[20px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100">
+                  <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100">
                     {user.last_name || "—"}
                   </td>
 
-                  {/* Email */}
-                  <td className="px-4 font-roboto text-[14px] leading-[20px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100 truncate max-w-[280px]">
+                  <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100 truncate max-w-70">
                     {user.email}
                   </td>
 
-                  {/* Department */}
-                  <td className="px-4 font-roboto text-[14px] leading-[20px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100">
+                  <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100">
                     {user.department || "—"}
                   </td>
 
-                  {/* Position */}
-                  <td className="px-4 font-roboto text-[14px] leading-[20px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100">
+                  <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100">
                     {user.position || "—"}
                   </td>
 
-                  {/* Action button matching Figma: 40px circle */}
                   <td className="px-4 text-right">
                     <Link
                       href={`/users/${user.id}`}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full text-[#626262] hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                       title="View employee profile"
                       aria-label={`View profile of ${user.first_name || user.email}`}
                     >

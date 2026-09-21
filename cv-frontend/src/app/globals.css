@@ -7,9 +7,38 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-roboto), Roboto, system-ui, sans-serif;
+  --font-roboto: var(--font-roboto), Roboto, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-roboto), Roboto, system-ui, sans-serif;
+  --color-cv-background: #f5f5f7;
+  --color-cv-surface: #e2e2e4;
+  --color-cv-text: #2e2e2e;
+  --color-cv-muted: #626262;
+  --color-cv-placeholder: #c4c4c6;
+  --color-cv-border: #aeaeae;
+  --color-cv-accent: #c63031;
+  --color-cv-accent-hover: #b52a2b;
+  --color-cv-on-accent: #f5f5f7;
+  --spacing-auth-offset: 121px;
+  --spacing-auth-tab: 150px;
+  --spacing-auth-link: 46px;
+  --spacing-auth-rule: 2px;
+  --spacing-content: 1238px;
+  --spacing-search: 388px;
+  --spacing-table-header: 58px;
+  --spacing-table-row: 73px;
+  --spacing-email: 280px;
+  --text-cv-title: 34px;
+  --text-cv-title--line-height: 42px;
+  --leading-cv-label: 18px;
+  --leading-cv-input: 23px;
+  --tracking-cv: 0.15px;
+  --tracking-cv-tight: 0.25px;
+  --tracking-cv-wide: 0.4px;
+  --shadow-cv-button:
+    0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px rgb(0 0 0 / 14%),
+    0px 1px 5px rgb(0 0 0 / 12%);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

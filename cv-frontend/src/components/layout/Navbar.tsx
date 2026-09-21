@@ -110,10 +110,10 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
             href={item.href}
             onClick={() => setMobileOpen(false)}
             className={cn(
-              "group flex h-14 w-full items-center gap-4 pl-4 rounded-r-full text-[16px] leading-[24px] tracking-[0.15px] transition-colors",
+              "group flex h-14 w-full items-center gap-4 pl-4 rounded-r-full text-base leading-6 tracking-[0.15px] transition-colors",
               isActive
-                ? "bg-[#E2E2E4] dark:bg-zinc-800 text-[#2E2E2E] dark:text-zinc-100 font-normal"
-                : "text-[#626262] dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-850 hover:text-[#2E2E2E] dark:hover:text-zinc-200",
+                ? "bg-cv-surface dark:bg-zinc-800 text-cv-text dark:text-zinc-100 font-normal"
+                : "text-cv-muted dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-850 hover:text-cv-text dark:hover:text-zinc-200",
             )}
             aria-current={isActive ? "page" : undefined}
           >
@@ -121,8 +121,8 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
               className={cn(
                 "h-6 w-6 shrink-0 transition-colors",
                 isActive
-                  ? "text-[#2E2E2E] dark:text-zinc-100"
-                  : "text-[#626262] dark:text-zinc-400 group-hover:text-[#2E2E2E] dark:group-hover:text-zinc-200",
+                  ? "text-cv-text dark:text-zinc-100"
+                  : "text-cv-muted dark:text-zinc-400 group-hover:text-cv-text dark:group-hover:text-zinc-200",
               )}
             />
             <span className="font-roboto">{item.label}</span>
@@ -141,7 +141,7 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
           className="absolute bottom-16 left-2 right-2 z-50 rounded-lg border border-zinc-200 bg-white p-1.5 shadow-lg dark:border-zinc-800 dark:bg-zinc-900"
         >
           <div className="border-b border-zinc-100 px-3 py-2 dark:border-zinc-800">
-            <p className="font-roboto text-sm font-medium text-[#2E2E2E] dark:text-zinc-100 truncate">
+            <p className="font-roboto text-sm font-medium text-cv-text dark:text-zinc-100 truncate">
               {userName}
             </p>
           </div>
@@ -175,16 +175,16 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
         aria-label={`User profile for ${userName}`}
       >
         <div
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#C63031] text-[#F5F5F7]"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cv-accent text-cv-on-accent"
           aria-hidden="true"
         >
-          <span className="font-roboto text-[20px] font-medium leading-[20px] uppercase">
+          <span className="font-roboto text-xl font-medium leading-5 uppercase">
             {initial}
           </span>
         </div>
         <div className="min-w-0 flex-1">
           <span
-            className="block truncate font-roboto text-[16px] leading-[24px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100"
+            className="block truncate font-roboto text-base leading-6 tracking-cv text-cv-text dark:text-zinc-100"
             title={userName}
           >
             {userName}
@@ -210,7 +210,7 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
             priority
             className="h-6 w-6 shrink-0"
           />
-          <span className="font-roboto text-[16px] font-medium leading-[24px] tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100">
+          <span className="font-roboto text-base font-medium leading-6 tracking-cv text-cv-text dark:text-zinc-100">
             CV Builder
           </span>
         </Link>
@@ -234,14 +234,14 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
             priority
             className="h-6 w-6 shrink-0"
           />
-          <span className="font-roboto text-[16px] font-medium text-[#2E2E2E] dark:text-zinc-100">
+          <span className="font-roboto text-base font-medium text-cv-text dark:text-zinc-100">
             CV Builder
           </span>
         </Link>
         <button
           type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="rounded p-2 text-[#2E2E2E] hover:bg-zinc-100 dark:text-zinc-100 dark:hover:bg-zinc-800"
+          className="rounded p-2 text-cv-text hover:bg-zinc-100 dark:text-zinc-100 dark:hover:bg-zinc-800"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
         >
           {mobileOpen ? (
@@ -258,7 +258,7 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
           onClick={() => setMobileOpen(false)}
         >
           <aside
-            className="relative h-full w-[200px] border-r border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-950"
+            className="relative h-full w-50 border-r border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-950"
             onClick={(e) => e.stopPropagation()}
           >
             {renderAsideContent()}
@@ -267,7 +267,7 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
       )}
 
       <aside
-        className="fixed top-0 bottom-0 left-0 z-40 hidden w-[200px] border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 md:flex md:flex-col"
+        className="fixed top-0 bottom-0 left-0 z-40 hidden w-50 border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 md:flex md:flex-col"
         aria-label="Sidebar Navigation"
       >
         {renderAsideContent()}

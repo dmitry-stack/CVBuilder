@@ -50,131 +50,127 @@ export default function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-      <div className="flex-1 rounded-lg px-6 pb-4 pt-8 dark:bg-zinc-900">
-        {serverError && (
-          <div className="mb-4 flex items-center gap-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
-            <AlertCircle className="h-4 w-4 shrink-0" />
-            <span>{serverError}</span>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+      {serverError && (
+        <div className="mb-6 flex items-center gap-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span>{serverError}</span>
+        </div>
+      )}
+
+      <div className="space-y-9">
+        <div>
+          <div className="relative">
+            <Input
+              {...register("email")}
+              id="email"
+              type="email"
+              autoComplete="email"
+              placeholder="Email"
+              disabled={isPending}
+              aria-invalid={errors.email ? "true" : undefined}
+              className="h-12 w-full border border-cv-border bg-transparent px-3 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus-visible:border-zinc-300 focus-visible:ring-0 focus:outline-hidden transition-colors"
+            />
           </div>
-        )}
-
-        <div className="w-full">
-          <div>
-            <div className="relative">
-              <Input
-                {...register("email")}
-                id="email"
-                type="email"
-                autoComplete="email"
-                placeholder="Email"
-                disabled={isPending}
-                aria-invalid={errors.email ? "true" : undefined}
-              />
-            </div>
-            {errors.email && (
-              <p className="mt-1 text-xs text-destructive">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
-
-          <div className="mt-4">
-            <div className="relative">
-              <Input
-                {...register("password")}
-                id="password"
-                type={showPassword ? "text" : "password"}
-                autoComplete="new-password"
-                placeholder="Password"
-                disabled={isPending}
-                aria-invalid={errors.password ? "true" : undefined}
-                className="pr-10"
-              />
-
-              <button
-                type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-zinc-300"
-                onClick={() => setShowPassword((prev) => !prev)}
-                tabIndex={-1}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
-            </div>
-            {errors.password && (
-              <p className="mt-1 text-xs text-destructive">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-
-          <div className="mt-4">
-            <div className="relative">
-              <Input
-                {...register("confirmPassword")}
-                id="confirmPassword"
-                type={showConfirmPassword ? "text" : "password"}
-                autoComplete="new-password"
-                placeholder="Confirm Password"
-                disabled={isPending}
-                aria-invalid={errors.confirmPassword ? "true" : undefined}
-                className="pr-10"
-              />
-
-              <button
-                type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-zinc-300"
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
-                tabIndex={-1}
-                aria-label={
-                  showConfirmPassword ? "Hide password" : "Show password"
-                }
-              >
-                {showConfirmPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
-            </div>
-            {errors.confirmPassword && (
-              <p className="mt-1 text-xs text-destructive">
-                {errors.confirmPassword.message}
-              </p>
-            )}
-          </div>
+          {errors.email && (
+            <p className="mt-1.5 text-xs text-destructive">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
-        <div className="mt-6 flex justify-center">
-          <Button
-            type="submit"
-            className="w-55 rounded-4xl h-12 bg-[#C63031] text-white hover:bg-[#b52a2b]"
-            disabled={isPending}
-          >
-            {isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Creating account...
-              </>
-            ) : (
-              "CREATE AN ACCOUNT"
-            )}
-          </Button>
+        <div>
+          <div className="relative">
+            <Input
+              {...register("password")}
+              id="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="new-password"
+              placeholder="Password"
+              disabled={isPending}
+              aria-invalid={errors.password ? "true" : undefined}
+              className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus-visible:border-zinc-300 focus-visible:ring-0 focus:outline-hidden transition-colors"
+            />
+
+            <button
+              type="button"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:text-cv-text dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors focus:outline-hidden"
+              onClick={() => setShowPassword((prev) => !prev)}
+              tabIndex={-1}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? (
+                <EyeOff className="h-6 w-6" />
+              ) : (
+                <Eye className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+          {errors.password && (
+            <p className="mt-1.5 text-xs text-destructive">
+              {errors.password.message}
+            </p>
+          )}
         </div>
 
-        <div className="mt-4 pt-4 text-center text-sm text-gray-600 dark:border-zinc-800 dark:text-zinc-400">
-          <Link
-            href="/signin"
-            className="font-medium text-primary underline-offset-4 hover:underline"
-          >
-            I HAVE AN ACCOUNT
-          </Link>
+        <div>
+          <div className="relative">
+            <Input
+              {...register("confirmPassword")}
+              id="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              autoComplete="new-password"
+              placeholder="Confirm Password"
+              disabled={isPending}
+              aria-invalid={errors.confirmPassword ? "true" : undefined}
+              className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus-visible:border-zinc-300 focus-visible:ring-0 focus:outline-hidden transition-colors"
+            />
+
+            <button
+              type="button"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:text-cv-text dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors focus:outline-hidden"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+              tabIndex={-1}
+              aria-label={
+                showConfirmPassword ? "Hide password" : "Show password"
+              }
+            >
+              {showConfirmPassword ? (
+                <EyeOff className="h-6 w-6" />
+              ) : (
+                <Eye className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+          {errors.confirmPassword && (
+            <p className="mt-1.5 text-xs text-destructive">
+              {errors.confirmPassword.message}
+            </p>
+          )}
         </div>
+      </div>
+
+      <div className="mx-auto mt-10 sm:mt-12 flex w-55 flex-col items-center gap-2">
+        <Button
+          type="submit"
+          className="h-12 w-55 rounded-full bg-cv-accent font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-on-accent shadow-cv-button hover:bg-cv-accent-hover transition-all cursor-pointer"
+          disabled={isPending}
+        >
+          {isPending ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            </>
+          ) : (
+            "CREATE ACCOUNT"
+          )}
+        </Button>
+
+        <Link
+          href="/signin"
+          className="flex h-12 w-55 items-center justify-center rounded-full font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-muted hover:text-cv-text dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
+        >
+          I HAVE AN ACCOUNT
+        </Link>
       </div>
     </form>
   );
