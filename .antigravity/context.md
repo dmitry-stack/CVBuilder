@@ -110,6 +110,19 @@ cv-frontend/
     - Table body rows: 73px height each, 40px avatar (`#AEAEAE` with 20px uppercase initial or user photo), 14px regular font, 40px circle action button at right.
     - Interactive client-side & server-side search filtering and column sorting.
     - Loading skeletons and clean empty state.
+- [x] **Unified Common Layout Header (`<Header />`):**
+  - Integrated a single application shell `<Header />` in `src/app/(app)/layout.tsx` with `HeaderProvider` context.
+  - Automatically renders top-level route titles (`Employees`, `Skills`, `Languages`, `CVs`, `Settings`).
+  - Automatically switches to exact Figma breadcrumbs for user subroutes (`Employees > [red user icon] {Name} > Profile / Skills / Languages / CVs`).
+  - Removed redundant per-page local header banners from `UsersTable.tsx` and `UsersTableSkeleton.tsx`.
+  - Colocated unit tests in `Header.test.tsx` (6 tests). All 74 tests passing.
+- [x] **User Profile Page Scaffolding (`/users/[id]`):**
+  - Matched visual reference from `.antigravity/assets/profile.png`:
+    - Top centered profile section: 128px circular avatar with initial letter, user full name (`text-2xl`), email, and membership date (`A member since Sun Jan 14 2024`).
+    - Centered 2x2 form grid below: First Name, Last Name, Department (dropdown), Position (dropdown) with filled input styling.
+    - Sub-tab navigation in `ProfileTabs.tsx` (`PROFILE`, `SKILLS`, `LANGUAGES`).
+    - Photo upload / avatar interaction in `ProfileAvatar.tsx`.
+  - Colocated unit and component test suites: `profile.schema.test.ts` (5 tests), `ProfileTabs.test.tsx` (2 tests), `ProfileForm.test.tsx` (5 tests). All 74 project tests passing.
 - [x] **Route Grouping & Navigation Shell:**
   - Standardized Next.js route groups: `(auth)` for public authentication and `(app)` for authenticated application modules.
   - Resolved nested HTML bug by establishing clean `AppLayout` in `src/app/(app)/layout.tsx` with sidebar padding (`md:pl-[200px]`).
@@ -164,7 +177,7 @@ cv-frontend/
 | **System** | No Internet Error | ⏳ Not Started | Public | Low |
 | **System** | Unsupported Device | ⏳ Not Started | Public | Low |
 | **Users** | Users List (`/users`) | ✅ Implemented | User, Admin | Done |
-| **Users** | User Profile (`/users/[id]`) | ⏳ Not Started | User, Admin | High |
+| **Users** | User Profile (`/users/[id]`) | 🟡 UI Scaffolded | User, Admin | High |
 | **Users** | User Skills (`/users/[id]/skills`) | ⏳ Not Started | User, Admin | Medium |
 | **Users** | User Languages (`/users/[id]/languages`) | ⏳ Not Started | User, Admin | Medium |
 | **Users** | User CVs list (Admin view) | ⏳ Not Started | Admin | Medium |
