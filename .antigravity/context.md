@@ -78,20 +78,27 @@ cv-frontend/
 ## 4. Current Implementation Status
 
 ### Completed
-- [x] **Authentication UI & Forms with Server Actions:**
+- [x] **Authentication UI & Forms with Server Actions & Exact Figma Alignment:**
   - Migrated `SigninForm` and `SignupForm` to execute dedicated Server Actions (`loginAction` and `signupAction`).
   - Forms use React `useTransition` for non-blocking pending states, keeping instant client-side Zod validation while delegating token handling and cookie storage directly to the server.
+  - Pixel-perfect visual alignment with Figma inspect specifications:
+    - Dedicated `AuthTabs` navigation with 150px wide tabs, 56px header height, and 150px red active underline (`#C63031`).
+    - 560px max width form container centered on canvas with 121px top offset.
+    - Typography: 34px/42px headings (`Welcome back`, `Sign up now`), 16px/24px subtitles (`#2E2E2E`).
+    - 48px input fields with `#AEAEAE` borders, 16px Roboto text, `#C4C4C6` placeholder, and 40px rounded password toggle icons.
+    - 220px pill primary buttons (`rounded-[40px]`, `#C63031`, 14px uppercase tracking 0.4px) with drop shadow `shadow-[0px_3px_1px_-2px_rgba(0,0,0,0.2),0px_2px_2px_rgba(0,0,0,0.14),0px_1px_5px_rgba(0,0,0,0.12)]`.
+    - 220px secondary links (`FORGOT PASSWORD` and `I HAVE AN ACCOUNT`).
 - [x] **Automated Testing:**
-  - `auth.actions.test.ts`: 6 unit tests (server-side validation, cookie setting, error translation).
+  - `auth.actions.test.ts`: 9 unit tests (server-side validation, httpOnly cookie setting, error translation, logoutAction, refreshAction).
   - `auth.schema.test.ts`: 7 unit tests for validation rules (email format, password length, confirmation match).
   - `input.test.tsx`: 6 unit tests (rendering, user typing, disabled state, ref forwarding, custom class merging, aria-invalid).
-  - `auth-storage.test.ts`: 5 unit tests (cookie sync, session delete, token refresh, concurrent request deduplication).
   - `LogoutButton.test.tsx`: 2 component tests (rendering, logout and Apollo cache clear flow).
-  - `SigninForm.test.tsx`: 4 component tests (rendering, validation errors, server action submission, error display).
+  - `LoginForm.test.tsx`: 4 component tests (rendering, validation errors, server action submission, error display).
   - `SignupForm.test.tsx`: 5 component tests (rendering, validation, password mismatch, server action submission, error display).
   - `Navbar.test.tsx`: 6 component tests (brand logo, 4 nav links, active route highlight, user profile pill, logout flow, responsive drawer toggle).
   - `UsersTable.test.tsx`: 8 component tests (Employees breadcrumb, search input, sortable headers, mock employee data rows, avatar initial fallback, search filter, empty state, column sorting).
-  - Vitest suite passes 100% (49/49 tests passing).
+  - `AuthTabs.test.tsx`: 3 component tests (tab rendering, active tab indicator for /signin and /signup).
+  - Vitest suite passes 100% (50/50 tests passing across 9 test suites).
 - [x] **Employees / Users Directory (`/users`):**
   - Implemented GraphQL query `src/features/users/api/users.graphql` (`query Users($params: SearchPaginationInput)`).
   - Executed `graphql-codegen` generating `UsersDocument` and typed response models.
@@ -111,12 +118,13 @@ cv-frontend/
     - Pinned bottom user profile pill with 40px red initial circle (`#C63031`) and integrated logout button.
     - Responsive mobile top header and slide-out navigation drawer.
 - [x] **Root Route (`/`) & Landing:**
-  - Added `src/app/page.tsx` server component with dynamic cookie inspection to redirect authenticated users to `/users` and unauthenticated users to `/signin`.
-- [x] **Authentication & Token Security:**
-  - Server Actions directly set `refresh_token` as an `HttpOnly; Secure; SameSite=Lax` cookie on the server.
-  - Implemented Next.js route handlers `POST/DELETE /api/auth/session` and `POST /api/auth/refresh`.
-  - Implemented Apollo Client `ErrorLink` in `src/lib/apollo-provider.tsx` to automatically catch `401 Unauthorized` / `UNAUTHENTICATED` errors, invoke `/api/auth/refresh`, update headers, and transparently retry failed queries/mutations (with `useRouter().push("/signin")` for Next.js client-side navigation on failed refresh).
-  - Implemented in-flight refresh promise lock in `authStorage` to deduplicate concurrent refresh calls.
+  - Added `src/app/page.tsx` server component with dynamic cookie inspection (`access_token` or `refresh_token`) to redirect authenticated users to `/users` and unauthenticated users to `/signin`.
+- [x] **Authentication & Token Security (BFF Architecture):**
+  - All token management is server-side with strict `HttpOnly; Secure; SameSite=Lax` cookies for both `access_token` and `refresh_token` (`src/lib/auth/graphql-auth.server.ts`).
+  - Next.js Route Handler `POST /api/graphql` serves as a secure BFF proxy, reading `access_token` from cookies and attaching `Bearer ${token}` to upstream GraphQL calls.
+  - Apollo Client in `src/lib/apollo-provider.tsx` connects to `/api/graphql` with `credentials: "same-origin"`.
+  - Apollo Client `ErrorLink` catches `401 Unauthorized` / `UNAUTHENTICATED` errors, deduplicates concurrent requests, calls `refreshAction()`, and transparently retries queued operations.
+  - Server Actions (`loginAction`, `signupAction`, `refreshAction`, `logoutAction`) use typed GraphQL documents (`LoginDocument`, `SignupDocument`, `UpdateTokenDocument`).
 - [x] **Domain Separation:**
   - Relocated `LogoutButton` to `src/features/auth/ui/LogoutButton.tsx` and updated target to `/signin`.
 - [x] **Font Configuration Cleanup:**

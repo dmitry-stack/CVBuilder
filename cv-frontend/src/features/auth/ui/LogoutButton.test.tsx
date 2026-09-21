@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { LogoutButton } from "./LogoutButton";
-import { authStorage } from "@/lib/auth-storage";
+import { logoutAction } from "@/features/auth/actions/logout.action";
 
 const mockPush = vi.fn();
 const mockRefresh = vi.fn();
@@ -22,10 +22,8 @@ vi.mock("@apollo/client/react", () => ({
   }),
 }));
 
-vi.mock("@/lib/auth-storage", () => ({
-  authStorage: {
-    clearTokens: vi.fn(),
-  },
+vi.mock("@/features/auth/actions/logout.action", () => ({
+  logoutAction: vi.fn().mockResolvedValue({ success: true }),
 }));
 
 describe("LogoutButton component", () => {
@@ -46,7 +44,7 @@ describe("LogoutButton component", () => {
     const button = screen.getByRole("button", { name: /log out/i });
     await user.click(button);
 
-    expect(authStorage.clearTokens).toHaveBeenCalled();
+    expect(logoutAction).toHaveBeenCalled();
     expect(mockClearStore).toHaveBeenCalled();
     expect(mockPush).toHaveBeenCalledWith("/signin");
     expect(mockRefresh).toHaveBeenCalled();

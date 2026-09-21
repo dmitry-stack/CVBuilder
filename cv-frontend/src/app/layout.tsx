@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body
-        className={`min-h-full flex flex-col ${roboto.className} antialiased`}
+        className={`min-h-full flex flex-col ${roboto.variable} ${roboto.className} font-sans antialiased`}
       >
         <ApolloProviderWrapper>{children}</ApolloProviderWrapper>
       </body>

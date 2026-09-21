@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useApolloClient } from "@apollo/client/react";
-import { authStorage } from "@/lib/auth-storage";
+import { logoutAction } from "@/features/auth/actions/logout.action";
 import { Button } from "@/components/ui/button";
 
 export function LogoutButton() {
@@ -10,8 +10,7 @@ export function LogoutButton() {
   const client = useApolloClient();
 
   const handleLogout = async () => {
-    authStorage.clearTokens();
-
+    await logoutAction();
     await client.clearStore();
 
     router.push("/signin");

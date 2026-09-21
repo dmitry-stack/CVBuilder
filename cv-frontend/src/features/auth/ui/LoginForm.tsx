@@ -9,14 +9,13 @@ import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { signupSchema, type SignupFormData } from "../schemas/auth.schema";
-import { signupAction } from "../actions/signup.action";
+import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
+import { loginAction } from "../actions/login.action";
 
-export default function SignupForm() {
+export default function LoginForm() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
@@ -25,20 +24,19 @@ export default function SignupForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
-  const onSubmit = (data: SignupFormData) => {
+  const onSubmit = (data: LoginFormData) => {
     setServerError(null);
 
     startTransition(async () => {
-      const result = await signupAction(data);
+      const result = await loginAction(data);
 
       if (result.serverError) {
         setServerError(result.serverError);
@@ -69,7 +67,7 @@ export default function SignupForm() {
               placeholder="Email"
               disabled={isPending}
               aria-invalid={errors.email ? "true" : undefined}
-              className="h-12 w-full border border-cv-border bg-transparent px-3 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus-visible:border-zinc-300 focus-visible:ring-0 focus:outline-hidden transition-colors"
+              className="h-12 w-full border border-cv-border bg-transparent px-3 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus-visible:border-zinc-300 focus-visible:ring-0 focus:outline-hidden transition-colors"
             />
           </div>
           {errors.email && (
@@ -85,16 +83,16 @@ export default function SignupForm() {
               {...register("password")}
               id="password"
               type={showPassword ? "text" : "password"}
-              autoComplete="new-password"
+              autoComplete="current-password"
               placeholder="Password"
               disabled={isPending}
               aria-invalid={errors.password ? "true" : undefined}
-              className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus-visible:border-zinc-300 focus-visible:ring-0 focus:outline-hidden transition-colors"
+              className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus-visible:border-zinc-300 focus-visible:ring-0 focus:outline-hidden transition-colors"
             />
 
             <button
               type="button"
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:text-cv-text dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors focus:outline-hidden"
+              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:text-cv-text dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors focus:outline-hidden"
               onClick={() => setShowPassword((prev) => !prev)}
               tabIndex={-1}
               aria-label={showPassword ? "Hide password" : "Show password"}
@@ -112,42 +110,6 @@ export default function SignupForm() {
             </p>
           )}
         </div>
-
-        <div>
-          <div className="relative">
-            <Input
-              {...register("confirmPassword")}
-              id="confirmPassword"
-              type={showConfirmPassword ? "text" : "password"}
-              autoComplete="new-password"
-              placeholder="Confirm Password"
-              disabled={isPending}
-              aria-invalid={errors.confirmPassword ? "true" : undefined}
-              className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus-visible:border-zinc-300 focus-visible:ring-0 focus:outline-hidden transition-colors"
-            />
-
-            <button
-              type="button"
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:text-cv-text dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors focus:outline-hidden"
-              onClick={() => setShowConfirmPassword((prev) => !prev)}
-              tabIndex={-1}
-              aria-label={
-                showConfirmPassword ? "Hide password" : "Show password"
-              }
-            >
-              {showConfirmPassword ? (
-                <EyeOff className="h-6 w-6" />
-              ) : (
-                <Eye className="h-6 w-6" />
-              )}
-            </button>
-          </div>
-          {errors.confirmPassword && (
-            <p className="mt-1.5 text-xs text-destructive">
-              {errors.confirmPassword.message}
-            </p>
-          )}
-        </div>
       </div>
 
       <div className="mx-auto mt-10 sm:mt-12 flex w-55 flex-col items-center gap-2">
@@ -161,15 +123,15 @@ export default function SignupForm() {
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             </>
           ) : (
-            "CREATE ACCOUNT"
+            "SIGN IN"
           )}
         </Button>
 
         <Link
-          href="/signin"
+          href="/forgot-password"
           className="flex h-12 w-55 items-center justify-center rounded-full font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-muted hover:text-cv-text dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
         >
-          I HAVE AN ACCOUNT
+          FORGOT PASSWORD
         </Link>
       </div>
     </form>

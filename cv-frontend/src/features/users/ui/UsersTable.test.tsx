@@ -2,7 +2,6 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { UsersTable } from "./UsersTable";
 
-// Mock @apollo/client/react useQuery
 vi.mock("@apollo/client/react", () => ({
   useQuery: vi.fn().mockReturnValue({
     data: null,
@@ -62,7 +61,6 @@ describe("UsersTable component", () => {
   it("renders avatar initials when no avatar image is available", () => {
     render(<UsersTable />);
 
-    // Rostislav should have "R" avatar initial
     const initials = screen.getAllByText("R");
     expect(initials.length).toBeGreaterThan(0);
   });
@@ -98,10 +96,8 @@ describe("UsersTable component", () => {
 
     const firstNameHeader = screen.getByRole("button", { name: /first name/i });
 
-    // Initial render
     expect(screen.getByText("Rostislav")).toBeInTheDocument();
 
-    // Click to toggle sort
     fireEvent.click(firstNameHeader);
     expect(screen.getByText("Artem")).toBeInTheDocument();
   });
