@@ -7,15 +7,13 @@ import { useHeaderContext } from "./HeaderContext";
 
 export function Header() {
   const pathname = usePathname() || "";
-  const { userName: contextUserName } = useHeaderContext();
+  const { userName } = useHeaderContext();
 
   const userMatch = pathname.match(/^\/users\/([^/]+)(?:\/([^/]+))?$/);
 
   if (userMatch) {
     const [, userId, subRoute] = userMatch;
     if (userId && userId !== "loading") {
-      const userName = contextUserName || "Rostislav Harlanov";
-
       let subPageTitle = "Profile";
       if (subRoute === "skills") subPageTitle = "Skills";
       else if (subRoute === "languages") subPageTitle = "Languages";
@@ -45,7 +43,15 @@ export function Header() {
 
             <span className="inline-flex items-center gap-1.5 font-medium text-cv-accent">
               <User className="h-4 w-4 shrink-0" aria-hidden="true" />
-              <span className="truncate">{userName}</span>
+              {userName ? (
+                <span className="truncate">{userName}</span>
+              ) : (
+                <span
+                  data-slot="header-user-skeleton"
+                  className="h-4 w-28 rounded-xs bg-zinc-200 dark:bg-zinc-800 animate-pulse inline-block align-middle"
+                  aria-label="Loading user name"
+                />
+              )}
             </span>
 
             <ChevronRight

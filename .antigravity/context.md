@@ -10,6 +10,10 @@
 * **Design Spec**: Innowise CV Builder Figma Layouts (Desktop & Tablet responsive, Light/Dark themes)
 * **Backend API**: GraphQL API running at `http://localhost:3001/api/graphql` (PostgreSQL + Docker + Cloudinary + Browserless + SMTP)
 * **Requirements Source**: [.antigravity/instructions.md](./instructions.md)
+* **Role & Permission Model**:
+  * **Single Role (User Only)**: The application does **not** feature an Admin role. All authenticated accounts are standard **User** accounts.
+  * **Ownership-Based Access Control**: All data modification (updating profile, uploading avatar, modifying CVs, skills, and languages) is strictly restricted to the resource owner (`isOwnProfile = currentUserId === resourceOwnerId`).
+  * **Read-Only Peer View**: When viewing another user's profile (`/users/[id]`), all inputs and dropdowns are rendered in read-only/disabled states, and edit/save/cancel buttons as well as photo upload controls are hidden.
 
 ---
 
@@ -116,20 +120,33 @@ cv-frontend/
   - Automatically switches to exact Figma breadcrumbs for user subroutes (`Employees > [red user icon] {Name} > Profile / Skills / Languages / CVs`).
   - Removed redundant per-page local header banners from `UsersTable.tsx` and `UsersTableSkeleton.tsx`.
   - Colocated unit tests in `Header.test.tsx` (6 tests). All 74 tests passing.
-- [x] **User Profile Page Scaffolding (`/users/[id]`):**
-  - Matched visual reference from `.antigravity/assets/profile.png`:
-    - Top centered profile section: 128px circular avatar with initial letter, user full name (`text-2xl`), email, and membership date (`A member since Sun Jan 14 2024`).
-    - Centered 2x2 form grid below: First Name, Last Name, Department (dropdown), Position (dropdown) with filled input styling.
-    - Sub-tab navigation in `ProfileTabs.tsx` (`PROFILE`, `SKILLS`, `LANGUAGES`).
-    - Photo upload / avatar interaction in `ProfileAvatar.tsx`.
-  - Colocated unit and component test suites: `profile.schema.test.ts` (5 tests), `ProfileTabs.test.tsx` (2 tests), `ProfileForm.test.tsx` (5 tests). All 74 project tests passing.
+- [x] **Figma Toast Notifications System:**
+  - Implemented exact Figma toast design specifications in `src/components/ui/toast.tsx` and `src/app/globals.css`:
+    - 4 variants: Success (`#66BB6A`, border `#335D35`, text `#335D35`), Error (`#C63031`, border `#631818`, text `#F5F5F7`), Warning (`#FFB800`, border `#7F5C00`, text `#7F5C00`), Info (`#29B6F6`, border `#145B7B`, text `#145B7B`).
+    - Exact dimensions: width 280px, min-height 80px, border-radius 12px, container frame 328px.
+    - Typography: Title (Roboto 16px font-weight 500, line-height 24px, tracking 0.15px), Description (Roboto 12px font-weight 400, line-height 20px, tracking 0.15px).
+    - Top-right close button (24px button with 12px vector `X` icon).
+    - Mounted `<AppToastContainer />` in root `src/app/layout.tsx`.
+    - Created typed `notify` helper (`notify.success`, `notify.error`, `notify.warning`, `notify.info`).
+    - Colocated unit test suite `toast.test.tsx` (6 tests). All 80 project tests passing.
+- [x] **User Profile Page & Live GraphQL Integration (`/users/[id]`):**
+  - Integrated live GraphQL queries and mutations:
+    - `query User($userId: ID!)`: fetches live user, profile, department, and position data.
+    - `query Departments`: dynamically populates department dropdown options from the backend.
+    - `query Positions`: dynamically populates position dropdown options from the backend.
+    - `mutation UpdateProfile`: updates employee first and last names.
+    - `mutation UpdateUser`: updates department, position, and role assignments.
+  - Built dedicated reusable `ProfileSkeleton` (`src/features/users/ui/ProfileSkeleton.tsx`) matching exact Figma avatar and 2x2 grid layout dimensions with label and input placeholders to prevent layout shift.
+  - Added Next.js App Router streaming skeleton in `src/app/(app)/users/[id]/loading.tsx`.
+  - Added breadcrumb user name skeleton in `<Header />` (`data-slot="header-user-skeleton"`) so the common header shows a clean pulse placeholder during profile loading rather than hardcoding names.
+  - Colocated unit and component test suites: `profile.schema.test.ts` (5 tests), `ProfileTabs.test.tsx` (2 tests), `ProfileForm.test.tsx` (7 tests), `ProfileSkeleton.test.tsx` (2 tests), `Header.test.tsx` (7 tests). All 88 project tests passing.
 - [x] **Route Grouping & Navigation Shell:**
   - Standardized Next.js route groups: `(auth)` for public authentication and `(app)` for authenticated application modules.
   - Resolved nested HTML bug by establishing clean `AppLayout` in `src/app/(app)/layout.tsx` with sidebar padding (`md:pl-[200px]`).
   - Built accessible, responsive `Navbar` (Sidebar / Aside) in `src/components/layout/Navbar.tsx` based directly on Figma specs:
     - 200px fixed aside with rounded-r-full navigation items (`Employees`, `Skills`, `Languages`, `CVs`).
     - Active route highlighting (`bg-[#E2E2E4] text-[#2E2E2E]`) and smooth hover transitions.
-    - Pinned bottom user profile pill with 40px red initial circle (`#C63031`) and integrated logout button.
+    - Pinned bottom user profile pill integrated with `useCurrentUser`: displays live user name, avatar (or initial circle fallback), email, and dynamic menu linking directly to the user's personal profile (`/users/[id]`) and logout action.
     - Responsive mobile top header and slide-out navigation drawer.
 - [x] **Root Route (`/`) & Landing:**
   - Added `src/app/page.tsx` server component with dynamic cookie inspection (`access_token` or `refresh_token`) to redirect authenticated users to `/users` and unauthenticated users to `/signin`.
@@ -165,6 +182,8 @@ cv-frontend/
 
 ## 5. Module & Page Roadmap (Aligned with Instructions)
 
+> **Note**: The application has **no Admin role**. All authenticated features are accessible to the standard `User` role, with data modifications strictly gated by resource ownership (`currentUserId === resourceOwnerId`). Peer profiles are accessible in a read-only presentation.
+
 | Module | Page | Status | Access | Priority |
 | :--- | :--- | :--- | :--- | :--- |
 | **Authentication** | Sign In (`/signin`) | ✅ Implemented | Public | Done |
@@ -176,25 +195,20 @@ cv-frontend/
 | **System** | Not Found (404) (`not-found.tsx`) | ⏳ Not Started | Public | Medium |
 | **System** | No Internet Error | ⏳ Not Started | Public | Low |
 | **System** | Unsupported Device | ⏳ Not Started | Public | Low |
-| **Users** | Users List (`/users`) | ✅ Implemented | User, Admin | Done |
-| **Users** | User Profile (`/users/[id]`) | 🟡 UI Scaffolded | User, Admin | High |
-| **Users** | User Skills (`/users/[id]/skills`) | ⏳ Not Started | User, Admin | Medium |
-| **Users** | User Languages (`/users/[id]/languages`) | ⏳ Not Started | User, Admin | Medium |
-| **Users** | User CVs list (Admin view) | ⏳ Not Started | Admin | Medium |
-| **Skills** | Skills (User View) | ⏳ Not Started | User | Medium |
-| **Skills** | Skills Management (Admin) | ⏳ Not Started | Admin | Medium |
-| **Languages** | Languages (User View) | ⏳ Not Started | User | Medium |
-| **Languages** | Languages Management (Admin) | ⏳ Not Started | Admin | Medium |
-| **CVs** | CV List (`/cvs`) | ⏳ Not Started | User, Admin | High |
-| **CVs** | CV Details (`/cvs/[id]`) | ⏳ Not Started | User, Admin | High |
-| **CVs** | CV Skills (`/cvs/[id]/skills`) | ⏳ Not Started | User, Admin | Medium |
-| **CVs** | CV Projects (`/cvs/[id]/projects`) | ⏳ Not Started | User, Admin | Medium |
-| **CVs** | CV Preview (`/cvs/[id]/preview`) | ⏳ Not Started | User, Admin | High |
-| **CVs** | PDF Export (`exportPdf`) | ⏳ Not Started | User, Admin | High |
-| **Admin** | Positions Management | ⏳ Not Started | Admin | Low |
-| **Admin** | Departments Management | ⏳ Not Started | Admin | Low |
-| **Admin** | Projects Management | ⏳ Not Started | Admin | Low |
-| **Settings** | User & App Settings | ⏳ Not Started | User, Admin | Low |
+| **Users** | Employees Directory (`/users`) | ✅ Implemented | User | Done |
+| **Users** | User Profile (`/users/[id]`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
+| **Users** | User Skills (`/users/[id]/skills`) | ⏳ Not Started | User (Owner editable, peer read-only) | Medium |
+| **Users** | User Languages (`/users/[id]/languages`) | ⏳ Not Started | User (Owner editable, peer read-only) | Medium |
+| **Users** | User CVs (`/users/[id]/cvs`) | ⏳ Not Started | User (Owner editable, peer read-only) | Medium |
+| **Skills** | Skills Directory / Management (`/skills`) | ⏳ Not Started | User | Medium |
+| **Languages** | Languages Directory / Management (`/languages`) | ⏳ Not Started | User | Medium |
+| **CVs** | CV List (`/cvs`) | ⏳ Not Started | User | High |
+| **CVs** | CV Details (`/cvs/[id]`) | ⏳ Not Started | User (Owner editable) | High |
+| **CVs** | CV Skills (`/cvs/[id]/skills`) | ⏳ Not Started | User (Owner editable) | Medium |
+| **CVs** | CV Projects (`/cvs/[id]/projects`) | ⏳ Not Started | User (Owner editable) | Medium |
+| **CVs** | CV Preview (`/cvs/[id]/preview`) | ⏳ Not Started | User | High |
+| **CVs** | PDF Export (`exportPdf`) | ⏳ Not Started | User | High |
+| **Settings** | User & App Settings (`/settings`) | ⏳ Not Started | User | Low |
 
 ---
 
@@ -217,3 +231,9 @@ cv-frontend/
 5. **React 19 Ref Purity & Client Navigation:**
    - Never read or mutate `ref.current` during component render bodies; synchronize refs inside `useEffect` and access them strictly inside event handlers or asynchronous callbacks.
    - Strictly avoid `window.location.href` for internal Next.js navigation; use `useRouter().push()` in Client Components or `redirect()` in Server Components/Actions.
+6. **Role & Ownership Enforcement:**
+   - The application has **no Admin role**; all authenticated users have the standard `User` role.
+   - Resource mutation is strictly governed by ownership checks (`isOwnProfile = currentUserId === targetUserId`).
+   - Peer profiles are always read-only. Forms must disable editing and hide submission actions when the authenticated user is not the owner.
+7. **Generated GraphQL Artifacts & Linting:**
+   - Machine-generated artifacts under `src/graphql/__generated__/**` are excluded in `eslint.config.mjs` (`globalIgnores`) so that internal `@graphql-codegen` helper typings (`any`) do not produce lint failures.

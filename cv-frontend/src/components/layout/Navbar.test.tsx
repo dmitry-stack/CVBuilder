@@ -26,6 +26,21 @@ vi.mock("@/features/auth/actions/logout.action", () => ({
   logoutAction: vi.fn().mockResolvedValue({ success: true }),
 }));
 
+vi.mock("@/features/auth/hooks/useCurrentUser", () => ({
+  useCurrentUser: vi.fn().mockReturnValue({
+    currentUser: {
+      id: "user-123",
+      first_name: "Rostislav",
+      last_name: "Harlanov",
+      email: "rostislav@example.com",
+      avatar: null,
+    },
+    currentUserId: "user-123",
+    isOwnProfile: (id?: string) => id === "user-123",
+    loading: false,
+  }),
+}));
+
 describe("Navbar / Aside Sidebar", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -100,5 +115,18 @@ describe("Navbar / Aside Sidebar", () => {
     expect(
       screen.getByRole("button", { name: /close menu/i }),
     ).toBeInTheDocument();
+  });
+
+  it("links to current user's profile page in user menu", () => {
+    render(<Navbar />);
+
+    const profileBtn = screen.getByRole("button", {
+      name: /user profile for/i,
+    });
+    fireEvent.click(profileBtn);
+
+    const profileLink = screen.getByRole("link", { name: /profile/i });
+    expect(profileLink).toHaveAttribute("href", "/users/user-123");
+    expect(screen.getByText("rostislav@example.com")).toBeInTheDocument();
   });
 });
