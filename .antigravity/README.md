@@ -21,7 +21,7 @@ This directory serves as the **Shared Project Brain and Configuration Layer** fo
 
 3. [**`instructions.md`**](./instructions.md) — **Product Requirements & Specifications**:
    - Figma design references and layout requirements.
-   - Backend API contracts and role-based permissions (User vs Admin).
+   - Backend API contracts and owner-based permissions (User role only).
    - Core domain feature requirements (CVs, Skills, Languages, Employees).
 
 ---

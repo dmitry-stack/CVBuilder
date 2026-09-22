@@ -26,3 +26,13 @@ mutation UpdateToken {
     refresh_token
   }
 }
+query Me {
+  me {
+    id
+    email
+    role
+    first_name
+    last_name
+    avatar
+  }
+}

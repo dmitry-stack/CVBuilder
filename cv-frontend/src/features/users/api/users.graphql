@@ -24,3 +24,68 @@ query Users($params: SearchPaginationInput) {
     total_pages
   }
 }
+
+query User($userId: ID!) {
+  user(userId: $userId) {
+    id
+    email
+    role
+    created_at
+    profile {
+      id
+      first_name
+      last_name
+      full_name
+      avatar
+    }
+    department {
+      id
+      name
+    }
+    position {
+      id
+      name
+    }
+  }
+}
+
+query Departments {
+  departments {
+    items {
+      id
+      name
+    }
+  }
+}
+
+query Positions {
+  positions {
+    items {
+      id
+      name
+    }
+  }
+}
+
+mutation UpdateProfile($profile: UpdateProfileInput!) {
+  updateProfile(profile: $profile) {
+    id
+    first_name
+    last_name
+  }
+}
+
+mutation UpdateUser($user: UpdateUserInput!) {
+  updateUser(user: $user) {
+    id
+    role
+    department {
+      id
+      name
+    }
+    position {
+      id
+      name
+    }
+  }
+}

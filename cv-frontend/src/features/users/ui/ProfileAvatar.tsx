@@ -8,12 +8,14 @@ interface ProfileAvatarProps {
   initialAvatar?: string | null;
   userName?: string;
   onAvatarChange?: (file: File | null) => void;
+  editable?: boolean;
 }
 
 export function ProfileAvatar({
   initialAvatar,
   userName = "User",
   onAvatarChange,
+  editable = true,
 }: ProfileAvatarProps) {
   const [preview, setPreview] = useState<string | null>(initialAvatar || null);
   const [, startTransition] = useTransition();
@@ -22,6 +24,7 @@ export function ProfileAvatar({
   const initial = userName.charAt(0).toUpperCase() || "U";
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!editable) return;
     const file = e.target.files?.[0];
     if (file) {
       const objectUrl = URL.createObjectURL(file);
@@ -32,6 +35,7 @@ export function ProfileAvatar({
 
   const handleRemovePhoto = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!editable) return;
     startTransition(() => {
       setPreview(null);
       if (fileInputRef.current) {
@@ -40,6 +44,33 @@ export function ProfileAvatar({
       onAvatarChange?.(null);
     });
   };
+
+  if (!editable) {
+    return (
+      <div data-slot="profile-avatar" className="relative inline-block">
+        <div
+          className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full bg-[#9E9E9E] dark:bg-zinc-600 shadow-xs"
+          aria-label={`${userName}'s avatar`}
+        >
+          {preview ? (
+            <Image
+              src={preview}
+              alt={`${userName}'s avatar`}
+              fill
+              className="object-cover"
+              unoptimized
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-white">
+              <span className="font-roboto text-5xl font-light uppercase select-none">
+                {initial}
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div data-slot="profile-avatar" className="relative group inline-block">

@@ -1,6 +1,31 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
+import { useQuery } from "@apollo/client/react";
 import { ProfileForm, type UserProfileData } from "./ProfileForm";
+
+vi.mock("@apollo/client/react", () => ({
+  useQuery: vi.fn().mockReturnValue({
+    data: null,
+    loading: false,
+    error: null,
+  }),
+  useMutation: vi
+    .fn()
+    .mockReturnValue([vi.fn().mockResolvedValue({}), { loading: false }]),
+}));
+
+vi.mock("@/components/layout/HeaderContext", () => ({
+  HeaderSync: () => null,
+}));
+
+vi.mock("@/features/auth/hooks/useCurrentUser", () => ({
+  useCurrentUser: vi.fn().mockReturnValue({
+    currentUser: { id: "1" },
+    currentUserId: "1",
+    isOwnProfile: (id?: string) => id === "1",
+    loading: false,
+  }),
+}));
 
 const mockUser: UserProfileData = {
   id: "1",
@@ -83,5 +108,40 @@ describe("ProfileForm Component", () => {
         }),
       );
     });
+  });
+
+  it("renders read-only inputs and hides save/cancel actions when viewing another user's profile", () => {
+    render(<ProfileForm initialData={mockUser} isOwner={false} />);
+
+    expect(screen.getByLabelText(/first name/i)).toBeDisabled();
+    expect(screen.getByLabelText(/last name/i)).toBeDisabled();
+    expect(screen.getByLabelText(/department/i)).toBeDisabled();
+    expect(screen.getByLabelText(/position/i)).toBeDisabled();
+
+    expect(
+      screen.queryByRole("button", { name: /save/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /cancel/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders ProfileSkeleton while profile data is loading", () => {
+    vi.mocked(useQuery).mockReturnValue({
+      data: null,
+      loading: true,
+      error: null,
+    } as unknown as ReturnType<typeof useQuery>);
+
+    const { container } = render(<ProfileForm userId="1" />);
+    expect(
+      container.querySelector('[data-slot="profile-skeleton"]'),
+    ).toBeInTheDocument();
+
+    vi.mocked(useQuery).mockReturnValue({
+      data: null,
+      loading: false,
+      error: null,
+    } as unknown as ReturnType<typeof useQuery>);
   });
 });

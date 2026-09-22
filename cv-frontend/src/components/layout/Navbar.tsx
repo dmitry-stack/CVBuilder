@@ -17,6 +17,7 @@ import { useApolloClient } from "@apollo/client/react";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.svg";
 import { logoutAction } from "@/features/auth/actions/logout.action";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
 interface NavItem {
   label: string;
@@ -52,8 +53,30 @@ interface NavbarProps {
   userInitial?: string;
 }
 
-export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
-  const userInitial = userName.charAt(0).toUpperCase() || "U";
+export function Navbar({
+  userName: userNameProp,
+  userInitial: userInitialProp,
+}: NavbarProps = {}) {
+  const { currentUser, currentUserId } = useCurrentUser();
+
+  const fetchedFullName = [currentUser?.first_name, currentUser?.last_name]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+
+  const resolvedName =
+    userNameProp || fetchedFullName || currentUser?.email || "User";
+
+  const initial =
+    userInitialProp ||
+    (resolvedName && resolvedName !== "User"
+      ? resolvedName.charAt(0).toUpperCase()
+      : currentUser?.email
+        ? currentUser.email.charAt(0).toUpperCase()
+        : "U");
+
+  const profileHref = currentUserId ? `/users/${currentUserId}` : "/users";
+
   const pathname = usePathname();
   const router = useRouter();
   const client = useApolloClient();
@@ -93,8 +116,6 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
       setProfileMenuOpen(false);
     }
   };
-
-  const initial = userInitial || userName.charAt(0).toUpperCase() || "U";
 
   const renderNavLinks = () => (
     <nav aria-label="Main Navigation" className="flex flex-col">
@@ -142,11 +163,16 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
         >
           <div className="border-b border-zinc-100 px-3 py-2 dark:border-zinc-800">
             <p className="font-roboto text-sm font-medium text-cv-text dark:text-zinc-100 truncate">
-              {userName}
+              {resolvedName}
             </p>
+            {currentUser?.email && (
+              <p className="font-roboto text-xs text-zinc-500 dark:text-zinc-400 truncate mt-0.5">
+                {currentUser.email}
+              </p>
+            )}
           </div>
           <Link
-            href="/users"
+            href={profileHref}
             onClick={() => {
               setProfileMenuOpen(false);
               setMobileOpen(false);
@@ -160,7 +186,7 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
             type="button"
             onClick={handleLogout}
             disabled={isLoggingOut}
-            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors"
+            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
           >
             <span>{isLoggingOut ? "Logging out..." : "Log out"}</span>
           </button>
@@ -169,25 +195,35 @@ export function Navbar({ userName = "Rostislav Harlanov" }: NavbarProps) {
       <button
         type="button"
         onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-        className="group flex h-14 w-full items-center gap-2 pl-2 pr-3 rounded-r-full text-left transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+        className="group flex h-14 w-full items-center gap-2 pl-2 pr-3 rounded-r-full text-left transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
         aria-expanded={profileMenuOpen}
         aria-haspopup="true"
-        aria-label={`User profile for ${userName}`}
+        aria-label={`User profile for ${resolvedName}`}
       >
         <div
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cv-accent text-cv-on-accent"
+          className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-cv-accent text-cv-on-accent"
           aria-hidden="true"
         >
-          <span className="font-roboto text-xl font-medium leading-5 uppercase">
-            {initial}
-          </span>
+          {currentUser?.avatar ? (
+            <Image
+              src={currentUser.avatar}
+              alt={resolvedName}
+              fill
+              className="object-cover"
+              unoptimized
+            />
+          ) : (
+            <span className="font-roboto text-xl font-medium leading-5 uppercase">
+              {initial}
+            </span>
+          )}
         </div>
         <div className="min-w-0 flex-1">
           <span
             className="block truncate font-roboto text-base leading-6 tracking-cv text-cv-text dark:text-zinc-100"
-            title={userName}
+            title={resolvedName}
           >
-            {userName}
+            {resolvedName}
           </span>
         </div>
       </button>

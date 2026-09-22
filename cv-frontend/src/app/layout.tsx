@@ -4,6 +4,7 @@ import "./globals.css";
 import { roboto } from "./fonts";
 import { ReactNode } from "react";
 import { ApolloProviderWrapper } from "@/lib/apollo-provider";
+import { AppToastContainer } from "@/components/ui/toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         className={`min-h-full flex flex-col ${roboto.variable} ${roboto.className} font-sans antialiased`}
       >
         <ApolloProviderWrapper>{children}</ApolloProviderWrapper>
+        <AppToastContainer />
       </body>
     </html>
   );

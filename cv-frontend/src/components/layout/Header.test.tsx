@@ -85,4 +85,17 @@ describe("Header Component (Common Layout Header)", () => {
 
     expect(screen.getByText("CVs")).toBeInTheDocument();
   });
+
+  it("renders breadcrumb user skeleton when user name is loading", () => {
+    mockPathname = "/users/2";
+    const { container } = render(
+      <HeaderProvider>
+        <Header />
+      </HeaderProvider>,
+    );
+
+    expect(
+      container.querySelector('[data-slot="header-user-skeleton"]'),
+    ).toBeInTheDocument();
+  });
 });
