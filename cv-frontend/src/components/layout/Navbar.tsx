@@ -77,6 +77,15 @@ export function Navbar({
 
   const profileHref = currentUserId ? `/users/${currentUserId}` : "/users";
 
+  NAV_ITEMS.forEach((item) => {
+    if (item.label === "Skills") {
+      item.href = currentUserId ? `/users/${currentUserId}/skills` : "/skills";
+    }
+    if (item.label === "Languages") {
+      item.href = currentUserId ? `/languages` : "/languages";
+    }
+  });
+
   const pathname = usePathname();
   const router = useRouter();
   const client = useApolloClient();

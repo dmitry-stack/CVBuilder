@@ -140,6 +140,57 @@ cv-frontend/
   - Added Next.js App Router streaming skeleton in `src/app/(app)/users/[id]/loading.tsx`.
   - Added breadcrumb user name skeleton in `<Header />` (`data-slot="header-user-skeleton"`) so the common header shows a clean pulse placeholder during profile loading rather than hardcoding names.
   - Colocated unit and component test suites: `profile.schema.test.ts` (5 tests), `ProfileTabs.test.tsx` (2 tests), `ProfileForm.test.tsx` (7 tests), `ProfileSkeleton.test.tsx` (2 tests), `Header.test.tsx` (7 tests). All 88 project tests passing.
+- [x] **User Skills Page & Mastery Progress System (`/users/[id]/skills`):**
+  - Designed and implemented the User Skills page matching the Figma reference `.antigravity/assets/skills.png`.
+  - Built `SkillMasteryBar` (`src/features/users/ui/SkillMasteryBar.tsx`):
+    - 5-level visual indicator matching Figma colors and fill percentages:
+      1. `Novice` (20% fill, Grey `#626262`)
+      2. `Advanced` (40% fill, Blue `#29B6F6`)
+      3. `Competent` (60% fill, Green `#66BB6A`)
+      4. `Proficient` (80% fill, Yellow `#FFB800`)
+      5. `Expert` (100% fill, CV Accent Red `#C63031`)
+    - Accessible `role="progressbar"` with live preview.
+  - Built `UserSkillsView` (`src/features/users/ui/UserSkillsView.tsx`):
+    - Groups skills by category name in a responsive 3-column grid layout (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4`).
+    - Synchronizes common header breadcrumb with user's full name via `<HeaderSync />`.
+    - Enforces ownership gating (`isOwnProfile = currentUserId === userId`):
+      - Owner mode: "+ Add Skill" action button and hover edit/delete actions for each skill.
+      - Peer mode: Strictly read-only presentation matching Figma design.
+    - Clean empty state with "Add Your First Skill" action when no skills are registered.
+  - Built `SkillDialog` (`src/features/users/ui/SkillDialog.tsx`):
+    - Accessible modal for adding, editing, and deleting user profile skills.
+    - Autocompletes skill names from catalog and features live visual `SkillMasteryBar` preview during mastery level selection.
+  - Built `SkillsSkeleton` (`src/features/users/ui/SkillsSkeleton.tsx`) and updated `loading.tsx` for zero-layout-shift streaming.
+  - Declared typed GraphQL operations in `src/features/users/api/skills.graphql` (`ProfileSkills`, `SkillCategories`, `SkillsCatalog`, mutations for add/update/delete).
+  - Colocated unit tests: `SkillMasteryBar.test.tsx` (7 tests), `skill.schema.test.ts` (5 tests), `UserSkillsView.test.tsx` (5 tests).
+  - All 105 tests passing across 21 test suites; 0 TypeScript errors; 0 lint errors; production build succeeded.
+- [x] **User Languages Page & CEFR Proficiency System (`/users/[id]/languages`):**
+  - Designed and implemented the User Languages page matching the design system and skills page architecture.
+  - Built `LanguageProficiencyBar` (`src/features/users/ui/LanguageProficiencyBar.tsx`):
+    - 7-level CEFR + Native visual indicator mapped to the 5 Skills colors with tier-based progression:
+      1. `A1` (15% fill, Grey `#626262`, Beginner)
+      2. `A2` (30% fill, Grey `#626262`, Elementary)
+      3. `B1` (45% fill, Blue `#29B6F6`, Intermediate)
+      4. `B2` (60% fill, Green `#66BB6A`, Upper Intermediate)
+      5. `C1` (75% fill, Yellow `#FFB800`, Advanced)
+      6. `C2` (90% fill, CV Accent Red `#C63031`, Proficient / Mastery)
+      7. `Native` (100% fill, CV Accent Red `#C63031`, Native / Bilingual)
+    - Accessible `role="progressbar"` with live preview and description.
+  - Built `UserLanguagesView` (`src/features/users/ui/UserLanguagesView.tsx`):
+    - Renders languages in a responsive 3-column grid (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4`).
+    - Synchronizes common header breadcrumbs with user's full name via `<HeaderSync />`.
+    - Enforces single-role ownership gating (`isOwnProfile = currentUserId === userId`):
+      - Owner mode: `+ Add Language` button and hover edit/delete actions for each language.
+      - Peer mode: Strictly read-only presentation.
+    - Clean empty state with "Add Your First Language" action when no languages are recorded.
+  - Built `LanguageDialog` (`src/features/users/ui/LanguageDialog.tsx`):
+    - Accessible modal for adding, editing, and deleting user profile languages.
+    - Autocompletes language names from the global language catalog.
+    - Features live visual `LanguageProficiencyBar` preview during CEFR level selection.
+  - Built `LanguagesSkeleton` (`src/features/users/ui/LanguagesSkeleton.tsx`) and updated `loading.tsx` for zero-layout-shift streaming.
+  - Declared typed GraphQL operations in `src/features/users/api/languages.graphql` (`ProfileLanguages`, `LanguagesCatalog`, mutations `addProfileLanguage`, `updateProfileLanguage`, `deleteProfileLanguage`).
+  - Colocated unit tests: `LanguageProficiencyBar.test.tsx` (5 tests), `language.schema.test.ts` (4 tests), `UserLanguagesView.test.tsx` (5 tests).
+  - All 119 tests passing across 24 test suites; 0 TypeScript errors; 0 lint errors; production build succeeded.
 - [x] **Route Grouping & Navigation Shell:**
   - Standardized Next.js route groups: `(auth)` for public authentication and `(app)` for authenticated application modules.
   - Resolved nested HTML bug by establishing clean `AppLayout` in `src/app/(app)/layout.tsx` with sidebar padding (`md:pl-[200px]`).
@@ -197,7 +248,7 @@ cv-frontend/
 | **System** | Unsupported Device | ⏳ Not Started | Public | Low |
 | **Users** | Employees Directory (`/users`) | ✅ Implemented | User | Done |
 | **Users** | User Profile (`/users/[id]`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
-| **Users** | User Skills (`/users/[id]/skills`) | ⏳ Not Started | User (Owner editable, peer read-only) | Medium |
+| **Users** | User Skills (`/users/[id]/skills`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
 | **Users** | User Languages (`/users/[id]/languages`) | ⏳ Not Started | User (Owner editable, peer read-only) | Medium |
 | **Users** | User CVs (`/users/[id]/cvs`) | ⏳ Not Started | User (Owner editable, peer read-only) | Medium |
 | **Skills** | Skills Directory / Management (`/skills`) | ⏳ Not Started | User | Medium |

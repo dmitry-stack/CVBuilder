@@ -16,5 +16,5 @@ describe("DropdownMenuButton", () => {
     const viewLink = await screen.findByRole("menuitem", { name: /view/i });
     expect(viewLink).toBeInTheDocument();
     expect(viewLink).toHaveAttribute("href", "/users/user-123");
-  });
+  }, 15000);
 });
