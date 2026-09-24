@@ -1,0 +1,72 @@
+query Cvs($params: SearchPaginationInput) {
+  cvs(params: $params) {
+    items {
+      id
+      created_at
+      name
+      education
+      description
+      user {
+        id
+        email
+        profile {
+          first_name
+          last_name
+          avatar
+        }
+      }
+    }
+    total
+    page
+    limit
+    total_pages
+  }
+}
+
+query Cv($cvId: ID!) {
+  cv(cvId: $cvId) {
+    id
+    created_at
+    name
+    education
+    description
+    user {
+      id
+      email
+      profile {
+        first_name
+        last_name
+        avatar
+      }
+    }
+  }
+}
+
+mutation CreateCv($cv: CreateCvInput!) {
+  createCv(cv: $cv) {
+    id
+    created_at
+    name
+    education
+    description
+    user {
+      id
+      email
+    }
+  }
+}
+
+mutation UpdateCv($cv: UpdateCvInput!) {
+  updateCv(cv: $cv) {
+    id
+    name
+    education
+    description
+  }
+}
+
+mutation DeleteCv($cv: DeleteCvInput!) {
+  deleteCv(cv: $cv) {
+    affected
+  }
+}

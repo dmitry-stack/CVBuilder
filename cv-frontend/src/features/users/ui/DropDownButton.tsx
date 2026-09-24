@@ -10,20 +10,34 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-interface DropdownMenuButtonProps {
-  userId: string;
+export interface DropdownMenuButtonProps {
+  id?: string;
+  userId?: string;
+  viewHref?: string;
+  onUpdate?: () => void;
+  onDelete?: () => void;
 }
 
-export function DropdownMenuButton({ userId }: DropdownMenuButtonProps) {
+export function DropdownMenuButton({
+  id,
+  userId,
+  viewHref,
+  onUpdate,
+  onDelete,
+}: DropdownMenuButtonProps) {
+  const targetId = id || userId || "";
+  const targetHref =
+    viewHref || (userId ? `/users/${userId}` : `/users/${targetId}`);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-hidden cursor-pointer"
             title="User actions"
-            aria-label={`Actions for user ${userId}`}
+            aria-label={`Actions for user ${targetId}`}
           >
             <MoreVertical className="h-5 w-5" />
           </button>
@@ -31,11 +45,21 @@ export function DropdownMenuButton({ userId }: DropdownMenuButtonProps) {
       />
       <DropdownMenuContent align="end" className="w-32">
         <DropdownMenuGroup>
-          <DropdownMenuItem render={<Link href={`/users/${userId}`} />}>
+          <DropdownMenuItem render={<Link href={targetHref} />}>
             View
           </DropdownMenuItem>
-          <DropdownMenuItem>Update</DropdownMenuItem>
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+          {onUpdate ? (
+            <DropdownMenuItem onClick={onUpdate}>Update</DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem>Update</DropdownMenuItem>
+          )}
+          {onDelete ? (
+            <DropdownMenuItem variant="destructive" onClick={onDelete}>
+              Delete
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

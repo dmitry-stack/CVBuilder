@@ -191,6 +191,25 @@ cv-frontend/
   - Declared typed GraphQL operations in `src/features/users/api/languages.graphql` (`ProfileLanguages`, `LanguagesCatalog`, mutations `addProfileLanguage`, `updateProfileLanguage`, `deleteProfileLanguage`).
   - Colocated unit tests: `LanguageProficiencyBar.test.tsx` (5 tests), `language.schema.test.ts` (4 tests), `UserLanguagesView.test.tsx` (5 tests).
   - All 119 tests passing across 24 test suites; 0 TypeScript errors; 0 lint errors; production build succeeded.
+- [x] **CV Management & Dialogs (Create, Update, Delete & CV Table):**
+  - Built feature-driven CV schema in `src/features/cvs/schemas/cv.schema.ts` (with compatibility re-export in `src/features/users/schemas/cv.schema.ts`) validating name, education, and description with Zod.
+  - Declared typed GraphQL operations in `src/features/cvs/api/cvs.graphql` (`query Cvs`, `query Cv`, mutations `createCv`, `updateCv`, `deleteCv`) with generated typed document nodes.
+  - Implemented accessible modal primitives:
+    - `CVDialog` (`src/features/cvs/ui/CVDialog.tsx`): unified modal for Create and Update operations with accessible modal dialog semantics, keyboard escape and focus handling, reactive form resetting via keyed form remounting, validation error display with `AlertCircle`, and dark/light theme support.
+    - `DeleteCVDialog` (`src/features/cvs/ui/DeleteCVDialog.tsx`): accessible confirmation modal (`role="alertdialog"`) with destructive action confirmation, loading state, and highlighted CV title.
+    - Named wrappers `CreateCVDialog` and `UpdateCVDialog` for modularity.
+  - Implemented interactive `CVTable` (`src/features/users/ui/CVTable.tsx`):
+    - Table rendering with search filtering and column sorting for Name, Education, and Employee.
+    - Create CV button hooked to `CVDialog` in create mode.
+    - Row-level action menu with `DropdownMenuButton` (`/cvs/[id]` view link, Update modal trigger, Delete confirmation trigger).
+    - Apollo mutation integration with cache refetch and Figma toast notifications (`notify.success`, `notify.error`).
+  - Colocated comprehensive unit & component test suites:
+    - `cv.schema.test.ts` (7 tests)
+    - `CVDialog.test.tsx` (7 tests)
+    - `DeleteCVDialog.test.tsx` (4 tests)
+    - `CVTable.test.tsx` (6 tests)
+    - `DropDownButton.test.tsx` (1 test)
+  - Full suite passes 100% (145/145 tests passing across 28 test suites); 0 TypeScript errors; 0 lint errors/warnings; production build succeeded.
 - [x] **Route Grouping & Navigation Shell:**
   - Standardized Next.js route groups: `(auth)` for public authentication and `(app)` for authenticated application modules.
   - Resolved nested HTML bug by establishing clean `AppLayout` in `src/app/(app)/layout.tsx` with sidebar padding (`md:pl-[200px]`).
@@ -249,11 +268,11 @@ cv-frontend/
 | **Users** | Employees Directory (`/users`) | ✅ Implemented | User | Done |
 | **Users** | User Profile (`/users/[id]`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
 | **Users** | User Skills (`/users/[id]/skills`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
-| **Users** | User Languages (`/users/[id]/languages`) | ⏳ Not Started | User (Owner editable, peer read-only) | Medium |
+| **Users** | User Languages (`/users/[id]/languages`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
 | **Users** | User CVs (`/users/[id]/cvs`) | ⏳ Not Started | User (Owner editable, peer read-only) | Medium |
 | **Skills** | Skills Directory / Management (`/skills`) | ⏳ Not Started | User | Medium |
 | **Languages** | Languages Directory / Management (`/languages`) | ⏳ Not Started | User | Medium |
-| **CVs** | CV List (`/cvs`) | ⏳ Not Started | User | High |
+| **CVs** | CV List (`/cvs`) | ✅ Implemented | User | Done |
 | **CVs** | CV Details (`/cvs/[id]`) | ⏳ Not Started | User (Owner editable) | High |
 | **CVs** | CV Skills (`/cvs/[id]/skills`) | ⏳ Not Started | User (Owner editable) | Medium |
 | **CVs** | CV Projects (`/cvs/[id]/projects`) | ⏳ Not Started | User (Owner editable) | Medium |
