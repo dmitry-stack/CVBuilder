@@ -258,7 +258,7 @@ export function UsersTable() {
                   </td>
 
                   <td className="px-4 text-right">
-                    <DropdownMenuButton userId={user.id} />
+                    <DropdownMenuButton id={user.id} />
                   </td>
                 </tr>
               ))

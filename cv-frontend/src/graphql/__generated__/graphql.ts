@@ -1,4 +1,7 @@
+/* eslint-disable */
+/** Internal type. DO NOT USE DIRECTLY. */
 type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> =
   | T
   | {
@@ -21,6 +24,17 @@ export type AddProfileSkillInput = {
 export type AuthInput = {
   email: string;
   password: string;
+};
+
+export type CreateCvInput = {
+  description: string;
+  education?: string | null | undefined;
+  name: string;
+  userId?: string | number | null | undefined;
+};
+
+export type DeleteCvInput = {
+  cvId: string | number;
 };
 
 export type DeleteProfileLanguageInput = {
@@ -50,6 +64,13 @@ export type SignupInput = {
   confirmPassword: string;
   email: string;
   password: string;
+};
+
+export type UpdateCvInput = {
+  cvId: string | number;
+  description: string;
+  education?: string | null | undefined;
+  name: string;
 };
 
 export type UpdateProfileInput = {
@@ -122,6 +143,92 @@ export type MeQuery = {
     avatar: string | null;
   };
 };
+
+export type CvsQueryVariables = Exact<{
+  params?: SearchPaginationInput | null | undefined;
+}>;
+
+export type CvsQuery = {
+  cvs: {
+    total: number;
+    page: number;
+    limit: number;
+    total_pages: number;
+    items: Array<{
+      id: string;
+      created_at: string;
+      name: string;
+      education: string | null;
+      description: string;
+      user: {
+        id: string;
+        email: string;
+        profile: {
+          first_name: string | null;
+          last_name: string | null;
+          avatar: string | null;
+        };
+      } | null;
+    }>;
+  };
+};
+
+export type CvQueryVariables = Exact<{
+  cvId: string | number;
+}>;
+
+export type CvQuery = {
+  cv: {
+    id: string;
+    created_at: string;
+    name: string;
+    education: string | null;
+    description: string;
+    user: {
+      id: string;
+      email: string;
+      profile: {
+        first_name: string | null;
+        last_name: string | null;
+        avatar: string | null;
+      };
+    } | null;
+  };
+};
+
+export type CreateCvMutationVariables = Exact<{
+  cv: CreateCvInput;
+}>;
+
+export type CreateCvMutation = {
+  createCv: {
+    id: string;
+    created_at: string;
+    name: string;
+    education: string | null;
+    description: string;
+    user: { id: string; email: string } | null;
+  };
+};
+
+export type UpdateCvMutationVariables = Exact<{
+  cv: UpdateCvInput;
+}>;
+
+export type UpdateCvMutation = {
+  updateCv: {
+    id: string;
+    name: string;
+    education: string | null;
+    description: string;
+  };
+};
+
+export type DeleteCvMutationVariables = Exact<{
+  cv: DeleteCvInput;
+}>;
+
+export type DeleteCvMutation = { deleteCv: { affected: number } };
 
 export type ProfileLanguagesQueryVariables = Exact<{
   userId: string | number;
@@ -551,6 +658,361 @@ export const MeDocument = {
     },
   ],
 } as unknown as DocumentNode<MeQuery, MeQueryVariables>;
+export const CvsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Cvs" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "params" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "SearchPaginationInput" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "cvs" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "params" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "params" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "items" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "created_at" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "education" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "email" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "profile" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "first_name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "last_name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "avatar" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "total" } },
+                { kind: "Field", name: { kind: "Name", value: "page" } },
+                { kind: "Field", name: { kind: "Name", value: "limit" } },
+                { kind: "Field", name: { kind: "Name", value: "total_pages" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CvsQuery, CvsQueryVariables>;
+export const CvDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Cv" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "cvId" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "cv" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cvId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cvId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "created_at" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "education" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "email" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "profile" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "first_name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "last_name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "avatar" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CvQuery, CvQueryVariables>;
+export const CreateCvDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CreateCv" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "cv" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "CreateCvInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createCv" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cv" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cv" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "created_at" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "education" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "email" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreateCvMutation, CreateCvMutationVariables>;
+export const UpdateCvDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateCv" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "cv" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "UpdateCvInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateCv" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cv" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cv" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "education" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UpdateCvMutation, UpdateCvMutationVariables>;
+export const DeleteCvDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteCv" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "cv" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "DeleteCvInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteCv" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cv" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cv" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "affected" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DeleteCvMutation, DeleteCvMutationVariables>;
 export const ProfileLanguagesDocument = {
   kind: "Document",
   definitions: [
