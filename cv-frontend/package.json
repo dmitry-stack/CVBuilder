@@ -27,7 +27,6 @@
     "@base-ui/react": "^1.8.0",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@hookform/resolvers": "^5.9.1",
-    "@vitest/coverage-v8": "5.0.1",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.3.0",
     "graphql": "^17.0.2",
@@ -72,6 +71,7 @@
     "typescript": "^5",
     "vite": "^8.3.0",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.1",
+    "@vitest/coverage-v8": "^5.0.1"
   }
 }
