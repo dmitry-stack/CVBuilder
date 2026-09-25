@@ -10,7 +10,7 @@ import {
   type UsersQuery,
 } from "@/graphql/__generated__/graphql";
 import { UsersTableRowSkeleton } from "./UsersTableRowSkeleton";
-import { DropdownMenuButton } from "./DropDownButton";
+import { DropdownMenuButton } from "../../../components/ui/DropDownButton";
 
 export interface UserItem {
   id: string;
@@ -31,7 +31,7 @@ export function UsersTable() {
   const [sortField, setSortField] = useState<SortField>("first_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
-  const { data, loading } = useQuery<UsersQuery>(UsersDocument, {
+  const { data, loading } = useQuery(UsersDocument, {
     variables: {
       params: {
         search: search || undefined,

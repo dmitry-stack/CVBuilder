@@ -18,9 +18,6 @@ import {
   AddProfileSkillDocument,
   UpdateProfileSkillDocument,
   DeleteProfileSkillDocument,
-  type ProfileSkillsQuery,
-  type SkillCategoriesQuery,
-  type SkillsCatalogQuery,
   type Mastery,
 } from "@/graphql/__generated__/graphql";
 
@@ -98,27 +95,23 @@ export function UserSkillsView({
   const isOwner =
     typeof propIsOwner === "boolean" ? propIsOwner : isOwnProfile(userId);
 
-  const { data: profileData, loading: profileLoading } =
-    useQuery<ProfileSkillsQuery>(ProfileSkillsDocument, {
+  const { data: profileData, loading: profileLoading } = useQuery(
+    ProfileSkillsDocument,
+    {
       variables: { userId },
       skip: !userId,
       errorPolicy: "ignore",
-    });
-
-  const { data: categoriesData } = useQuery<SkillCategoriesQuery>(
-    SkillCategoriesDocument,
-    {
-      errorPolicy: "ignore",
     },
   );
 
-  const { data: catalogData } = useQuery<SkillsCatalogQuery>(
-    SkillsCatalogDocument,
-    {
-      variables: { params: { limit: 100 } },
-      errorPolicy: "ignore",
-    },
-  );
+  const { data: categoriesData } = useQuery(SkillCategoriesDocument, {
+    errorPolicy: "ignore",
+  });
+
+  const { data: catalogData } = useQuery(SkillsCatalogDocument, {
+    variables: { params: { limit: 100 } },
+    errorPolicy: "ignore",
+  });
 
   const [addProfileSkill] = useMutation(AddProfileSkillDocument, {
     refetchQueries: [{ query: ProfileSkillsDocument, variables: { userId } }],

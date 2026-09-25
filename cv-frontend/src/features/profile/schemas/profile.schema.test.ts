@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { profileSchema } from "./profile.schema";
+import { profileSchema } from "../schemas/profile.schema";
 
 describe("profileSchema", () => {
   const validData = {

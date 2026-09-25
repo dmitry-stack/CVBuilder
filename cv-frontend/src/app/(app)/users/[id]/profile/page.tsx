@@ -1,5 +1,5 @@
-import { ProfileTabs } from "@/features/users/ui/ProfileTabs";
-import { ProfileForm } from "@/features/users/ui/ProfileForm";
+import { ProfileTabs } from "@/features/profile/ui/ProfileTabs";
+import { ProfileForm } from "@/features/profile/ui/ProfileForm";
 
 interface PageProps {
   params: Promise<{

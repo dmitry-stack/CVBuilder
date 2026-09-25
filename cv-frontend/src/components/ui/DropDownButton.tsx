@@ -26,8 +26,7 @@ export function DropdownMenuButton({
   onDelete,
 }: DropdownMenuButtonProps) {
   const targetId = id || userId || "";
-  const targetHref =
-    viewHref || (userId ? `/users/${userId}` : `/users/${targetId}`);
+  const targetHref = viewHref || `/users/${targetId}/profile`;
 
   return (
     <DropdownMenu>

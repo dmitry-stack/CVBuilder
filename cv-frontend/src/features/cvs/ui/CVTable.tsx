@@ -10,13 +10,13 @@ import {
   DeleteCvDocument,
   type CvsQuery,
 } from "@/graphql/__generated__/graphql";
-import { DropdownMenuButton } from "./DropDownButton";
+import { DropdownMenuButton } from "../../../components/ui/DropDownButton";
 import { Button } from "@/components/ui/button";
 import { notify } from "@/components/ui/toast";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { CVDialog } from "@/features/cvs/ui/CVDialog";
 import { DeleteCVDialog } from "@/features/cvs/ui/DeleteCVDialog";
-import type { CvFormData } from "../schemas/cv.schema";
+import type { CvFormData } from "../../users/schemas/cv.schema";
 
 export interface CVItem {
   id: string;

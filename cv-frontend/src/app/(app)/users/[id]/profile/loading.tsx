@@ -1,4 +1,4 @@
-import { ProfileSkeleton } from "@/features/users/ui/ProfileSkeleton";
+import { ProfileSkeleton } from "@/features/profile/ui/ProfileSkeleton";
 
 export default function UserProfileLoading() {
   return (

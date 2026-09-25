@@ -75,14 +75,18 @@ export function Navbar({
         ? currentUser.email.charAt(0).toUpperCase()
         : "U");
 
-  const profileHref = currentUserId ? `/users/${currentUserId}` : "/users";
+  const profileHref = currentUserId
+    ? `/users/${currentUserId}/profile`
+    : "/users";
 
   NAV_ITEMS.forEach((item) => {
     if (item.label === "Skills") {
       item.href = currentUserId ? `/users/${currentUserId}/skills` : "/skills";
     }
     if (item.label === "Languages") {
-      item.href = currentUserId ? `/languages` : "/languages";
+      item.href = currentUserId
+        ? `/users/${currentUserId}/languages`
+        : "/languages";
     }
   });
 
@@ -129,9 +133,9 @@ export function Navbar({
   const renderNavLinks = () => (
     <nav aria-label="Main Navigation" className="flex flex-col">
       {NAV_ITEMS.map((item) => {
-        const isActive =
-          pathname === item.href ||
-          (item.href !== "/" && pathname?.startsWith(`${item.href}/`));
+        const isActive = pathname === item.href;
+        // ||
+        // (item.href !== "/" && pathname?.startsWith(`${item.href}/`));
         const Icon = item.icon;
 
         return (

@@ -1,10 +1,10 @@
 "use client";
 
 import { useQuery } from "@apollo/client/react";
-import { MeDocument, type MeQuery } from "@/graphql/__generated__/graphql";
+import { MeDocument } from "@/graphql/__generated__/graphql";
 
 export function useCurrentUser() {
-  const { data, loading, error } = useQuery<MeQuery>(MeDocument, {
+  const { data, loading, error } = useQuery(MeDocument, {
     errorPolicy: "ignore",
   });
 

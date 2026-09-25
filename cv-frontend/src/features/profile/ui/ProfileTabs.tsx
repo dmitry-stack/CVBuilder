@@ -14,8 +14,10 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
   const tabs = [
     {
       label: "PROFILE",
-      href: `/users/${userId}`,
-      isActive: pathname === `/users/${userId}`,
+      href: `/users/${userId}/profile`,
+      isActive:
+        pathname === `/users/${userId}/profile` ||
+        pathname === `/users/${userId}`,
     },
     {
       label: "SKILLS",

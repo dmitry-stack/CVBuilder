@@ -1,4 +1,4 @@
-import { CVTable } from "@/features/users/ui/CVTable";
+import { CVTable } from "@/features/cvs/ui/CVTable";
 import { Suspense } from "react";
 import { UsersTableSkeleton } from "@/features/users/ui/UsersTableSkeleton";
 
