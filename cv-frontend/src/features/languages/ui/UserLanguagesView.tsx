@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { LanguageProficiencyBar } from "./LanguageProficiencyBar";
 import { LanguagesSkeleton } from "./LanguagesSkeleton";
 import { LanguageDialog } from "./LanguageDialog";
+import { DeleteLanguageDialog } from "./DeleteLanguageDialog";
 import type {
   LanguageFormData,
   ProficiencyType,
@@ -98,6 +99,7 @@ export function UserLanguagesView({
     new Set(),
   );
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
   // Allow canceling selection mode with Escape key
   useEffect(() => {
@@ -200,6 +202,7 @@ export function UserLanguagesView({
       );
       setSelectedLanguages(new Set());
       setIsDeleteMode(false);
+      setIsDeleteConfirmOpen(false);
     } catch (err: unknown) {
       const msg =
         err instanceof Error ? err.message : "Failed to delete languages.";
@@ -381,7 +384,6 @@ export function UserLanguagesView({
             })}
           </div>
 
-          {/* Action buttons at bottom, aligned according to reference */}
           {isOwner && languages.length > 0 && (
             <div
               data-slot="languages-actions"
@@ -419,7 +421,7 @@ export function UserLanguagesView({
 
                   <button
                     type="button"
-                    onClick={handleConfirmDelete}
+                    onClick={() => setIsDeleteConfirmOpen(true)}
                     disabled={selectedLanguages.size === 0 || isDeleting}
                     className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-[#C63031] dark:text-[#E04B4C] hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer select-none"
                   >
@@ -444,6 +446,14 @@ export function UserLanguagesView({
         onDelete={handleDeleteLanguage}
         initialData={dialogState.data}
         catalogLanguages={catalogLanguages}
+      />
+
+      <DeleteLanguageDialog
+        isOpen={isDeleteConfirmOpen}
+        onClose={() => setIsDeleteConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+        languageNames={Array.from(selectedLanguages)}
+        isDeleting={isDeleting}
       />
     </div>
   );

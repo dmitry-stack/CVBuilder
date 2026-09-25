@@ -34,24 +34,6 @@ export interface CVItem {
   } | null;
 }
 
-const fallbackCvs: CVItem[] = [
-  {
-    id: "1",
-    name: "Full Stack Engineer",
-    education: "Bachelor of Science in Computer Science",
-    description:
-      "Highly motivated and experienced Software Engineer with 5+ years of proven success in leading and developing robust and scalable applications. Adept at leveraging React, Node.js, Three.js, and WebGL to create innovative and visually appealing user interfaces.",
-    user: {
-      id: "u1",
-      email: "john.doe@example.com",
-      profile: {
-        first_name: "John",
-        last_name: "Doe",
-      },
-    },
-  },
-];
-
 type SortField = "name" | "education" | "employee";
 type SortOrder = "asc" | "desc";
 
@@ -67,7 +49,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
 
   const { currentUserId } = useCurrentUser();
 
-  const { data, refetch } = useQuery<CvsQuery>(CvsDocument, {
+  const { data, refetch } = useQuery(CvsDocument, {
     variables: {
       params: {
         search: search || undefined,
@@ -130,7 +112,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
           : null,
       }));
     }
-    return initialCvs || fallbackCvs;
+    return initialCvs || [];
   }, [data, initialCvs]);
 
   const filteredCvs = useMemo(() => {
@@ -302,7 +284,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
           <Button
             type="button"
             onClick={handleOpenCreate}
-            className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white text-xs px-4 h-8 uppercase font-medium tracking-wider shadow-cv-button transition-colors cursor-pointer inline-flex items-center gap-1.5"
+            className=" text-cv-accent bg-transparent  hover:bg-transparent text-xs px-4 h-8 uppercase font-medium tracking-wider cursor-pointer inline-flex items-center gap-1.5"
           >
             <Plus className="h-3.5 w-3.5" />
             <span>Create CV</span>

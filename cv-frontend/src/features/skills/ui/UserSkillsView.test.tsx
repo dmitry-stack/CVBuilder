@@ -275,6 +275,11 @@ describe("UserSkillsView Component", () => {
     const deleteBtn = screen.getByRole("button", { name: /Delete \(2\)/i });
     fireEvent.click(deleteBtn);
 
+    const confirmBtn = await screen.findByRole("button", {
+      name: /Delete Skills \(2\)/i,
+    });
+    fireEvent.click(confirmBtn);
+
     await waitFor(() => {
       expect(mockDeleteProfileSkill).toHaveBeenCalledWith({
         variables: {

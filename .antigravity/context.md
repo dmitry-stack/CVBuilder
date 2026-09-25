@@ -210,8 +210,11 @@ cv-frontend/
     - `CVDialog.test.tsx` (7 tests)
     - `DeleteCVDialog.test.tsx` (4 tests)
     - `CVTable.test.tsx` (6 tests)
+    - `CVTableSkeleton.test.tsx` (5 tests)
     - `DropDownButton.test.tsx` (1 test)
-  - Full suite passes 100% (145/145 tests passing across 28 test suites); 0 TypeScript errors; 0 lint errors/warnings; production build succeeded.
+  - Built `CVTableSkeleton` (`src/features/cvs/ui/CVTableSkeleton.tsx`) matching exact table columns and layout, mounted in `cvs/loading.tsx` and `cvs/page.tsx`.
+  - Implemented accessible deletion confirmation modals: `DeleteSkillDialog` (`src/features/skills/ui/DeleteSkillDialog.tsx`) and `DeleteLanguageDialog` (`src/features/languages/ui/DeleteLanguageDialog.tsx`) with single and batch item confirmation, replacing native `window.confirm`. Colocated tests in `DeleteSkillDialog.test.tsx` (6 tests) and `DeleteLanguageDialog.test.tsx` (6 tests).
+  - Full suite passes 100% (176/176 tests passing across 32 test suites); 0 TypeScript errors; 0 lint errors/warnings; production build succeeded.
 - [x] **Route Grouping & Navigation Shell:**
   - Standardized Next.js route groups: `(auth)` for public authentication and `(app)` for authenticated application modules.
   - Resolved nested HTML bug by establishing clean `AppLayout` in `src/app/(app)/layout.tsx` with sidebar padding (`md:pl-[200px]`).
@@ -272,8 +275,8 @@ cv-frontend/
 | **Users** | User Skills (`/users/[id]/skills`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
 | **Users** | User Languages (`/users/[id]/languages`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
 | **Users** | User CVs (`/users/[id]/cvs`) | ⏳ Not Started | User (Owner editable, peer read-only) | Medium |
-| **Skills** | Skills Directory / Management (`/skills`) | ⏳ Not Started | User | Medium |
-| **Languages** | Languages Directory / Management (`/languages`) | ⏳ Not Started | User | Medium |
+| **Skills** | Skills Directory / Management (`/skills`) | ✅ Implemented | User | Done |
+| **Languages** | Languages Directory / Management (`/languages`) | ✅ Implemented | User | Done |
 | **CVs** | CV List (`/cvs`) | ✅ Implemented | User | Done |
 | **CVs** | CV Details (`/cvs/[id]`) | ⏳ Not Started | User (Owner editable) | High |
 | **CVs** | CV Skills (`/cvs/[id]/skills`) | ⏳ Not Started | User (Owner editable) | Medium |

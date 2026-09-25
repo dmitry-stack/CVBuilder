@@ -1,15 +1,15 @@
 import { CVTable } from "@/features/cvs/ui/CVTable";
 import { Suspense } from "react";
-import { UsersTableSkeleton } from "@/features/users/ui/UsersTableSkeleton";
+import { CVTableSkeleton } from "@/features/cvs/ui/CVTableSkeleton";
 
 export const metadata = {
   title: "CVs | CV Builder",
-  description: "Manage and browse emplo yees directory, positions, and CVs",
+  description: "Manage and browse employees directory, positions, and CVs",
 };
 
-export default function UsersPage() {
+export default function CVsPage() {
   return (
-    <Suspense fallback={<UsersTableSkeleton />}>
+    <Suspense fallback={<CVTableSkeleton />}>
       <CVTable />
     </Suspense>
   );

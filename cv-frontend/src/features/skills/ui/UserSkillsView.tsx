@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { SkillMasteryBar } from "./SkillMasteryBar";
 import { SkillsSkeleton } from "./SkillsSkeleton";
 import { SkillDialog } from "./SkillDialog";
+import { DeleteSkillDialog } from "./DeleteSkillDialog";
 import type { SkillFormData, MasteryType } from "../schemas/skill.schema";
 import {
   ProfileSkillsDocument,
@@ -138,6 +139,7 @@ export function UserSkillsView({
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set());
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
   // Allow canceling selection mode with Escape key
   useEffect(() => {
@@ -313,6 +315,7 @@ export function UserSkillsView({
       );
       setSelectedSkills(new Set());
       setIsDeleteMode(false);
+      setIsDeleteConfirmOpen(false);
     } catch (err: unknown) {
       const msg =
         err instanceof Error ? err.message : "Failed to delete skills.";
@@ -544,7 +547,7 @@ export function UserSkillsView({
 
                   <button
                     type="button"
-                    onClick={handleConfirmDelete}
+                    onClick={() => setIsDeleteConfirmOpen(true)}
                     disabled={selectedSkills.size === 0 || isDeleting}
                     className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-[#C63031] dark:text-[#E04B4C] hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer select-none"
                   >
@@ -570,6 +573,14 @@ export function UserSkillsView({
         initialData={dialogState.data}
         categories={categoriesList}
         catalogSkills={catalogSkills}
+      />
+
+      <DeleteSkillDialog
+        isOpen={isDeleteConfirmOpen}
+        onClose={() => setIsDeleteConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+        skillNames={Array.from(selectedSkills)}
+        isDeleting={isDeleting}
       />
     </div>
   );
