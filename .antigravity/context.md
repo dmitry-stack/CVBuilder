@@ -154,7 +154,8 @@ cv-frontend/
     - Groups skills by category name in a responsive 3-column grid layout (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4`).
     - Synchronizes common header breadcrumb with user's full name via `<HeaderSync />`.
     - Enforces ownership gating (`isOwnProfile = currentUserId === userId`):
-      - Owner mode: "+ Add Skill" action button and hover edit/delete actions for each skill.
+      - Owner mode: Aligned to Figma `skillsOwner.png` reference with bottom `+ ADD SKILL` and `REMOVE SKILLS` buttons.
+      - Selection Mode Deletion: Clicking `REMOVE SKILLS` enters selection mode allowing users to pick multiple skills via interactive checkboxes; clicking `DELETE (n)` sends batch deletion to backend; `CANCEL` or `Escape` key exits selection mode. Individual hover deletion replaced with selection mode.
       - Peer mode: Strictly read-only presentation matching Figma design.
     - Clean empty state with "Add Your First Skill" action when no skills are registered.
   - Built `SkillDialog` (`src/features/users/ui/SkillDialog.tsx`):
@@ -162,8 +163,8 @@ cv-frontend/
     - Autocompletes skill names from catalog and features live visual `SkillMasteryBar` preview during mastery level selection.
   - Built `SkillsSkeleton` (`src/features/users/ui/SkillsSkeleton.tsx`) and updated `loading.tsx` for zero-layout-shift streaming.
   - Declared typed GraphQL operations in `src/features/users/api/skills.graphql` (`ProfileSkills`, `SkillCategories`, `SkillsCatalog`, mutations for add/update/delete).
-  - Colocated unit tests: `SkillMasteryBar.test.tsx` (7 tests), `skill.schema.test.ts` (5 tests), `UserSkillsView.test.tsx` (5 tests).
-  - All 105 tests passing across 21 test suites; 0 TypeScript errors; 0 lint errors; production build succeeded.
+  - Colocated unit tests: `SkillMasteryBar.test.tsx` (7 tests), `skill.schema.test.ts` (5 tests), `UserSkillsView.test.tsx` (9 tests).
+  - All 109 tests passing across 21 test suites; 0 TypeScript errors; 0 lint errors; production build succeeded.
 - [x] **User Languages Page & CEFR Proficiency System (`/users/[id]/languages`):**
   - Designed and implemented the User Languages page matching the design system and skills page architecture.
   - Built `LanguageProficiencyBar` (`src/features/users/ui/LanguageProficiencyBar.tsx`):
@@ -180,17 +181,18 @@ cv-frontend/
     - Renders languages in a responsive 3-column grid (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4`).
     - Synchronizes common header breadcrumbs with user's full name via `<HeaderSync />`.
     - Enforces single-role ownership gating (`isOwnProfile = currentUserId === userId`):
-      - Owner mode: `+ Add Language` button and hover edit/delete actions for each language.
+      - Owner mode: Aligned to `skillsOwner.png` design system with bottom `+ ADD LANGUAGE` and `REMOVE LANGUAGES` action buttons.
+      - Selection Mode Deletion: Clicking `REMOVE LANGUAGES` enters selection mode allowing users to pick multiple languages via interactive checkboxes; clicking `DELETE (n)` sends batch deletion to backend; `CANCEL` or `Escape` key exits selection mode.
       - Peer mode: Strictly read-only presentation.
     - Clean empty state with "Add Your First Language" action when no languages are recorded.
-  - Built `LanguageDialog` (`src/features/users/ui/LanguageDialog.tsx`):
+  - Built `LanguageDialog` (`src/features/languages/ui/LanguageDialog.tsx`):
     - Accessible modal for adding, editing, and deleting user profile languages.
     - Autocompletes language names from the global language catalog.
     - Features live visual `LanguageProficiencyBar` preview during CEFR level selection.
-  - Built `LanguagesSkeleton` (`src/features/users/ui/LanguagesSkeleton.tsx`) and updated `loading.tsx` for zero-layout-shift streaming.
-  - Declared typed GraphQL operations in `src/features/users/api/languages.graphql` (`ProfileLanguages`, `LanguagesCatalog`, mutations `addProfileLanguage`, `updateProfileLanguage`, `deleteProfileLanguage`).
-  - Colocated unit tests: `LanguageProficiencyBar.test.tsx` (5 tests), `language.schema.test.ts` (4 tests), `UserLanguagesView.test.tsx` (5 tests).
-  - All 119 tests passing across 24 test suites; 0 TypeScript errors; 0 lint errors; production build succeeded.
+  - Built `LanguagesSkeleton` (`src/features/languages/ui/LanguagesSkeleton.tsx`) and updated `loading.tsx` for zero-layout-shift streaming.
+  - Declared typed GraphQL operations in `src/features/languages/api/languages.graphql` (`ProfileLanguages`, `LanguagesCatalog`, mutations `addProfileLanguage`, `updateProfileLanguage`, `deleteProfileLanguage`).
+  - Colocated unit tests: `LanguageProficiencyBar.test.tsx` (5 tests), `language.schema.test.ts` (4 tests), `UserLanguagesView.test.tsx` (9 tests).
+  - All 153 tests passing across 28 test suites; 0 TypeScript errors; 0 lint errors; production build succeeded.
 - [x] **CV Management & Dialogs (Create, Update, Delete & CV Table):**
   - Built feature-driven CV schema in `src/features/cvs/schemas/cv.schema.ts` (with compatibility re-export in `src/features/users/schemas/cv.schema.ts`) validating name, education, and description with Zod.
   - Declared typed GraphQL operations in `src/features/cvs/api/cvs.graphql` (`query Cvs`, `query Cv`, mutations `createCv`, `updateCv`, `deleteCv`) with generated typed document nodes.
