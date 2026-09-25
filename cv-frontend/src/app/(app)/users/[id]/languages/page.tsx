@@ -1,5 +1,5 @@
-import { ProfileTabs } from "@/features/users/ui/ProfileTabs";
-import { UserLanguagesView } from "@/features/users/ui/UserLanguagesView";
+import { ProfileTabs } from "@/features/profile/ui/ProfileTabs";
+import { UserLanguagesView } from "@/features/languages/ui/UserLanguagesView";
 
 interface PageProps {
   params: Promise<{
@@ -22,6 +22,7 @@ export default async function UserLanguagesPage({ params }: PageProps) {
   return (
     <div className="w-full max-w-content mx-auto space-y-6">
       <ProfileTabs userId={id} />
+
       <UserLanguagesView userId={id} />
     </div>
   );

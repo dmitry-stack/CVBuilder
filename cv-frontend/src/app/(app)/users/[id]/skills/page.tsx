@@ -1,18 +1,16 @@
-import { ProfileTabs } from "@/features/users/ui/ProfileTabs";
-import { UserSkillsView } from "@/features/users/ui/UserSkillsView";
+import { ProfileTabs } from "@/features/profile/ui/ProfileTabs";
+import { UserSkillsView } from "@/features/skills/ui/UserSkillsView";
 
 interface PageProps {
-  params: Promise<{
-    id: string;
-  }>;
+  params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps) {
   const { id } = await params;
 
   return {
-    title: `Skills | CV Builder`,
-    description: `Manage and view skills for user ${id}`,
+    title: `User Profile | CV Builder`,
+    description: `Manage profile, skills, languages, and CVs for user ${id}`,
   };
 }
 

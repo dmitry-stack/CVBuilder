@@ -27,7 +27,7 @@ export function UsersTableSkeleton({ rowCount = 5 }: UsersTableSkeletonProps) {
         </div>
       </div>
 
-      <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs overflow-x-auto">
+      <div className=" bg-white dark:bg-zinc-950 shadow-xs overflow-x-auto">
         <table className="w-full border-collapse text-left">
           <thead>
             <tr className="h-table-header border-b border-zinc-200 dark:border-zinc-800 bg-transparent">

@@ -1,4 +1,4 @@
-import { LanguagesSkeleton } from "@/features/users/ui/LanguagesSkeleton";
+import { LanguagesSkeleton } from "@/features/languages/ui/LanguagesSkeleton";
 
 export default function UserLanguagesLoading() {
   return (

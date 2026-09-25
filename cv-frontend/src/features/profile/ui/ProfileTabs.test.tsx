@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from "vitest";
 import { ProfileTabs } from "./ProfileTabs";
 
 vi.mock("next/navigation", () => ({
-  usePathname: () => "/users/user-1",
+  usePathname: () => "/users/user-1/profile",
 }));
 
 describe("ProfileTabs Component", () => {
@@ -14,7 +14,7 @@ describe("ProfileTabs Component", () => {
     const skillsTab = screen.getByRole("link", { name: "SKILLS" });
     const languagesTab = screen.getByRole("link", { name: "LANGUAGES" });
 
-    expect(profileTab).toHaveAttribute("href", "/users/user-1");
+    expect(profileTab).toHaveAttribute("href", "/users/user-1/profile");
     expect(skillsTab).toHaveAttribute("href", "/users/user-1/skills");
     expect(languagesTab).toHaveAttribute("href", "/users/user-1/languages");
   });

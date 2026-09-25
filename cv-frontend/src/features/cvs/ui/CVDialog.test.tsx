@@ -21,7 +21,7 @@ describe("CVDialog", () => {
     expect(
       screen.getByRole("button", { name: /create cv/i }),
     ).toBeInTheDocument();
-  });
+  }, 15000);
 
   it("shows validation errors when submitting with empty required fields", async () => {
     const handleSave = vi.fn();

@@ -1,28 +1,22 @@
-import { ProfileTabs } from "@/features/users/ui/ProfileTabs";
-import { UserLanguagesView } from "@/features/users/ui/UserLanguagesView";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/features/auth/actions/get-current-user.server";
+import { UserLanguagesView } from "@/features/languages/ui/UserLanguagesView";
 
-interface PageProps {
-  params: Promise<{
-    id: string;
-  }>;
-}
+export const metadata = {
+  title: "Languages | CV Builder",
+  description: "Manage your profile languages",
+};
 
-export async function generateMetadata({ params }: PageProps) {
-  const { id } = await params;
+export default async function LanguagesPage() {
+  const currentUser = await getCurrentUser();
 
-  return {
-    title: `Languages | CV Builder`,
-    description: `Manage and view languages for user ${id}`,
-  };
-}
-
-export default async function UserLanguagesPage({ params }: PageProps) {
-  const { id } = await params;
+  if (!currentUser?.id) {
+    redirect("/signin");
+  }
 
   return (
     <div className="w-full max-w-content mx-auto space-y-6">
-      <ProfileTabs userId={id} />
-      <UserLanguagesView userId={id} />
+      <UserLanguagesView userId={currentUser.id} isOwner={true} />
     </div>
   );
 }

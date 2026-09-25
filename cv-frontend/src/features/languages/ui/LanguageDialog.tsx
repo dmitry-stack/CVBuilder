@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X, AlertCircle, Trash2 } from "lucide-react";
@@ -12,6 +12,7 @@ import {
   type LanguageFormData,
   type ProficiencyType,
 } from "../schemas/language.schema";
+import { DeleteLanguageDialog } from "./DeleteLanguageDialog";
 
 interface CatalogLanguageOption {
   name: string;
@@ -82,6 +83,8 @@ export function LanguageDialog({
     }
   }, [isOpen, initialData, reset]);
 
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+
   if (!isOpen) return null;
 
   const onSubmit = async (data: LanguageFormData) => {
@@ -89,14 +92,16 @@ export function LanguageDialog({
     onClose();
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (!initialData?.name || !onDelete) return;
-    if (
-      window.confirm(`Are you sure you want to remove "${initialData.name}"?`)
-    ) {
-      await onDelete(initialData.name);
-      onClose();
-    }
+    setIsConfirmDeleteOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!initialData?.name || !onDelete) return;
+    await onDelete(initialData.name);
+    setIsConfirmDeleteOpen(false);
+    onClose();
   };
 
   return (
@@ -106,7 +111,7 @@ export function LanguageDialog({
       aria-labelledby="language-dialog-title"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs"
     >
-      <div className="w-full max-w-md rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div className="w-full max-w-md  bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
           <h2
             id="language-dialog-title"
@@ -244,6 +249,13 @@ export function LanguageDialog({
           </div>
         </form>
       </div>
+
+      <DeleteLanguageDialog
+        isOpen={isConfirmDeleteOpen}
+        onClose={() => setIsConfirmDeleteOpen(false)}
+        onConfirm={handleConfirmDelete}
+        languageNames={initialData?.name ? [initialData.name] : []}
+      />
     </div>
   );
 }

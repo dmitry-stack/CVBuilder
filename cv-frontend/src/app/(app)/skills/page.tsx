@@ -1,28 +1,22 @@
-import { ProfileTabs } from "@/features/users/ui/ProfileTabs";
-import { UserSkillsView } from "@/features/users/ui/UserSkillsView";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/features/auth/actions/get-current-user.server";
+import { UserSkillsView } from "@/features/skills/ui/UserSkillsView";
 
-interface PageProps {
-  params: Promise<{
-    id: string;
-  }>;
-}
+export const metadata = {
+  title: "Skills | CV Builder",
+  description: "Manage your profile skills",
+};
 
-export async function generateMetadata({ params }: PageProps) {
-  const { id } = await params;
+export default async function SkillsPage() {
+  const currentUser = await getCurrentUser();
 
-  return {
-    title: `Skills | CV Builder`,
-    description: `Manage and view skills for user ${id}`,
-  };
-}
-
-export default async function UserSkillsPage({ params }: PageProps) {
-  const { id } = await params;
+  if (!currentUser?.id) {
+    redirect("/signin");
+  }
 
   return (
     <div className="w-full max-w-content mx-auto space-y-6">
-      <ProfileTabs userId={id} />
-      <UserSkillsView userId={id} />
+      <UserSkillsView userId={currentUser.id} isOwner={true} />
     </div>
   );
 }

@@ -9,7 +9,12 @@ export function proxy(request: NextRequest) {
 
   const isAuthPage =
     pathname.startsWith("/signin") || pathname.startsWith("/signup");
-  const isProtectedPage = pathname.startsWith("/users");
+  const isProtectedPage =
+    pathname.startsWith("/users") ||
+    pathname.startsWith("/skills") ||
+    pathname.startsWith("/languages") ||
+    pathname.startsWith("/cvs") ||
+    pathname.startsWith("/settings");
 
   if (!token && isProtectedPage) {
     const signinUrl = new URL("/signin", request.url);

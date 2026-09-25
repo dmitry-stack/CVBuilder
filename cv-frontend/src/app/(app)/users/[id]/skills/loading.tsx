@@ -1,4 +1,4 @@
-import { SkillsSkeleton } from "@/features/users/ui/SkillsSkeleton";
+import { SkillsSkeleton } from "@/features/skills/ui/SkillsSkeleton";
 
 export default function UserSkillsLoading() {
   return (

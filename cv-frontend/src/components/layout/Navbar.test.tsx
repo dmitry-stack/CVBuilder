@@ -126,7 +126,7 @@ describe("Navbar / Aside Sidebar", () => {
     fireEvent.click(profileBtn);
 
     const profileLink = screen.getByRole("link", { name: /profile/i });
-    expect(profileLink).toHaveAttribute("href", "/users/user-123");
+    expect(profileLink).toHaveAttribute("href", "/users/user-123/profile");
     expect(screen.getByText("rostislav@example.com")).toBeInTheDocument();
   });
 });
