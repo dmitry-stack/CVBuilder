@@ -237,14 +237,12 @@ export function CVDialog({
   );
 }
 
-// Convenience wrapper for Create dialog
 export function CreateCVDialog(
   props: Omit<CVDialogProps, "initialData" | "title">,
 ) {
   return <CVDialog {...props} initialData={null} title="Create CV" />;
 }
 
-// Convenience wrapper for Update dialog
 export function UpdateCVDialog(props: CVDialogProps) {
   return <CVDialog {...props} title={props.title || "Update CV"} />;
 }

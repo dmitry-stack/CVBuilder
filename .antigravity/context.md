@@ -215,6 +215,59 @@ cv-frontend/
   - Built `CVTableSkeleton` (`src/features/cvs/ui/CVTableSkeleton.tsx`) matching exact table columns and layout, mounted in `cvs/loading.tsx` and `cvs/page.tsx`.
   - Implemented accessible deletion confirmation modals: `DeleteSkillDialog` (`src/features/skills/ui/DeleteSkillDialog.tsx`) and `DeleteLanguageDialog` (`src/features/languages/ui/DeleteLanguageDialog.tsx`) with single and batch item confirmation, replacing native `window.confirm`. Colocated tests in `DeleteSkillDialog.test.tsx` (6 tests) and `DeleteLanguageDialog.test.tsx` (6 tests).
   - Full suite passes 100% (176/176 tests passing across 32 test suites); 0 TypeScript errors; 0 lint errors/warnings; production build succeeded.
+- [x] **CV Skills Management & Mastery System (`/cvs/[id]/skills`):**
+  - Designed and implemented the CV Skills page matching the exact visual design of `.antigravity/assets/cvSkills.png` and `skillsOwner.png` using a decoupled, modular architecture adhering to strict Single Responsibility Principle (all files < 175 lines, functions < 30 lines).
+  - Built dedicated GraphQL operations in `src/features/cvs/api/cv_skills.graphql` (`query CvSkills`, mutations `addCvSkill`, `updateCvSkill`, `deleteCvSkill`).
+  - Extracted business logic and category resolution into `src/features/cvs/lib/cv-skills.utils.ts` with colocated unit tests in `cv-skills.utils.test.ts` (5 tests).
+  - Built `useCvSkills` custom hook (`src/features/cvs/hooks/useCvSkills.ts`) isolating Apollo queries, mutations, selection mode, and toast notifications from the presentation layer. Added seamless fallback to `cv.user.profile.skills` when `cv.skills` is empty, along with automatic background synchronization to persist profile skills to CV skills.
+  - Built modular UI components aligned 1:1 with `cvSkills.png`:
+    - `CVSkillsList.tsx`: Vertically stacked category sections with headers in `font-roboto text-base font-normal` and a responsive 3-column items grid (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4`).
+    - `CVSkillCard.tsx`: Flat skill item row with `SkillMasteryBar` preceding skill name, hover pencil icon for editing, and selection checkbox in delete mode.
+    - `SkillMasteryBar.tsx`: Calibrated pastel track colors for light mode (`#FFE082`, `#C8E6C9`, `#B3E5FC`, `#E0E0E0`, `#FFCDD2`) and 72px bar width (`w-18`).
+    - `CVSkillsActions.tsx`: 3-column grid alignment where `+ ADD SKILL` aligns under column 2 and `REMOVE SKILLS` (with red trash icon) aligns under column 3; delete mode renders `CANCEL` under column 2 and `DELETE (n)` under column 3.
+    - `CVSkillsEmptyState.tsx`: Clean dashed container with subtitle and pill button matching `UserSkillsView`.
+    - `CVSkillsView.tsx`: Orchestrator managing `SkillDialog`, `DeleteSkillDialog`, `isDeleting`, and breadcrumbs via `HeaderSync`.
+  - Enforced single-role ownership gating (`isOwner = currentUser.id === cv.user.id`): owners can add, edit, and batch-delete CV skills; peers receive a read-only view.
+  - Colocated component tests in `src/features/cvs/ui/CVSkillsView.test.tsx` (8 tests).
+- [x] **CV Details Management (`/cvs/[id]/details` & `/cvs/[id]`):**
+  - Designed and implemented the CV Details page matching `.antigravity/assets/cvDetails.png`:
+    - Synchronizes common header breadcrumbs via `<HeaderSync userName={cv.name} />` producing `CVs > Software Engineer With 5+ Years Of Experience (red) > Details`.
+    - Supported CV breadcrumb route matching in `Header.tsx` (`/cvs/[id]/details`, `/cvs/[id]/skills`, etc.) with pulse skeleton.
+    - Form layout: Clean vertical stack (`max-w-4xl`) with 12px grey labels (`Name`, `Education`, `Description` without asterisks).
+    - Inputs: 48px height (`h-12`), 1px border (`#AEAEAE`), transparent background, 16px Roboto text.
+    - Textarea: Min-height 160px with relaxed line height.
+    - Action button: Single pill button **`UPDATE`** (`rounded-[40px]`, `min-w-[140px]`, `h-10`) aligned to bottom-right; rendered in soft grey (`#AEAEAE`) when clean/pristine and red (`bg-cv-accent`) when dirty; no Cancel button per design spec.
+    - Peer mode: Disables all inputs in read-only mode and hides the update action button.
+  - Built `CVDetailsSkeleton.tsx` matching exact 48px inputs, 160px textarea, and single pill button geometry for zero layout shift.
+  - Built `CVDetailsView.tsx` with `useForm` + `cvFormSchema` (Zod), Apollo `CvDocument` query and `UpdateCvDocument` mutation, and `notify.success/error`.
+  - Added redirect from `/cvs/[id]` to `/cvs/[id]/details` (`src/app/(app)/cvs/[id]/page.tsx`).
+  - Colocated unit & component tests in `CVDetailsView.test.tsx` (6 tests) and `Header.test.tsx` (10 tests).
+  - Full project test suite passing 100% (192/192 tests passing across 34 test suites); TypeScript typecheck passing (0 errors); ESLint passing (0 errors); Next.js production build passing.
+- [x] **CV Projects Management (`/cvs/[id]/projects`):**
+  - Designed and implemented the CV Projects page matching the exact visual design of `.antigravity/assets/cvProjects.png`:
+    - Reusable CV sub-navigation tabs (`CVTabs.tsx`) supporting `Details`, `Skills`, `Projects`, and `Preview`.
+    - Pill search bar (`CVProjectsHeader.tsx`) with search icon and 40px rounded input for instant client-side filtering.
+    - Prominent red `+ ADD PROJECT` pill button (`bg-cv-accent text-white rounded-[40px] shadow-md`) displayed conditionally for CV owners.
+    - 4-column responsive list header (`CVProjectsList.tsx`): sortable columns with directional indicator arrows (`Name ↓`, `Domain`, `Start Date ↓`, `End Date ↓`).
+    - Project cards (`CVProjectCard.tsx`):
+      - 4-column metadata row matching the header grid.
+      - 3-dots action menu (`MoreVertical` icon dropdown) with `Edit` and `Remove` options for CV owners.
+      - Full-width project description text.
+      - Pill badges for project responsibilities (`bg-[#E2E2E4] text-[#2E2E2E] rounded-full text-xs`).
+    - Interactive dialogs:
+      - `CVProjectDialog.tsx`: Modal for adding or editing a project within the CV, complete with available project selection, role and responsibilities tag inputs, and date pickers.
+      - `DeleteCVProjectDialog.tsx`: Confirmation modal (`role="alertdialog"`) for unlinking a project from the CV.
+      - `CVProjectsSkeleton.tsx`: Zero-layout-shift pulse skeleton matching header and card layout.
+    - Decoupled architecture:
+      - Custom hook `useCvProjects.ts` managing Apollo queries (`CvProjectsDocument`, `AvailableProjectsDocument`), mutations (`AddCvProjectDocument`, `UpdateCvProjectDocument`, `RemoveCvProjectDocument`), sorting, filtering, and modal states.
+      - Schema validation in `cv-project.schema.ts` (Zod) verifying dates (`end_date >= start_date`), project selection, and string lists.
+      - Date formatting and sorting utilities in `cv-projects.utils.ts`.
+    - Single-role ownership gating (`isOwner = currentUserId === cv.user?.id`): peer users receive a read-only list with hidden action menus and add buttons.
+    - Colocated unit and component test suites:
+      - `cv-project.schema.test.ts` (4 tests)
+      - `cv-projects.utils.test.ts` (5 tests)
+      - `CVProjectsView.test.tsx` (8 tests)
+  - Full suite passes 100% (209/209 tests passing across 37 test suites); 0 TypeScript errors; 0 ESLint errors; production build succeeded.
 - [x] **Route Grouping & Navigation Shell:**
   - Standardized Next.js route groups: `(auth)` for public authentication and `(app)` for authenticated application modules.
   - Resolved nested HTML bug by establishing clean `AppLayout` in `src/app/(app)/layout.tsx` with sidebar padding (`md:pl-[200px]`).
@@ -278,9 +331,9 @@ cv-frontend/
 | **Skills** | Skills Directory / Management (`/skills`) | ✅ Implemented | User | Done |
 | **Languages** | Languages Directory / Management (`/languages`) | ✅ Implemented | User | Done |
 | **CVs** | CV List (`/cvs`) | ✅ Implemented | User | Done |
-| **CVs** | CV Details (`/cvs/[id]`) | ⏳ Not Started | User (Owner editable) | High |
-| **CVs** | CV Skills (`/cvs/[id]/skills`) | ⏳ Not Started | User (Owner editable) | Medium |
-| **CVs** | CV Projects (`/cvs/[id]/projects`) | ⏳ Not Started | User (Owner editable) | Medium |
+| **CVs** | CV Details (`/cvs/[id]`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
+| **CVs** | CV Skills (`/cvs/[id]/skills`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
+| **CVs** | CV Projects (`/cvs/[id]/projects`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
 | **CVs** | CV Preview (`/cvs/[id]/preview`) | ⏳ Not Started | User | High |
 | **CVs** | PDF Export (`exportPdf`) | ⏳ Not Started | User | High |
 | **Settings** | User & App Settings (`/settings`) | ⏳ Not Started | User | Low |

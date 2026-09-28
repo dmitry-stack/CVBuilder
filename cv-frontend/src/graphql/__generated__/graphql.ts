@@ -8,6 +8,22 @@ export type Incremental<T> =
       [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
     };
 import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
+export type AddCvProjectInput = {
+  cvId: string | number;
+  end_date?: string | null | undefined;
+  projectId: string | number;
+  responsibilities: Array<string>;
+  roles: Array<string>;
+  start_date: string;
+};
+
+export type AddCvSkillInput = {
+  categoryId?: string | number | null | undefined;
+  cvId: string | number;
+  mastery: Mastery;
+  name: string;
+};
+
 export type AddProfileLanguageInput = {
   name: string;
   proficiency: Proficiency;
@@ -37,6 +53,11 @@ export type DeleteCvInput = {
   cvId: string | number;
 };
 
+export type DeleteCvSkillInput = {
+  cvId: string | number;
+  name: Array<string>;
+};
+
 export type DeleteProfileLanguageInput = {
   name: Array<string>;
   userId: string | number;
@@ -51,6 +72,11 @@ export type Mastery =
   "Advanced" | "Competent" | "Expert" | "Novice" | "Proficient";
 
 export type Proficiency = "A1" | "A2" | "B1" | "B2" | "C1" | "C2" | "Native";
+
+export type RemoveCvProjectInput = {
+  cvId: string | number;
+  projectId: string | number;
+};
 
 export type SearchPaginationInput = {
   limit?: number | null | undefined;
@@ -70,6 +96,22 @@ export type UpdateCvInput = {
   cvId: string | number;
   description: string;
   education?: string | null | undefined;
+  name: string;
+};
+
+export type UpdateCvProjectInput = {
+  cvId: string | number;
+  end_date?: string | null | undefined;
+  projectId: string | number;
+  responsibilities: Array<string>;
+  roles: Array<string>;
+  start_date: string;
+};
+
+export type UpdateCvSkillInput = {
+  categoryId?: string | number | null | undefined;
+  cvId: string | number;
+  mastery: Mastery;
   name: string;
 };
 
@@ -141,6 +183,198 @@ export type MeQuery = {
     first_name: string | null;
     last_name: string | null;
     avatar: string | null;
+  };
+};
+
+export type CvProjectsQueryVariables = Exact<{
+  cvId: string | number;
+}>;
+
+export type CvProjectsQuery = {
+  cv: {
+    id: string;
+    name: string;
+    user: { id: string } | null;
+    projects: Array<{
+      id: string;
+      name: string;
+      internal_name: string;
+      domain: string;
+      start_date: string;
+      end_date: string | null;
+      description: string;
+      environment: Array<string>;
+      roles: Array<string>;
+      responsibilities: Array<string>;
+      project: { id: string; name: string };
+    }> | null;
+  };
+};
+
+export type AvailableProjectsQueryVariables = Exact<{
+  params?: SearchPaginationInput | null | undefined;
+}>;
+
+export type AvailableProjectsQuery = {
+  projects: {
+    total: number;
+    page: number;
+    limit: number;
+    total_pages: number;
+    items: Array<{
+      id: string;
+      name: string;
+      domain: string;
+      description: string;
+      start_date: string;
+      end_date: string | null;
+      environment: Array<string>;
+    }>;
+  };
+};
+
+export type AddCvProjectMutationVariables = Exact<{
+  project: AddCvProjectInput;
+}>;
+
+export type AddCvProjectMutation = {
+  addCvProject: {
+    id: string;
+    projects: Array<{
+      id: string;
+      name: string;
+      internal_name: string;
+      domain: string;
+      start_date: string;
+      end_date: string | null;
+      description: string;
+      environment: Array<string>;
+      roles: Array<string>;
+      responsibilities: Array<string>;
+      project: { id: string; name: string };
+    }> | null;
+  };
+};
+
+export type UpdateCvProjectMutationVariables = Exact<{
+  project: UpdateCvProjectInput;
+}>;
+
+export type UpdateCvProjectMutation = {
+  updateCvProject: {
+    id: string;
+    projects: Array<{
+      id: string;
+      name: string;
+      internal_name: string;
+      domain: string;
+      start_date: string;
+      end_date: string | null;
+      description: string;
+      environment: Array<string>;
+      roles: Array<string>;
+      responsibilities: Array<string>;
+      project: { id: string; name: string };
+    }> | null;
+  };
+};
+
+export type RemoveCvProjectMutationVariables = Exact<{
+  project: RemoveCvProjectInput;
+}>;
+
+export type RemoveCvProjectMutation = {
+  removeCvProject: {
+    id: string;
+    projects: Array<{
+      id: string;
+      name: string;
+      internal_name: string;
+      domain: string;
+      start_date: string;
+      end_date: string | null;
+      description: string;
+      environment: Array<string>;
+      roles: Array<string>;
+      responsibilities: Array<string>;
+      project: { id: string; name: string };
+    }> | null;
+  };
+};
+
+export type CvSkillsQueryVariables = Exact<{
+  cvId: string | number;
+}>;
+
+export type CvSkillsQuery = {
+  cv: {
+    id: string;
+    name: string;
+    skills: Array<{
+      name: string;
+      categoryId: string | null;
+      mastery: Mastery;
+    }>;
+    user: {
+      id: string;
+      email: string;
+      profile: {
+        id: string;
+        first_name: string | null;
+        last_name: string | null;
+        avatar: string | null;
+        skills: Array<{
+          name: string;
+          categoryId: string | null;
+          mastery: Mastery;
+        }>;
+      };
+    } | null;
+  };
+};
+
+export type AddCvSkillMutationVariables = Exact<{
+  skill: AddCvSkillInput;
+}>;
+
+export type AddCvSkillMutation = {
+  addCvSkill: {
+    id: string;
+    skills: Array<{
+      name: string;
+      categoryId: string | null;
+      mastery: Mastery;
+    }>;
+  };
+};
+
+export type UpdateCvSkillMutationVariables = Exact<{
+  skill: UpdateCvSkillInput;
+}>;
+
+export type UpdateCvSkillMutation = {
+  updateCvSkill: {
+    id: string;
+    skills: Array<{
+      name: string;
+      categoryId: string | null;
+      mastery: Mastery;
+    }>;
+  };
+};
+
+export type DeleteCvSkillMutationVariables = Exact<{
+  skill: DeleteCvSkillInput;
+}>;
+
+export type DeleteCvSkillMutation = {
+  deleteCvSkill: {
+    id: string;
+    skills: Array<{
+      name: string;
+      categoryId: string | null;
+      mastery: Mastery;
+    }>;
   };
 };
 
@@ -658,6 +892,871 @@ export const MeDocument = {
     },
   ],
 } as unknown as DocumentNode<MeQuery, MeQueryVariables>;
+export const CvProjectsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CvProjects" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "cvId" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "cv" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cvId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cvId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "projects" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "internal_name" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "domain" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "start_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "end_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "environment" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "roles" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "responsibilities" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "project" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CvProjectsQuery, CvProjectsQueryVariables>;
+export const AvailableProjectsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AvailableProjects" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "params" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "SearchPaginationInput" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "projects" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "params" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "params" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "items" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "domain" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "start_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "end_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "environment" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "total" } },
+                { kind: "Field", name: { kind: "Name", value: "page" } },
+                { kind: "Field", name: { kind: "Name", value: "limit" } },
+                { kind: "Field", name: { kind: "Name", value: "total_pages" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AvailableProjectsQuery,
+  AvailableProjectsQueryVariables
+>;
+export const AddCvProjectDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AddCvProject" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "project" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AddCvProjectInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "addCvProject" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "project" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "project" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "projects" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "internal_name" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "domain" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "start_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "end_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "environment" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "roles" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "responsibilities" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "project" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AddCvProjectMutation,
+  AddCvProjectMutationVariables
+>;
+export const UpdateCvProjectDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateCvProject" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "project" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "UpdateCvProjectInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateCvProject" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "project" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "project" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "projects" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "internal_name" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "domain" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "start_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "end_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "environment" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "roles" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "responsibilities" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "project" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateCvProjectMutation,
+  UpdateCvProjectMutationVariables
+>;
+export const RemoveCvProjectDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "RemoveCvProject" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "project" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "RemoveCvProjectInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "removeCvProject" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "project" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "project" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "projects" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "internal_name" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "domain" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "start_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "end_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "environment" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "roles" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "responsibilities" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "project" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RemoveCvProjectMutation,
+  RemoveCvProjectMutationVariables
+>;
+export const CvSkillsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CvSkills" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "cvId" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "cv" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cvId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cvId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "skills" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "categoryId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "mastery" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "email" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "profile" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "first_name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "last_name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "avatar" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "skills" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "categoryId" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "mastery" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CvSkillsQuery, CvSkillsQueryVariables>;
+export const AddCvSkillDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AddCvSkill" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "skill" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "AddCvSkillInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "addCvSkill" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "skill" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "skill" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "skills" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "categoryId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "mastery" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AddCvSkillMutation, AddCvSkillMutationVariables>;
+export const UpdateCvSkillDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateCvSkill" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "skill" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "UpdateCvSkillInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateCvSkill" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "skill" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "skill" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "skills" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "categoryId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "mastery" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateCvSkillMutation,
+  UpdateCvSkillMutationVariables
+>;
+export const DeleteCvSkillDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteCvSkill" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "skill" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "DeleteCvSkillInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteCvSkill" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "skill" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "skill" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "skills" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "categoryId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "mastery" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteCvSkillMutation,
+  DeleteCvSkillMutationVariables
+>;
 export const CvsDocument = {
   kind: "Document",
   definitions: [

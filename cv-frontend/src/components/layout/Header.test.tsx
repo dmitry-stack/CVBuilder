@@ -98,4 +98,47 @@ describe("Header Component (Common Layout Header)", () => {
       container.querySelector('[data-slot="header-user-skeleton"]'),
     ).toBeInTheDocument();
   });
+
+  it("renders breadcrumbs when on /cvs/:id/details route", () => {
+    mockPathname = "/cvs/123/details";
+    render(
+      <HeaderProvider>
+        <HeaderSync userName="Software Engineer With 5+ Years Of Experience" />
+        <Header />
+      </HeaderProvider>,
+    );
+
+    const cvsLink = screen.getByRole("link", { name: "CVs" });
+    expect(cvsLink).toBeInTheDocument();
+    expect(cvsLink).toHaveAttribute("href", "/cvs");
+    expect(
+      screen.getByText("Software Engineer With 5+ Years Of Experience"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Details")).toBeInTheDocument();
+  });
+
+  it("renders breadcrumbs when on /cvs/:id/skills route", () => {
+    mockPathname = "/cvs/123/skills";
+    render(
+      <HeaderProvider>
+        <HeaderSync userName="Software Engineer With 5+ Years Of Experience" />
+        <Header />
+      </HeaderProvider>,
+    );
+
+    expect(screen.getByText("Skills")).toBeInTheDocument();
+  });
+
+  it("renders breadcrumb CV skeleton when CV name is loading", () => {
+    mockPathname = "/cvs/123/details";
+    const { container } = render(
+      <HeaderProvider>
+        <Header />
+      </HeaderProvider>,
+    );
+
+    expect(
+      container.querySelector('[data-slot="header-cv-skeleton"]'),
+    ).toBeInTheDocument();
+  });
 });

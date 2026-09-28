@@ -1,0 +1,109 @@
+query CvProjects($cvId: ID!) {
+  cv(cvId: $cvId) {
+    id
+    name
+    user {
+      id
+    }
+    projects {
+      id
+      name
+      internal_name
+      domain
+      start_date
+      end_date
+      description
+      environment
+      roles
+      responsibilities
+      project {
+        id
+        name
+      }
+    }
+  }
+}
+
+query AvailableProjects($params: SearchPaginationInput) {
+  projects(params: $params) {
+    items {
+      id
+      name
+      domain
+      description
+      start_date
+      end_date
+      environment
+    }
+    total
+    page
+    limit
+    total_pages
+  }
+}
+
+mutation AddCvProject($project: AddCvProjectInput!) {
+  addCvProject(project: $project) {
+    id
+    projects {
+      id
+      name
+      internal_name
+      domain
+      start_date
+      end_date
+      description
+      environment
+      roles
+      responsibilities
+      project {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation UpdateCvProject($project: UpdateCvProjectInput!) {
+  updateCvProject(project: $project) {
+    id
+    projects {
+      id
+      name
+      internal_name
+      domain
+      start_date
+      end_date
+      description
+      environment
+      roles
+      responsibilities
+      project {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation RemoveCvProject($project: RemoveCvProjectInput!) {
+  removeCvProject(project: $project) {
+    id
+    projects {
+      id
+      name
+      internal_name
+      domain
+      start_date
+      end_date
+      description
+      environment
+      roles
+      responsibilities
+      project {
+        id
+        name
+      }
+    }
+  }
+}

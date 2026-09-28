@@ -8,7 +8,6 @@ import {
   CreateCvDocument,
   UpdateCvDocument,
   DeleteCvDocument,
-  type CvsQuery,
 } from "@/graphql/__generated__/graphql";
 import { DropdownMenuButton } from "../../../components/ui/DropDownButton";
 import { Button } from "@/components/ui/button";
@@ -383,7 +382,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
                     <td className="px-4 text-right">
                       <DropdownMenuButton
                         id={cv.id}
-                        viewHref={`/cvs/${cv.id}`}
+                        viewHref={`/cvs/${cv.id}/details`}
                         onUpdate={() => handleOpenEdit(cv)}
                         onDelete={() => handleOpenDelete(cv)}
                       />
