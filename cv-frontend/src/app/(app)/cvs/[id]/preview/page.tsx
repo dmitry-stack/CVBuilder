@@ -6,8 +6,8 @@ interface PageProps {
 export default async function CVPreviewPage({ params }: PageProps) {
   const { id } = await params;
   return (
-    <>
-      <CVTabs userId={id} />
-    </>
+    <div className="w-full max-w-content mx-auto space-y-6">
+      <CVTabs cvId={id} />
+    </div>
   );
 }

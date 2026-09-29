@@ -6,7 +6,7 @@ import type {
   CvProjectItem,
   ProjectSortField,
   ProjectSortOrder,
-} from "../../cvs/lib/cv-projects.utils";
+} from "../../lib/cv-projects.utils";
 
 interface CVProjectsListProps {
   projects: CvProjectItem[];

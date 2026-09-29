@@ -252,9 +252,6 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
   };
 
   const getEmployeeDisplay = (cv: CVItem) => {
-    if (cv.user?.profile?.first_name || cv.user?.profile?.last_name) {
-      return `${cv.user.profile.first_name || ""} ${cv.user.profile.last_name || ""}`.trim();
-    }
     if (cv.user?.email) {
       return cv.user.email;
     }

@@ -13,8 +13,8 @@ import {
   CvsDocument,
   UpdateCvDocument,
 } from "@/graphql/__generated__/graphql";
-import { cvFormSchema, type CvFormData } from "../../cvs/schemas/cv.schema";
-import { CVDetailsSkeleton } from "../ui/CVDetailsSkeleton";
+import { cvFormSchema, type CvFormData } from "../../schemas/cv.schema";
+import { CVDetailsSkeleton } from "./CVDetailsSkeleton";
 
 interface CVDetailsViewProps {
   cvId: string;

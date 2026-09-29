@@ -1,7 +1,10 @@
 "use client";
 
 import { CVSkillCard } from "./CVSkillCard";
-import type { GroupedSkillCategory, SkillItem } from "../lib/cv-skills.utils";
+import type {
+  GroupedSkillCategory,
+  SkillItem,
+} from "../../lib/cv-skills.utils";
 
 interface CVSkillsListProps {
   groupedSkills: GroupedSkillCategory[];

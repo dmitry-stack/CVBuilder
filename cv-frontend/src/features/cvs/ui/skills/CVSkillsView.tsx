@@ -6,11 +6,11 @@ import { SkillsSkeleton } from "@/features/skills/ui/SkillsSkeleton";
 import { SkillDialog } from "@/features/skills/ui/SkillDialog";
 import { DeleteSkillDialog } from "@/features/skills/ui/DeleteSkillDialog";
 import type { SkillFormData } from "@/features/skills/schemas/skill.schema";
-import { useCvSkills } from "../hooks/useCvSkills";
+import { useCvSkills } from "../../hooks/useCvSkills";
 import { CVSkillsList } from "./CVSkillsList";
 import { CVSkillsActions } from "./CVSkillsActions";
 import { CVSkillsEmptyState } from "./CVSkillsEmptyState";
-import type { SkillItem } from "../lib/cv-skills.utils";
+import type { SkillItem } from "../../lib/cv-skills.utils";
 
 interface CVSkillsViewProps {
   cvId: string;
@@ -105,7 +105,7 @@ export function CVSkillsView({ cvId }: CVSkillsViewProps) {
       data-testid="cv-skills-view"
       className="w-full pt-4 sm:pt-6 pb-16 font-roboto"
     >
-      {ownerName && <HeaderSync userName={ownerName} />}
+      {cv?.name && <HeaderSync userName={cv?.name} />}
 
       {skills.length === 0 ? (
         <CVSkillsEmptyState isOwner={isOwner} onAddClick={openAddDialog} />

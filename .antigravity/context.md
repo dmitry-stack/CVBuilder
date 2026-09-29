@@ -64,11 +64,18 @@ cv-frontend/
     │   └── ui/                 # Reusable design system primitives (button.tsx, input.tsx)
     ├── features/               # Feature domain modules
     │   ├── auth/
-    │   │   ├── actions/        # login.action.ts, signup.action.ts
-    │   │   ├── api/            # auth.graphql (mutations: Login, Signup, UpdateToken)
-    │   │   ├── schemas/        # auth.schema.ts (loginSchema, signupSchema) & tests
-    │   │   └── ui/             # SigninForm, SignupForm, LogoutButton & test suites
-    │   └── users/
+    │   ├── users/
+    │   ├── skills/
+    │   ├── languages/
+    │   └── cvs/
+    │       ├── api/            # cvs.graphql, cv_projects.graphql, cv_skills.graphql
+    │       ├── hooks/          # useCvProjects, useCvSkills, useCVProjectDialogForm
+    │       ├── lib/            # cv-projects.utils, cv-skills.utils
+    │       ├── schemas/        # cv.schema, cv-project.schema
+    │       └── ui/             # CVTable, CVDialog, CVTabs, DeleteCVDialog
+    │           ├── details/    # CVDetailsView, CVDetailsSkeleton
+    │           ├── projects/   # CVProjectsView, CVProjectCard, CVProjectDialog, etc.
+    │           └── skills/     # CVSkillsView, CVSkillCard, CVSkillsActions, etc.
     ├── graphql/
     │   └── __generated__/      # Generated GraphQL documents and TypeScript types
     └── lib/
@@ -254,20 +261,33 @@ cv-frontend/
       - 3-dots action menu (`MoreVertical` icon dropdown) with `Edit` and `Remove` options for CV owners.
       - Full-width project description text.
       - Pill badges for project responsibilities (`bg-[#E2E2E4] text-[#2E2E2E] rounded-full text-xs`).
-    - Interactive dialogs:
-      - `CVProjectDialog.tsx`: Modal for adding or editing a project within the CV, complete with available project selection, role and responsibilities tag inputs, and date pickers.
+    - Interactive dialogs & modals:
+      - `CVProjectDialog.tsx`: Modal for adding or editing a project within the CV, matching `.antigravity/assets/projectCreateDialog.png`:
+        - 2-column header row for `Name` (with `ChevronDown`) and `Domain` in `#E2E2E4` light grey containers.
+        - 2-column date row for `Start Date` and `End Date` with calendar icons.
+        - Full-width `Description` text display in `#E2E2E4` light grey container, automatically synchronizing with the active/selected company project catalog item.
+        - Full-width `Environment` tags field (`CVProjectEnvironmentInput.tsx`) displaying interactive removable pill tags (`HTML5 ⓧ`, `CSS3 ⓧ`, `TypeScript ⓧ`, etc.), inline tag entry, and common technology dropdown suggestions.
+        - Full-width `Roles` field (`CVProjectRoleInput.tsx`) supporting comma-separated inputs with common role dropdown suggestions (`Frontend Developer`, `AI Developer`, etc.).
+        - Full-width `Responsibilities` input field (`Did something great, Did not break production`).
+        - Right-aligned `CANCEL` outline pill button and `UPDATE`/`ADD` red pill button.
       - `DeleteCVProjectDialog.tsx`: Confirmation modal (`role="alertdialog"`) for unlinking a project from the CV.
       - `CVProjectsSkeleton.tsx`: Zero-layout-shift pulse skeleton matching header and card layout.
-    - Decoupled architecture:
+    - Decoupled, modular architecture strictly adhering to the < 200 lines anti-god-component policy:
+      - `CVProjectDialog.tsx` (174 lines)
+      - `CVProjectMetaFields.tsx` (137 lines)
+      - `CVProjectEnvironmentInput.tsx` (166 lines)
+      - `CVProjectRoleInput.tsx` (116 lines)
+      - `useCVProjectDialogForm.ts` (116 lines)
       - Custom hook `useCvProjects.ts` managing Apollo queries (`CvProjectsDocument`, `AvailableProjectsDocument`), mutations (`AddCvProjectDocument`, `UpdateCvProjectDocument`, `RemoveCvProjectDocument`), sorting, filtering, and modal states.
-      - Schema validation in `cv-project.schema.ts` (Zod) verifying dates (`end_date >= start_date`), project selection, and string lists.
+      - Schema validation in `cv-project.schema.ts` (Zod) verifying dates (`end_date >= start_date`), project selection, description, environment, and string lists.
       - Date formatting and sorting utilities in `cv-projects.utils.ts`.
     - Single-role ownership gating (`isOwner = currentUserId === cv.user?.id`): peer users receive a read-only list with hidden action menus and add buttons.
     - Colocated unit and component test suites:
-      - `cv-project.schema.test.ts` (4 tests)
+      - `cv-project.schema.test.ts` (5 tests)
       - `cv-projects.utils.test.ts` (5 tests)
+      - `CVProjectDialog.test.tsx` (5 tests)
       - `CVProjectsView.test.tsx` (8 tests)
-  - Full suite passes 100% (209/209 tests passing across 37 test suites); 0 TypeScript errors; 0 ESLint errors; production build succeeded.
+  - Full suite passes 100% (215/215 tests passing across 38 test suites); 0 TypeScript errors; 0 ESLint errors; production build succeeded.
 - [x] **Route Grouping & Navigation Shell:**
   - Standardized Next.js route groups: `(auth)` for public authentication and `(app)` for authenticated application modules.
   - Resolved nested HTML bug by establishing clean `AppLayout` in `src/app/(app)/layout.tsx` with sidebar padding (`md:pl-[200px]`).
