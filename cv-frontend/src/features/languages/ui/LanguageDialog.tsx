@@ -111,7 +111,7 @@ export function LanguageDialog({
       aria-labelledby="language-dialog-title"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs"
     >
-      <div className="w-full max-w-md  bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
           <h2
             id="language-dialog-title"
@@ -123,7 +123,7 @@ export function LanguageDialog({
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors p-1 rounded-sm focus:outline-hidden"
+            className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors p-1 focus:outline-hidden"
           >
             <X className="h-5 w-5" />
           </button>
@@ -145,7 +145,7 @@ export function LanguageDialog({
               list="catalog-languages-list"
               {...register("name")}
               aria-invalid={!!errors.name}
-              className="w-full h-11 px-3.5 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
             />
             <datalist id="catalog-languages-list">
               {catalogLanguages.map((l) => (
@@ -178,7 +178,7 @@ export function LanguageDialog({
                 id="language_proficiency"
                 disabled={isSubmitting}
                 {...register("proficiency")}
-                className="w-full h-11 px-3.5 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors"
+                className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors"
               >
                 {proficiencyLevels.map((lvl) => (
                   <option key={lvl} value={lvl}>
@@ -187,7 +187,7 @@ export function LanguageDialog({
                 ))}
               </select>
 
-              <div className="flex items-center gap-3 px-3 py-2 rounded-xs bg-zinc-100 dark:bg-zinc-800/50">
+              <div className="flex items-center gap-3 px-3 py-2 bg-zinc-100 dark:bg-zinc-800/50">
                 <span className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto">
                   Preview:
                 </span>

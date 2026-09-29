@@ -305,7 +305,7 @@ export function ProfileForm({
               disabled={!isOwner}
               {...register("first_name")}
               aria-invalid={!!errors.first_name}
-              className="w-full h-11 px-3.5 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
+              className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
             />
             {errors.first_name && (
               <p className="mt-1 text-xs text-destructive flex items-center gap-1">
@@ -329,7 +329,7 @@ export function ProfileForm({
               disabled={!isOwner}
               {...register("last_name")}
               aria-invalid={!!errors.last_name}
-              className="w-full h-11 px-3.5 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
+              className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
             />
             {errors.last_name && (
               <p className="mt-1 text-xs text-destructive flex items-center gap-1">
@@ -351,7 +351,7 @@ export function ProfileForm({
                 id="department"
                 disabled={!isOwner}
                 {...register("department")}
-                className="w-full h-11 px-3.5 pr-9 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
+                className="w-full h-11 px-3.5 pr-9 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
               >
                 {availableDepartments.map((dept) => (
                   <option
@@ -389,7 +389,7 @@ export function ProfileForm({
                 id="position"
                 disabled={!isOwner}
                 {...register("position")}
-                className="w-full h-11 px-3.5 pr-9 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
+                className="w-full h-11 px-3.5 pr-9 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
               >
                 {availablePositions.map((pos) => (
                   <option

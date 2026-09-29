@@ -18,22 +18,22 @@ export function ProfileSkeleton() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
           <div>
             <div className="h-3 w-16 rounded-xs bg-zinc-200 dark:bg-zinc-800 mb-1.5" />
-            <div className="h-11 w-full rounded-xs bg-[#D1D5DB]/50 dark:bg-zinc-800" />
+            <div className="h-11 w-full bg-[#D1D5DB]/50 dark:bg-zinc-800" />
           </div>
 
           <div>
             <div className="h-3 w-16 rounded-xs bg-zinc-200 dark:bg-zinc-800 mb-1.5" />
-            <div className="h-11 w-full rounded-xs bg-[#D1D5DB]/50 dark:bg-zinc-800" />
+            <div className="h-11 w-full bg-[#D1D5DB]/50 dark:bg-zinc-800" />
           </div>
 
           <div>
             <div className="h-3 w-20 rounded-xs bg-zinc-200 dark:bg-zinc-800 mb-1.5" />
-            <div className="h-11 w-full rounded-xs bg-[#D1D5DB]/50 dark:bg-zinc-800" />
+            <div className="h-11 w-full bg-[#D1D5DB]/50 dark:bg-zinc-800" />
           </div>
 
           <div>
             <div className="h-3 w-16 rounded-xs bg-zinc-200 dark:bg-zinc-800 mb-1.5" />
-            <div className="h-11 w-full rounded-xs bg-[#D1D5DB]/50 dark:bg-zinc-800" />
+            <div className="h-11 w-full bg-[#D1D5DB]/50 dark:bg-zinc-800" />
           </div>
         </div>
       </div>

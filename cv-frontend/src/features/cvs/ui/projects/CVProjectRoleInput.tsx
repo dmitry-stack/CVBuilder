@@ -77,16 +77,16 @@ export function CVProjectRoleInput({
           onChange={handleInputChange}
           disabled={disabled}
           placeholder="e.g. Frontend Developer, AI Developer"
-          className="w-full h-10 px-3.5 pr-9 rounded-[4px] border border-[#AEAEAE] dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-hidden focus:border-cv-accent placeholder:text-zinc-400"
+          className="w-full h-12 px-3.5 pr-9 border border-[#AEAEAE] dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-[#2E2E2E] dark:text-zinc-100 focus:outline-hidden focus:border-cv-accent placeholder:text-[#C4C4C6]"
         />
         {!disabled && (
           <button
             type="button"
             aria-label="Toggle role options"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 cursor-pointer"
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-[#626262] hover:text-[#2E2E2E] dark:hover:text-zinc-200 cursor-pointer"
           >
-            <ChevronDown className="h-4 w-4" />
+            <ChevronDown className="h-5 w-5" />
           </button>
         )}
       </div>

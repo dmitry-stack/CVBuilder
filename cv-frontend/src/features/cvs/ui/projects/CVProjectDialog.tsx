@@ -57,103 +57,108 @@ function CVProjectDialogContent({
   });
 
   return (
-    <div className="w-full max-w-2xl rounded-lg bg-white dark:bg-zinc-900 p-6 sm:p-8 shadow-xl border border-zinc-200 dark:border-zinc-800 font-roboto">
-      <div className="flex items-center justify-between pb-3">
+    <div className="w-full animate-in fade-in zoom-in-95 duration-150 max-w-[860px] max-h-[min(680px,calc(100dvh-2rem))] flex flex-col bg-[#F5F5F7] dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-zinc-800 font-roboto overflow-hidden">
+      <div className="flex items-center justify-between px-6 pt-4 pb-2 shrink-0">
         <h2
           id="dialog-title"
-          className="text-xl font-medium text-zinc-900 dark:text-zinc-100"
+          className="text-xl font-medium leading-6 tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100"
         >
-          {initialData ? "Update project" : "Add Project to CV"}
+          {initialData ? "Update project" : "Add project"}
         </h2>
         <button
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="p-1 text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 cursor-pointer"
+          className="p-1 text-[#2E2E2E] dark:text-zinc-300 hover:opacity-75 transition-opacity cursor-pointer"
         >
-          <X className="h-5 w-5" />
+          <X className="h-6 w-6" />
         </button>
       </div>
 
-      <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4 pt-2">
-        <CVProjectMetaFields
-          initialData={initialData}
-          availableProjects={availableProjects}
-          selectedProjectId={selectedProjectId}
-          onProjectSelect={handleProjectSelect}
-          currentDomain={currentDomain}
-          isOngoing={isOngoing}
-          register={register}
-          errors={errors}
-        />
-
-        <div>
-          <label
-            htmlFor="p_desc"
-            className="block text-xs font-normal text-zinc-500 mb-1"
-          >
-            Description
-          </label>
-          <textarea
-            id="p_desc"
-            rows={3}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Project description"
-            className="w-full p-3 rounded-[4px] bg-[#E2E2E4] dark:bg-zinc-800 text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed border border-transparent focus:outline-hidden focus:border-zinc-400 resize-y min-h-[84px]"
+      <form
+        onSubmit={handleSubmit(onFormSubmit)}
+        className="flex flex-col flex-1 overflow-hidden"
+      >
+        <div className="px-6 py-2 space-y-4 overflow-y-auto flex-1">
+          <CVProjectMetaFields
+            initialData={initialData}
+            availableProjects={availableProjects}
+            selectedProjectId={selectedProjectId}
+            onProjectSelect={handleProjectSelect}
+            currentDomain={currentDomain}
+            isOngoing={isOngoing}
+            register={register}
+            errors={errors}
           />
+
+          <div>
+            <label
+              htmlFor="p_desc"
+              className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
+            >
+              Description
+            </label>
+            <textarea
+              id="p_desc"
+              rows={3}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Project description"
+              className="w-full min-h-[108px] p-3 bg-[#C4C4C6] dark:bg-zinc-800 text-sm text-[#2E2E2E] dark:text-zinc-200 border border-[#AEAEAE] dark:border-zinc-700 leading-relaxed focus:outline-hidden focus:border-cv-accent resize-y placeholder:text-[#AEAEAE]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]">
+              Environment
+            </label>
+            <CVProjectEnvironmentInput
+              tags={environmentTags}
+              onChange={setEnvironmentTags}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="p_roles"
+              className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
+            >
+              Roles
+            </label>
+            <CVProjectRoleInput value={rolesText} onChange={setRolesText} />
+          </div>
+
+          <div>
+            <label
+              htmlFor="p_resp"
+              className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
+            >
+              Responsibilities
+            </label>
+            <input
+              id="p_resp"
+              type="text"
+              value={respText}
+              onChange={(e) => setRespText(e.target.value)}
+              placeholder="Did something great, Did not break production"
+              className="w-full h-12 px-3.5 border border-[#AEAEAE] dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-[#2E2E2E] dark:text-zinc-100 placeholder:text-[#C4C4C6] focus:outline-hidden focus:border-cv-accent"
+            />
+          </div>
         </div>
 
-        <div>
-          <label className="block text-xs font-normal text-zinc-500 mb-1">
-            Environment
-          </label>
-          <CVProjectEnvironmentInput
-            tags={environmentTags}
-            onChange={setEnvironmentTags}
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="p_roles"
-            className="block text-xs font-normal text-zinc-500 mb-1"
-          >
-            Roles
-          </label>
-          <CVProjectRoleInput value={rolesText} onChange={setRolesText} />
-        </div>
-
-        <div>
-          <label
-            htmlFor="p_resp"
-            className="block text-xs font-normal text-zinc-500 mb-1"
-          >
-            Responsibilities
-          </label>
-          <input
-            id="p_resp"
-            type="text"
-            value={respText}
-            onChange={(e) => setRespText(e.target.value)}
-            placeholder="e.g. Did something great, Did not break production"
-            className="w-full h-10 px-3.5 rounded-[4px] border border-[#AEAEAE] dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-hidden focus:border-cv-accent"
-          />
-        </div>
-
-        <div className="flex justify-end items-center gap-3 pt-4">
+        <div className="flex justify-end items-center gap-6 px-6 py-4 shrink-0 bg-[#F5F5F7] dark:bg-zinc-900 border-t border-zinc-200/50 dark:border-zinc-800">
           <button
             type="button"
             onClick={onClose}
             disabled={isSubmitting}
-            className="rounded-[40px] px-8 py-2 text-sm font-medium tracking-wide uppercase border border-zinc-900 dark:border-zinc-300 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer disabled:opacity-50"
+            className="w-40 h-12 rounded-[40px] text-sm font-medium tracking-[0.4px] uppercase border border-[#2E2E2E] dark:border-zinc-300 text-[#2E2E2E] dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors cursor-pointer disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-[40px] px-8 py-2 text-sm font-medium tracking-wide uppercase text-white bg-cv-accent hover:bg-cv-accent-hover shadow-cv-button transition-colors cursor-pointer disabled:opacity-50"
+            className="w-40 h-12 rounded-[40px] text-sm font-medium tracking-[0.4px] uppercase text-[#F5F5F7] bg-cv-accent hover:bg-cv-accent-hover shadow-cv-button transition-colors cursor-pointer disabled:opacity-50"
           >
             {isSubmitting ? "Saving..." : initialData ? "Update" : "Add"}
           </button>

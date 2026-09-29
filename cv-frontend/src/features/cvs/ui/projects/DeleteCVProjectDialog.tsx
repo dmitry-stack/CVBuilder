@@ -43,7 +43,7 @@ export function DeleteCVProjectDialog({
     >
       <div
         ref={dialogRef}
-        className="w-full max-w-md rounded-lg bg-white dark:bg-zinc-900 p-6 shadow-xl border border-zinc-200 dark:border-zinc-800 animate-in fade-in zoom-in-95 duration-150"
+        className="w-full max-w-md bg-white dark:bg-zinc-900 p-6 shadow-xl border border-zinc-200 dark:border-zinc-800 animate-in fade-in zoom-in-95 duration-150"
       >
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-950/50 text-[#C63031]">

@@ -7,17 +7,17 @@ export function CVDetailsSkeleton() {
     >
       <div>
         <div className="h-3 w-16 bg-zinc-200 dark:bg-zinc-800 rounded-xs mb-2" />
-        <div className="h-12 w-full bg-zinc-200 dark:bg-zinc-800 rounded-xs" />
+        <div className="h-12 w-full bg-zinc-200 dark:bg-zinc-800" />
       </div>
 
       <div>
         <div className="h-3 w-20 bg-zinc-200 dark:bg-zinc-800 rounded-xs mb-2" />
-        <div className="h-12 w-full bg-zinc-200 dark:bg-zinc-800 rounded-xs" />
+        <div className="h-12 w-full bg-zinc-200 dark:bg-zinc-800" />
       </div>
 
       <div>
         <div className="h-3 w-24 bg-zinc-200 dark:bg-zinc-800 rounded-xs mb-2" />
-        <div className="h-40 w-full bg-zinc-200 dark:bg-zinc-800 rounded-xs" />
+        <div className="h-40 w-full bg-zinc-200 dark:bg-zinc-800" />
       </div>
 
       <div className="flex justify-end pt-4">

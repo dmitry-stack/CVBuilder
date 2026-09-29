@@ -122,7 +122,7 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
             aria-invalid={Boolean(errors.name)}
             placeholder="e.g. Software Engineer with 5+ years of experience"
             {...register("name")}
-            className="w-full h-12 px-4 rounded-xs border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
+            className="w-full h-12 px-4 border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
           />
           {errors.name && (
             <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
@@ -146,7 +146,7 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
             aria-invalid={Boolean(errors.education)}
             placeholder="e.g. Computer Systems Design"
             {...register("education")}
-            className="w-full h-12 px-4 rounded-xs border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
+            className="w-full h-12 px-4 border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
           />
           {errors.education && (
             <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
@@ -170,7 +170,7 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
             aria-invalid={Boolean(errors.description)}
             placeholder="Brief overview of professional background..."
             {...register("description")}
-            className="w-full min-h-[160px] p-4 rounded-xs border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base leading-relaxed text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed resize-y"
+            className="w-full min-h-[160px] p-4 border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base leading-relaxed text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed resize-y"
           />
           {errors.description && (
             <p className="mt-1 flex items-center gap-1 text-xs text-destructive">

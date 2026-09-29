@@ -318,7 +318,10 @@ cv-frontend/
   - Redirects authenticated traffic from `/signin` and `/signup` to `/users`.
   - Redirects legacy `/login` path to `/signin`.
 - [x] **GraphQL Codegen Setup:**
-  - Configured to inspect `../cv-backend/**/*.graphql` and generate typed document nodes into `src/graphql/__generated__/`.
+- [x] **Figma Border Geometry Alignment (Dialogs & Form Inputs):**
+  - Re-aligned all dialog windows to exact Figma specifications with rectangular frame geometry (removed `rounded-lg` and `rounded-sm` from dialog wrappers and close buttons across all 10 dialogs).
+  - Standardized all form text inputs, textareas, date inputs, and select fields across dialogs and profile/CV detail forms to sharp rectangular borders (removed `rounded-xs` and `rounded-[4px]`).
+  - Synchronized input placeholder skeletons (`CVDetailsSkeleton`, `ProfileSkeleton`) to sharp geometry to prevent layout shift.
 
 ### In Progress / Pending Architectural Refinements
 - [ ] **Theme Token Clean Up:**

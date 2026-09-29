@@ -190,7 +190,7 @@ describe("CVProjectDialog Component", () => {
       />,
     );
 
-    expect(screen.getByText("Add Project to CV")).toBeInTheDocument();
+    expect(screen.getByText("Add project")).toBeInTheDocument();
 
     // Change project selection to SaaS Media Platform
     const select = screen.getByRole("combobox") as HTMLSelectElement;

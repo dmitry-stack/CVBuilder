@@ -128,7 +128,7 @@ export function SkillDialog({
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors p-1 rounded-sm focus:outline-hidden"
+            className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors p-1 focus:outline-hidden"
           >
             <X className="h-5 w-5" />
           </button>
@@ -151,7 +151,7 @@ export function SkillDialog({
               {...register("name")}
               onChange={(e) => handleSkillNameChange(e.target.value)}
               aria-invalid={!!errors.name}
-              className="w-full h-11 px-3.5 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
             />
             <datalist id="catalog-skills-list">
               {catalogSkills.map((s) => (
@@ -177,7 +177,7 @@ export function SkillDialog({
               id="skill_category"
               disabled={isSubmitting}
               {...register("categoryId")}
-              className="w-full h-11 px-3.5 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors"
+              className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors"
             >
               <option value="">Select a category</option>
               {categories.map((c) => (
@@ -200,7 +200,7 @@ export function SkillDialog({
                 id="skill_mastery"
                 disabled={isSubmitting}
                 {...register("mastery")}
-                className="w-full h-11 px-3.5 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors"
+                className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors"
               >
                 {masteryLevels.map((lvl) => (
                   <option key={lvl} value={lvl}>
@@ -209,7 +209,7 @@ export function SkillDialog({
                 ))}
               </select>
 
-              <div className="flex items-center gap-3 px-3 py-2 rounded-xs bg-zinc-100 dark:bg-zinc-800/50">
+              <div className="flex items-center gap-3 px-3 py-2 bg-zinc-100 dark:bg-zinc-800/50">
                 <span className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto">
                   Preview:
                 </span>

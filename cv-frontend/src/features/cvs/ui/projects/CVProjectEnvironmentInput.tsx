@@ -79,13 +79,13 @@ export function CVProjectEnvironmentInput({
     <div ref={containerRef} className="relative">
       <div
         onClick={() => inputRef.current?.focus()}
-        className="w-full min-h-11 px-3 py-1.5 rounded-[4px] bg-[#E2E2E4] dark:bg-zinc-800 flex items-center justify-between gap-2 flex-wrap cursor-text"
+        className="w-full min-h-12 px-3 py-1.5 bg-[#C4C4C6] dark:bg-zinc-800 border border-[#AEAEAE] dark:border-zinc-700 flex items-center justify-between gap-2 flex-wrap cursor-text"
       >
         <div className="flex flex-wrap items-center gap-1.5 flex-1">
           {tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center gap-1 px-3 py-0.5 rounded-full border border-zinc-400/70 dark:border-zinc-500 text-xs font-normal text-zinc-700 dark:text-zinc-200 bg-transparent select-none"
+              className="inline-flex items-center gap-1.5 px-2.5 h-6 rounded-full border border-[#AEAEAE] text-xs font-normal text-[#2E2E2E] dark:text-zinc-200 bg-[#F5F5F7]/80 dark:bg-zinc-700/80 select-none"
             >
               <span>{tag}</span>
               {!disabled && (
@@ -96,9 +96,9 @@ export function CVProjectEnvironmentInput({
                     e.stopPropagation();
                     removeTag(tag);
                   }}
-                  className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer ml-0.5"
+                  className="w-3.5 h-3.5 rounded-full bg-[#AEAEAE] text-[#C4C4C6] dark:text-zinc-800 inline-flex items-center justify-center hover:opacity-80 cursor-pointer ml-0.5"
                 >
-                  <X className="h-3 w-3" />
+                  <X className="h-2.5 w-2.5" />
                 </button>
               )}
             </span>
@@ -115,7 +115,7 @@ export function CVProjectEnvironmentInput({
                 if (inputValue.trim()) addTag(inputValue);
               }}
               placeholder={tags.length === 0 ? "Add environment tag..." : ""}
-              className="outline-hidden text-xs text-zinc-800 dark:text-zinc-200 bg-transparent min-w-[80px] flex-1 py-1"
+              className="outline-hidden text-xs text-[#2E2E2E] dark:text-zinc-200 bg-transparent min-w-[80px] flex-1 py-1 placeholder:text-[#AEAEAE]"
             />
           )}
         </div>
@@ -128,9 +128,9 @@ export function CVProjectEnvironmentInput({
               e.stopPropagation();
               setIsDropdownOpen(!isDropdownOpen);
             }}
-            className="p-1 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer shrink-0"
+            className="p-1 text-[#626262] dark:text-zinc-400 hover:text-[#2E2E2E] dark:hover:text-zinc-100 cursor-pointer shrink-0"
           >
-            <ChevronDown className="h-4 w-4" />
+            <ChevronDown className="h-5 w-5" />
           </button>
         )}
       </div>

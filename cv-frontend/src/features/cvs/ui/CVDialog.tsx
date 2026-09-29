@@ -86,7 +86,7 @@ export function CVDialog({
       }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs"
     >
-      <div className="w-full max-w-lg rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div className="w-full max-w-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
           <div>
             <h2
@@ -106,7 +106,7 @@ export function CVDialog({
             onClick={onClose}
             disabled={isSubmitting}
             aria-label="Close dialog"
-            className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors p-1 rounded-sm focus:outline-hidden cursor-pointer"
+            className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors p-1 focus:outline-hidden cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
@@ -132,7 +132,7 @@ export function CVDialog({
               defaultValue={initialData?.name || ""}
               {...register("name")}
               aria-invalid={!!errors.name}
-              className="w-full h-11 px-3.5 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-70 disabled:cursor-not-allowed placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+              className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-70 disabled:cursor-not-allowed placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
             />
             {errors.name && (
               <p className="mt-1 text-xs text-destructive flex items-center gap-1 font-roboto">
@@ -157,7 +157,7 @@ export function CVDialog({
               defaultValue={initialData?.education || ""}
               {...register("education")}
               aria-invalid={!!errors.education}
-              className="w-full h-11 px-3.5 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-70 disabled:cursor-not-allowed placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+              className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-70 disabled:cursor-not-allowed placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
             />
             {errors.education && (
               <p className="mt-1 text-xs text-destructive flex items-center gap-1 font-roboto">
@@ -182,7 +182,7 @@ export function CVDialog({
               defaultValue={initialData?.description || ""}
               {...register("description")}
               aria-invalid={!!errors.description}
-              className="w-full p-3 rounded-xs bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors resize-y disabled:opacity-70 disabled:cursor-not-allowed placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+              className="w-full p-3 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors resize-y disabled:opacity-70 disabled:cursor-not-allowed placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
             />
             {errors.description && (
               <p className="mt-1 text-xs text-destructive flex items-center gap-1 font-roboto">
