@@ -1,5 +1,5 @@
 import { CVTabs } from "@/features/cvs/ui/CVTabs";
-import { CVSkillsView } from "@/features/cvs/ui/CVSkillsView";
+import { CVSkillsView } from "@/features/cvs/ui/skills/CVSkillsView";
 
 interface PageProps {
   params: Promise<{ id: string }>;

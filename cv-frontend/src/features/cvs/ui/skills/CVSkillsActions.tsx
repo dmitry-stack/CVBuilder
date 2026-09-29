@@ -73,7 +73,7 @@ export function CVSkillsActions({
             >
               <TrashXIcon className="h-4 w-4" />
               <span>
-                {selectedCount > 0 ? `Delete (${selectedCount})` : "Delete"}
+                {selectedCount > 0 ? `Remove (${selectedCount})` : "Remove"}
               </span>
             </button>
           </div>

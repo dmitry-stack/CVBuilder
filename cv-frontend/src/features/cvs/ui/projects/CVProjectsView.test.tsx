@@ -263,7 +263,7 @@ describe("CVProjectsView Component", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /Add Project/i }));
     expect(await screen.findByRole("dialog")).toBeInTheDocument();
-    expect(screen.getByText("Add Project to CV")).toBeInTheDocument();
+    expect(screen.getByText("Add project")).toBeInTheDocument();
   });
 
   it("opens remove confirmation dialog when Remove is clicked from action menu", async () => {

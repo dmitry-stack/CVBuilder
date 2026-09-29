@@ -1,7 +1,7 @@
 "use client";
 
 import { HeaderSync } from "@/components/layout/HeaderContext";
-import { useCvProjects } from "../../cvs/hooks/useCvProjects";
+import { useCvProjects } from "../../hooks/useCvProjects";
 import { CVProjectsHeader } from "./CVProjectsHeader";
 import { CVProjectsList } from "./CVProjectsList";
 import { CVProjectDialog } from "./CVProjectDialog";

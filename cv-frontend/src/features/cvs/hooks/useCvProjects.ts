@@ -92,6 +92,10 @@ export function useCvProjects(cvId: string) {
       id: p.id,
       name: p.name,
       domain: p.domain,
+      description: p.description,
+      environment: p.environment,
+      start_date: p.start_date,
+      end_date: p.end_date,
     }));
   }, [availData]);
 

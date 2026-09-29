@@ -78,7 +78,7 @@ describe("CVTable Component", () => {
 
     expect(screen.getByText("Senior Frontend Engineer")).toBeInTheDocument();
     expect(screen.getByText("BS Computer Science")).toBeInTheDocument();
-    expect(screen.getByText("Alice Smith")).toBeInTheDocument();
+    expect(screen.getByText("alice@example.com")).toBeInTheDocument();
     expect(
       screen.getByText(
         /expert in react, typescript, and modern frontend architecture/i,
@@ -87,7 +87,40 @@ describe("CVTable Component", () => {
 
     expect(screen.getByText("Backend Developer")).toBeInTheDocument();
     expect(screen.getByText("MS Software Engineering")).toBeInTheDocument();
-    expect(screen.getByText("Bob Jones")).toBeInTheDocument();
+    expect(screen.getByText("bob@example.com")).toBeInTheDocument();
+  });
+
+  it("filters CVs when searching by email", () => {
+    render(<CVTable initialCvs={mockCvs} />);
+
+    const searchInput = screen.getByPlaceholderText(/search cvs/i);
+    fireEvent.change(searchInput, { target: { value: "bob@" } });
+
+    expect(screen.getByText("Backend Developer")).toBeInTheDocument();
+    expect(
+      screen.queryByText("Senior Frontend Engineer"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("sorts CVs when clicking employee header", () => {
+    render(<CVTable initialCvs={mockCvs} />);
+
+    const employeeHeader = screen.getByRole("button", { name: /employee/i });
+    fireEvent.click(employeeHeader);
+
+    const cells = screen.getAllByRole("cell");
+    const emails = cells
+      .filter((c) => c.textContent?.includes("@example.com"))
+      .map((c) => c.textContent);
+    expect(emails).toEqual(["alice@example.com", "bob@example.com"]);
+
+    // Toggle desc
+    fireEvent.click(employeeHeader);
+    const updatedCells = screen.getAllByRole("cell");
+    const updatedEmails = updatedCells
+      .filter((c) => c.textContent?.includes("@example.com"))
+      .map((c) => c.textContent);
+    expect(updatedEmails).toEqual(["bob@example.com", "alice@example.com"]);
   });
 
   it("filters CVs when searching", () => {

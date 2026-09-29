@@ -6,6 +6,8 @@ export const cvProjectFormSchema = z
     start_date: z.string().min(1, "Start date is required"),
     end_date: z.string().optional().nullable(),
     roles: z.array(z.string()).optional(),
+    description: z.string().optional(),
+    environment: z.array(z.string()).optional(),
     responsibilities: z.array(z.string()).optional(),
   })
   .refine(

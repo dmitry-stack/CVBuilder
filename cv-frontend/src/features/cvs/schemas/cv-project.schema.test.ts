@@ -15,6 +15,21 @@ describe("cvProjectFormSchema", () => {
     expect(result.success).toBe(true);
   });
 
+  it("validates project form data with description and environment tags", () => {
+    const validData = {
+      projectId: "3",
+      start_date: "2023-01-20",
+      end_date: "2023-06-19",
+      description: "A system for setting up business process automation.",
+      environment: ["HTML5", "CSS3", "TypeScript", "React"],
+      roles: ["Frontend Developer", "AI Developer"],
+      responsibilities: ["Did something great", "Did not break production"],
+    };
+
+    const result = cvProjectFormSchema.safeParse(validData);
+    expect(result.success).toBe(true);
+  });
+
   it("fails when projectId is missing or empty", () => {
     const invalidData = {
       projectId: "",

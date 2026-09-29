@@ -3,14 +3,13 @@
 import { useState } from "react";
 import { HeaderSync } from "@/components/layout/HeaderContext";
 import { SkillsSkeleton } from "@/features/skills/ui/SkillsSkeleton";
-import { SkillDialog } from "@/features/skills/ui/SkillDialog";
-import { DeleteSkillDialog } from "@/features/skills/ui/DeleteSkillDialog";
-import type { SkillFormData } from "@/features/skills/schemas/skill.schema";
-import { useCvSkills } from "../hooks/useCvSkills";
+import { useCvSkills } from "../../hooks/useCvSkills";
 import { CVSkillsList } from "./CVSkillsList";
 import { CVSkillsActions } from "./CVSkillsActions";
 import { CVSkillsEmptyState } from "./CVSkillsEmptyState";
-import type { SkillItem } from "../lib/cv-skills.utils";
+import { CVSkillDialog } from "./CVSkillDialog";
+import { CVRemoveSkillsDialog } from "./CVRemoveSkillsDialog";
+import type { SkillItem } from "../../lib/cv-skills.utils";
 
 interface CVSkillsViewProps {
   cvId: string;
@@ -21,8 +20,7 @@ export function CVSkillsView({ cvId }: CVSkillsViewProps) {
     cv,
     skills,
     groupedSkills,
-    categoriesList,
-    catalogSkills,
+    availableSkills,
     isOwner,
     loading,
     isDeleteMode,
@@ -30,13 +28,14 @@ export function CVSkillsView({ cvId }: CVSkillsViewProps) {
     selectedSkills,
     toggleSkillSelection,
     clearSelection,
-    handleSaveSkill,
-    handleDeleteSkills,
+    handleAddSkill,
+    handleUpdateSkill,
+    handleRemoveSkills,
   } = useCvSkills(cvId);
 
   const [dialogState, setDialogState] = useState<{
     isOpen: boolean;
-    initialData: SkillFormData | null;
+    initialData: { name: string } | null;
   }>({
     isOpen: false,
     initialData: null,
@@ -45,6 +44,7 @@ export function CVSkillsView({ cvId }: CVSkillsViewProps) {
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const [deleteTargetNames, setDeleteTargetNames] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const openAddDialog = () =>
     setDialogState({ isOpen: true, initialData: null });
@@ -52,27 +52,25 @@ export function CVSkillsView({ cvId }: CVSkillsViewProps) {
   const openEditDialog = (skill: SkillItem) => {
     setDialogState({
       isOpen: true,
-      initialData: {
-        name: skill.name,
-        categoryId: skill.categoryId || "",
-        mastery: skill.mastery,
-      },
+      initialData: { name: skill.name },
     });
   };
 
   const closeDialog = () =>
     setDialogState({ isOpen: false, initialData: null });
 
-  const handleSave = async (formData: SkillFormData) => {
-    const isEdit = Boolean(dialogState.initialData);
-    await handleSaveSkill(formData, isEdit);
-    closeDialog();
-  };
-
-  const handleDeleteFromEditModal = async (name: string) => {
-    closeDialog();
-    setDeleteTargetNames([name]);
-    setIsConfirmDeleteOpen(true);
+  const handleSave = async (skillName: string) => {
+    try {
+      setIsSaving(true);
+      if (dialogState.initialData) {
+        await handleUpdateSkill(dialogState.initialData.name, skillName);
+      } else {
+        await handleAddSkill(skillName);
+      }
+      closeDialog();
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleOpenBatchDeleteConfirm = () => {
@@ -83,9 +81,10 @@ export function CVSkillsView({ cvId }: CVSkillsViewProps) {
   const handleConfirmDelete = async () => {
     try {
       setIsDeleting(true);
-      await handleDeleteSkills(deleteTargetNames);
+      await handleRemoveSkills(deleteTargetNames);
       setIsConfirmDeleteOpen(false);
       setDeleteTargetNames([]);
+      setIsDeleteMode(false);
     } finally {
       setIsDeleting(false);
     }
@@ -95,17 +94,13 @@ export function CVSkillsView({ cvId }: CVSkillsViewProps) {
     return <SkillsSkeleton />;
   }
 
-  const ownerName = cv?.user?.profile
-    ? `${cv.user.profile.first_name || ""} ${cv.user.profile.last_name || ""}`.trim()
-    : "";
-
   return (
     <div
       data-slot="cv-skills-view"
       data-testid="cv-skills-view"
       className="w-full pt-4 sm:pt-6 pb-16 font-roboto"
     >
-      {ownerName && <HeaderSync userName={ownerName} />}
+      {cv?.name && <HeaderSync userName={cv?.name} />}
 
       {skills.length === 0 ? (
         <CVSkillsEmptyState isOwner={isOwner} onAddClick={openAddDialog} />
@@ -136,17 +131,16 @@ export function CVSkillsView({ cvId }: CVSkillsViewProps) {
 
       {isOwner && (
         <>
-          <SkillDialog
+          <CVSkillDialog
             isOpen={dialogState.isOpen}
             onClose={closeDialog}
             onSave={handleSave}
-            onDelete={handleDeleteFromEditModal}
             initialData={dialogState.initialData}
-            categories={categoriesList}
-            catalogSkills={catalogSkills}
+            availableSkills={availableSkills}
+            isSubmitting={isSaving}
           />
 
-          <DeleteSkillDialog
+          <CVRemoveSkillsDialog
             isOpen={isConfirmDeleteOpen}
             onClose={() => setIsConfirmDeleteOpen(false)}
             onConfirm={handleConfirmDelete}

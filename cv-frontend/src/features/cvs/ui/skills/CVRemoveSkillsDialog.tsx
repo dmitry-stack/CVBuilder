@@ -1,28 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export interface DeleteCVDialogProps {
+export interface CVRemoveSkillsDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => Promise<void> | void;
-  cvName?: string;
+  skillNames: string[];
   isDeleting?: boolean;
 }
 
-export function DeleteCVDialog({
+export function CVRemoveSkillsDialog({
   isOpen,
   onClose,
   onConfirm,
-  cvName,
+  skillNames,
   isDeleting: propIsDeleting = false,
-}: DeleteCVDialogProps) {
+}: CVRemoveSkillsDialogProps) {
   const [internalDeleting, setInternalDeleting] = useState(false);
   const isDeleting = propIsDeleting || internalDeleting;
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !isDeleting) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, isDeleting, onClose]);
+
   if (!isOpen) return null;
+
+  const count = skillNames.length;
 
   const handleConfirm = async () => {
     try {
@@ -38,8 +51,8 @@ export function DeleteCVDialog({
     <div
       role="alertdialog"
       aria-modal="true"
-      aria-labelledby="delete-cv-dialog-title"
-      aria-describedby="delete-cv-dialog-description"
+      aria-labelledby="remove-skills-dialog-title"
+      aria-describedby="remove-skills-dialog-description"
       tabIndex={-1}
       onKeyDown={(e) => {
         if (e.key === "Escape" && !isDeleting) {
@@ -56,10 +69,10 @@ export function DeleteCVDialog({
               <AlertTriangle className="h-4 w-4" />
             </div>
             <h2
-              id="delete-cv-dialog-title"
+              id="remove-skills-dialog-title"
               className="text-base font-medium text-zinc-900 dark:text-zinc-100 font-roboto"
             >
-              Delete CV
+              Remove skills
             </h2>
           </div>
           <button
@@ -75,23 +88,16 @@ export function DeleteCVDialog({
 
         <div className="p-6 space-y-3">
           <p
-            id="delete-cv-dialog-description"
+            id="remove-skills-dialog-description"
             className="text-sm text-zinc-600 dark:text-zinc-300 font-roboto leading-relaxed"
           >
-            Are you sure you want to delete{" "}
-            {cvName ? (
-              <span className="font-semibold text-zinc-900 dark:text-zinc-100">
-                &ldquo;{cvName}&rdquo;
-              </span>
-            ) : (
-              "this CV"
-            )}
-            ?
+            Are you sure you want to remove {count} skills?
           </p>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto">
-            This action cannot be undone. All skills, projects, and custom
-            sections associated with this CV will be permanently removed.
-          </p>
+          {skillNames.length > 0 && (
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto">
+              ({skillNames.join(", ")})
+            </p>
+          )}
         </div>
 
         <div className="flex items-center justify-end gap-2 px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-200 dark:border-zinc-800">
@@ -100,7 +106,7 @@ export function DeleteCVDialog({
             variant="outline"
             onClick={onClose}
             disabled={isDeleting}
-            className="rounded-full px-4 h-9 text-xs font-medium cursor-pointer"
+            className="rounded-full px-4 h-9 text-xs font-medium uppercase tracking-wider cursor-pointer"
           >
             Cancel
           </Button>
@@ -110,7 +116,7 @@ export function DeleteCVDialog({
             disabled={isDeleting}
             className="rounded-full bg-destructive hover:bg-destructive/90 text-white px-5 h-9 text-xs font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 cursor-pointer inline-flex items-center gap-1.5"
           >
-            {isDeleting ? "Deleting..." : "Delete CV"}
+            {isDeleting ? "Removing..." : "Confirm"}
           </button>
         </div>
       </div>

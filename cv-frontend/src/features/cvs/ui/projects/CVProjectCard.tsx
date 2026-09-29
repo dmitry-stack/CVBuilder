@@ -5,7 +5,7 @@ import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import {
   formatProjectDate,
   type CvProjectItem,
-} from "../../cvs/lib/cv-projects.utils";
+} from "../../lib/cv-projects.utils";
 
 interface CVProjectCardProps {
   project: CvProjectItem;
