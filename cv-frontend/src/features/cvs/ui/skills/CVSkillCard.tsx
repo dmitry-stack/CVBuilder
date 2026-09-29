@@ -25,6 +25,8 @@ export function CVSkillCard({
   const handleClick = () => {
     if (isDeleteMode) {
       onToggleSelect(skill.name);
+    } else if (isOwner) {
+      onEditClick(skill);
     }
   };
 
@@ -34,12 +36,19 @@ export function CVSkillCard({
       data-testid={`skill-card-${skill.name}`}
       role={isDeleteMode ? "checkbox" : undefined}
       aria-checked={isDeleteMode ? isSelected : undefined}
-      tabIndex={isDeleteMode ? 0 : undefined}
+      tabIndex={isDeleteMode || isOwner ? 0 : undefined}
       onClick={handleClick}
       onKeyDown={(e) => {
         if (isDeleteMode && (e.key === " " || e.key === "Enter")) {
           e.preventDefault();
           onToggleSelect(skill.name);
+        } else if (
+          !isDeleteMode &&
+          isOwner &&
+          (e.key === " " || e.key === "Enter")
+        ) {
+          e.preventDefault();
+          onEditClick(skill);
         }
       }}
       className={cn(
@@ -51,7 +60,9 @@ export function CVSkillCard({
                 ? "bg-red-50/70 dark:bg-red-950/25 ring-1 ring-[#C63031]/30"
                 : "hover:bg-zinc-50 dark:hover:bg-zinc-800/40",
             )
-          : "hover:bg-zinc-50 dark:hover:bg-zinc-800/40",
+          : isOwner
+            ? "cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/40"
+            : "",
       )}
     >
       <div className="flex items-center gap-3 min-w-0">

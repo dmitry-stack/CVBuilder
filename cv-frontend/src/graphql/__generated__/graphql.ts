@@ -394,15 +394,7 @@ export type CvsQuery = {
       name: string;
       education: string | null;
       description: string;
-      user: {
-        id: string;
-        email: string;
-        profile: {
-          first_name: string | null;
-          last_name: string | null;
-          avatar: string | null;
-        };
-      } | null;
+      user: { id: string; email: string } | null;
     }>;
   };
 };
@@ -1829,27 +1821,6 @@ export const CvsDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "email" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "profile" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "first_name" },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "last_name" },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "avatar" },
-                                  },
-                                ],
-                              },
                             },
                           ],
                         },

@@ -100,13 +100,6 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
           ? {
               id: c.user.id,
               email: c.user.email,
-              profile: c.user.profile
-                ? {
-                    first_name: c.user.profile.first_name,
-                    last_name: c.user.profile.last_name,
-                    avatar: c.user.profile.avatar,
-                  }
-                : null,
             }
           : null,
       }));
@@ -123,8 +116,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
         const name = (cv.name || "").toLowerCase();
         const edu = (cv.education || "").toLowerCase();
         const desc = (cv.description || "").toLowerCase();
-        const emp =
-          `${cv.user?.profile?.first_name || ""} ${cv.user?.profile?.last_name || ""} ${cv.user?.email || ""}`.toLowerCase();
+        const emp = (cv.user?.email || "").toLowerCase();
         return (
           name.includes(q) ||
           edu.includes(q) ||
@@ -145,10 +137,8 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
         valA = (a.education || "").toLowerCase();
         valB = (b.education || "").toLowerCase();
       } else if (sortField === "employee") {
-        valA =
-          `${a.user?.profile?.first_name || ""} ${a.user?.profile?.last_name || ""}`.toLowerCase();
-        valB =
-          `${b.user?.profile?.first_name || ""} ${b.user?.profile?.last_name || ""}`.toLowerCase();
+        valA = (a.user?.email || "").toLowerCase();
+        valB = (b.user?.email || "").toLowerCase();
       }
 
       if (valA < valB) return sortOrder === "asc" ? -1 : 1;
@@ -209,13 +199,17 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
         });
         notify.success(`CV "${formData.name}" updated successfully!`);
       } else {
+        if (!currentUserId) {
+          notify.error("User session is not ready. Please try again.");
+          return;
+        }
         await createCvMutation({
           variables: {
             cv: {
               name: formData.name,
               education: formData.education || undefined,
               description: formData.description,
-              userId: currentUserId || undefined,
+              userId: currentUserId,
             },
           },
         });

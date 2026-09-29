@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect, useCallback, useRef } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { notify } from "@/components/ui/toast";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
@@ -35,9 +35,8 @@ export function useCvSkills(cvId: string) {
   const { currentUser } = useCurrentUser();
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set());
-  const initializedCvIds = useRef<Set<string>>(new Set());
 
-  const { data, loading, error } = useQuery(CvSkillsDocument, {
+  const { data, loading, error, refetch } = useQuery(CvSkillsDocument, {
     variables: { cvId },
     skip: !cvId,
     errorPolicy: "all",
@@ -95,12 +94,11 @@ export function useCvSkills(cvId: string) {
     cv?.user?.id &&
     String(currentUser.id) === String(cv.user.id),
   );
+  const isAdmin = currentUser?.role === "Admin";
+  const canEdit = isOwner || isAdmin;
 
   const skills: SkillItem[] = useMemo(() => {
-    const list =
-      cv?.skills && cv.skills.length > 0
-        ? cv.skills
-        : cv?.user?.profile?.skills || [];
+    const list = cv?.skills || [];
     return list.map((s) => ({
       name: s.name,
       categoryId: s.categoryId,
@@ -108,33 +106,19 @@ export function useCvSkills(cvId: string) {
     }));
   }, [cv]);
 
-  useEffect(() => {
-    if (!isOwner || loading || !cv?.id) return;
-    if (initializedCvIds.current.has(cv.id)) return;
+  const ownerProfileSkills: SkillItem[] = useMemo(() => {
+    const list = cv?.user?.profile?.skills || [];
+    return list.map((s) => ({
+      name: s.name,
+      categoryId: s.categoryId,
+      mastery: s.mastery as MasteryType,
+    }));
+  }, [cv]);
 
-    const profileSkills = cv.user?.profile?.skills || [];
-    const cvSkills = cv.skills || [];
-
-    if (cvSkills.length === 0 && profileSkills.length > 0) {
-      initializedCvIds.current.add(cv.id);
-      profileSkills.forEach(async (skill) => {
-        try {
-          await addSkill({
-            variables: {
-              skill: {
-                cvId,
-                name: skill.name,
-                categoryId: skill.categoryId || null,
-                mastery: skill.mastery as Mastery,
-              },
-            },
-          });
-        } catch {
-          // ignore if already added or race condition
-        }
-      });
-    }
-  }, [cv, isOwner, loading, cvId, addSkill]);
+  const availableSkills: SkillItem[] = useMemo(() => {
+    const currentNames = new Set(skills.map((s) => s.name));
+    return ownerProfileSkills.filter((s) => !currentNames.has(s.name));
+  }, [ownerProfileSkills, skills]);
 
   const categoriesList = useMemo(() => {
     if (
@@ -159,6 +143,79 @@ export function useCvSkills(cvId: string) {
     return groupSkillsByCategory(skills, categoriesList);
   }, [skills, categoriesList]);
 
+  const handleAddSkill = async (skillName: string) => {
+    const target = ownerProfileSkills.find((s) => s.name === skillName);
+    if (!target) {
+      notify.error("Skill not found in profile");
+      return;
+    }
+    try {
+      await addSkill({
+        variables: {
+          skill: {
+            cvId,
+            name: target.name,
+            categoryId: target.categoryId || null,
+            mastery: target.mastery as Mastery,
+          },
+        },
+      });
+      notify.success("Skill added successfully");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to add skill";
+      notify.error(msg);
+      throw err;
+    }
+  };
+
+  const handleUpdateSkill = async (
+    oldSkillName: string,
+    newSkillName: string,
+  ) => {
+    if (oldSkillName === newSkillName) return;
+    const target = ownerProfileSkills.find((s) => s.name === newSkillName);
+    if (!target) {
+      notify.error("Skill not found in profile");
+      return;
+    }
+    try {
+      await deleteSkill({
+        variables: { skill: { cvId, name: [oldSkillName] } },
+      });
+      await addSkill({
+        variables: {
+          skill: {
+            cvId,
+            name: target.name,
+            categoryId: target.categoryId || null,
+            mastery: target.mastery as Mastery,
+          },
+        },
+      });
+      notify.success("Skill updated successfully");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to update skill";
+      notify.error(msg);
+      throw err;
+    }
+  };
+
+  const handleRemoveSkills = async (names: string[]) => {
+    if (names.length === 0) return;
+    try {
+      await deleteSkill({ variables: { skill: { cvId, name: names } } });
+      clearSelection();
+      notify.success(
+        names.length === 1 ? "Skill removed" : `${names.length} skills removed`,
+      );
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to remove skill";
+      notify.error(msg);
+      throw err;
+    }
+  };
+
+  // Backward compatibility alias for any existing code
   const handleSaveSkill = async (formData: SkillFormData, isEdit: boolean) => {
     try {
       if (isEdit) {
@@ -193,36 +250,28 @@ export function useCvSkills(cvId: string) {
     }
   };
 
-  const handleDeleteSkills = async (names: string[]) => {
-    if (names.length === 0) return;
-    try {
-      await deleteSkill({ variables: { skill: { cvId, name: names } } });
-      clearSelection();
-      notify.success(
-        names.length === 1 ? "Skill removed" : `${names.length} skills removed`,
-      );
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to remove skill";
-      notify.error(msg);
-      throw err;
-    }
-  };
-
   return {
     cv,
     skills,
+    ownerProfileSkills,
+    availableSkills,
     groupedSkills,
     categoriesList,
     catalogSkills,
-    isOwner,
+    isOwner: canEdit,
+    canEdit,
     loading,
     error,
+    refetch,
     isDeleteMode,
     setIsDeleteMode,
     selectedSkills,
     toggleSkillSelection,
     clearSelection,
+    handleAddSkill,
+    handleUpdateSkill,
+    handleRemoveSkills,
     handleSaveSkill,
-    handleDeleteSkills,
+    handleDeleteSkills: handleRemoveSkills,
   };
 }
