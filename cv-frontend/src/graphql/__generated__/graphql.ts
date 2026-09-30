@@ -68,6 +68,18 @@ export type DeleteProfileSkillInput = {
   userId: string | number;
 };
 
+export type ExportPdfInput = {
+  html: string;
+  margin?: MarginInput | null | undefined;
+};
+
+export type MarginInput = {
+  bottom: string;
+  left: string;
+  right: string;
+  top: string;
+};
+
 export type Mastery =
   "Advanced" | "Competent" | "Expert" | "Novice" | "Proficient";
 
@@ -185,6 +197,64 @@ export type MeQuery = {
     avatar: string | null;
   };
 };
+
+export type CvPreviewQueryVariables = Exact<{
+  cvId: string | number;
+}>;
+
+export type CvPreviewQuery = {
+  cv: {
+    id: string;
+    created_at: string;
+    name: string;
+    education: string | null;
+    description: string;
+    user: {
+      id: string;
+      email: string;
+      position: { id: string; name: string } | null;
+      department: { id: string; name: string } | null;
+      profile: {
+        id: string;
+        first_name: string | null;
+        last_name: string | null;
+        full_name: string | null;
+        avatar: string | null;
+        languages: Array<{ name: string; proficiency: Proficiency }>;
+        skills: Array<{
+          name: string;
+          categoryId: string | null;
+          mastery: Mastery;
+        }>;
+      };
+    } | null;
+    languages: Array<{ name: string; proficiency: Proficiency }>;
+    skills: Array<{
+      name: string;
+      categoryId: string | null;
+      mastery: Mastery;
+    }>;
+    projects: Array<{
+      id: string;
+      name: string;
+      internal_name: string;
+      domain: string;
+      start_date: string;
+      end_date: string | null;
+      description: string;
+      environment: Array<string>;
+      roles: Array<string>;
+      responsibilities: Array<string>;
+      project: { id: string; name: string };
+    }> | null;
+  };
+};
+
+export type ExportPdfMutationVariables = Exact<{
+  pdf: ExportPdfInput;
+}>;
+
+export type ExportPdfMutation = { exportPdf: string };
 
 export type CvProjectsQueryVariables = Exact<{
   cvId: string | number;
@@ -884,6 +954,301 @@ export const MeDocument = {
     },
   ],
 } as unknown as DocumentNode<MeQuery, MeQueryVariables>;
+export const CvPreviewDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CvPreview" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "cvId" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "cv" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cvId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cvId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "created_at" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "education" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "email" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "position" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "department" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "profile" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "first_name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "last_name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "full_name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "avatar" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "languages" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "proficiency",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "skills" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "categoryId" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "mastery" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "languages" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "proficiency" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "skills" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "categoryId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "mastery" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "projects" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "internal_name" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "domain" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "start_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "end_date" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "environment" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "roles" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "responsibilities" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "project" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CvPreviewQuery, CvPreviewQueryVariables>;
+export const ExportPdfDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ExportPdf" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "pdf" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "ExportPdfInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "exportPdf" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "pdf" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pdf" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ExportPdfMutation, ExportPdfMutationVariables>;
 export const CvProjectsDocument = {
   kind: "Document",
   definitions: [

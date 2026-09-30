@@ -1,0 +1,66 @@
+query CvPreview($cvId: ID!) {
+  cv(cvId: $cvId) {
+    id
+    created_at
+    name
+    education
+    description
+    user {
+      id
+      email
+      position {
+        id
+        name
+      }
+      department {
+        id
+        name
+      }
+      profile {
+        id
+        first_name
+        last_name
+        full_name
+        avatar
+        languages {
+          name
+          proficiency
+        }
+        skills {
+          name
+          categoryId
+          mastery
+        }
+      }
+    }
+    languages {
+      name
+      proficiency
+    }
+    skills {
+      name
+      categoryId
+      mastery
+    }
+    projects {
+      id
+      name
+      internal_name
+      domain
+      start_date
+      end_date
+      description
+      environment
+      roles
+      responsibilities
+      project {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation ExportPdf($pdf: ExportPdfInput!) {
+  exportPdf(pdf: $pdf)
+}

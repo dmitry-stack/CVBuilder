@@ -322,6 +322,28 @@ cv-frontend/
   - Re-aligned all dialog windows to exact Figma specifications with rectangular frame geometry (removed `rounded-lg` and `rounded-sm` from dialog wrappers and close buttons across all 10 dialogs).
   - Standardized all form text inputs, textareas, date inputs, and select fields across dialogs and profile/CV detail forms to sharp rectangular borders (removed `rounded-xs` and `rounded-[4px]`).
   - Synchronized input placeholder skeletons (`CVDetailsSkeleton`, `ProfileSkeleton`) to sharp geometry to prevent layout shift.
+- [x] **CV Preview Page & PDF Export System (`/cvs/[id]/preview`):**
+  - Pixel-perfect visual alignment with reference image `.antigravity/assets/cvPreview.png`.
+  - Defined GraphQL queries & mutations in `src/features/cvs/api/cv_preview.graphql` (`query CvPreview($cvId: ID!)`, `mutation ExportPdf($pdf: ExportPdfInput!)`), and generated typed document nodes.
+  - Implemented domain & metric derivation utilities in `src/features/cvs/lib/cv-preview.utils.ts`:
+    - `extractUniqueDomains`: extracts non-duplicate project domains across CV projects.
+    - `calculateSkillMetrics`: derives skill experience duration in years and last-used calendar year based on project environment occurrences.
+    - `formatPreviewPeriod`: formats project date ranges as `MM.YYYY – Till now` / `MM.YYYY – MM.YYYY`.
+    - `formatResponsibilities`: parses project responsibilities into clean bullet points.
+    - `base64ToBlob` & `downloadBlob`: handles base64 decoded PDF Blob generation and client download trigger.
+  - Built custom hook `useCvPreview` (`src/features/cvs/hooks/useCvPreview.ts`) orchestrating preview queries, skill categorization, domain derivation, and PDF export with graceful fallback to `window.print()`.
+  - Built modular UI components under `src/features/cvs/ui/preview/` adhering to strict file size (< 200 lines) and function size (< 30 lines) constraints:
+    - `CVPreviewHeader.tsx`: Employee name, uppercase position subtitle, and pill outline `EXPORT PDF` button with loading state.
+    - `CVPreviewSummary.tsx`: 2-column layout with vertical coral/red border (`border-[#E57373]`). Left: Education, Language proficiency, Domains. Right: CV Title, Description, Grouped skills list.
+    - `CVPreviewProjects.tsx`: Left: uppercase red project name (`text-cv-accent`) and description. Right: Project roles, period, bulleted responsibilities, environment with vertical coral divider.
+    - `CVPreviewSkills.tsx`: "Professional skills" table with coral divider line, red category names, and calculated experience metrics.
+    - `CVPreviewSkeleton.tsx`: Zero-layout-shift pulse skeleton for preview page.
+    - `CVPreview.tsx`: Container orchestrator integrating sections, `HeaderSync` breadcrumbs, error/empty handling, and printable card container (`#cv-preview-content`).
+  - Colocated Vitest test suites:
+    - `cv-preview.utils.test.ts`: 12 unit tests verifying month-year formatting, periods, domains, skill metrics, responsibilities parsing, and blob decoding.
+    - `CVPreviewSkeleton.test.tsx`: 2 tests checking accessible loading states.
+    - `CVPreview.test.tsx`: 6 component tests covering loading, error, not found, full preview rendering, and PDF export button interactions.
+  - Verification: all 44 test suites (248 tests) pass, TypeScript passes 100%, ESLint passes with 0 warnings/errors, and Next.js Turbopack build succeeds with route `/cvs/[id]/preview` compiled.
 
 ### In Progress / Pending Architectural Refinements
 - [ ] **Theme Token Clean Up:**
@@ -357,8 +379,8 @@ cv-frontend/
 | **CVs** | CV Details (`/cvs/[id]`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
 | **CVs** | CV Skills (`/cvs/[id]/skills`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
 | **CVs** | CV Projects (`/cvs/[id]/projects`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
-| **CVs** | CV Preview (`/cvs/[id]/preview`) | ⏳ Not Started | User | High |
-| **CVs** | PDF Export (`exportPdf`) | ⏳ Not Started | User | High |
+| **CVs** | CV Preview (`/cvs/[id]/preview`) | ✅ Implemented | User | Done |
+| **CVs** | PDF Export (`exportPdf`) | ✅ Implemented | User | Done |
 | **Settings** | User & App Settings (`/settings`) | ⏳ Not Started | User | Low |
 
 ---
