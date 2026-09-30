@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import {
   Users,
   TrendingUp,
@@ -11,6 +11,8 @@ import {
   FileUser,
   Menu,
   X,
+  Settings,
+  LogOut,
   User as UserIcon,
 } from "lucide-react";
 import { useApolloClient } from "@apollo/client/react";
@@ -18,6 +20,13 @@ import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.svg";
 import { logoutAction } from "@/features/auth/actions/logout.action";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 interface NavItem {
   label: string;
@@ -83,27 +92,7 @@ export function Navbar({
   const router = useRouter();
   const client = useApolloClient();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const profileMenuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        profileMenuRef.current &&
-        !profileMenuRef.current.contains(event.target as Node)
-      ) {
-        setProfileMenuOpen(false);
-      }
-    }
-
-    if (profileMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [profileMenuOpen]);
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
@@ -115,7 +104,6 @@ export function Navbar({
       router.refresh();
     } finally {
       setIsLoggingOut(false);
-      setProfileMenuOpen(false);
     }
   };
 
@@ -156,80 +144,86 @@ export function Navbar({
   );
 
   const renderUserProfile = () => (
-    <div className="relative" ref={profileMenuRef}>
-      {profileMenuOpen && (
-        <div
-          role="menu"
-          aria-label="User Menu"
-          className="absolute bottom-16 left-2 right-2 z-50 rounded-lg border border-zinc-200 bg-white p-1.5 shadow-lg dark:border-zinc-800 dark:bg-zinc-900"
-        >
-          <div className="border-b border-zinc-100 px-3 py-2 dark:border-zinc-800">
-            <p className="font-roboto text-sm font-medium text-cv-text dark:text-zinc-100 truncate">
-              {resolvedName}
-            </p>
-            {currentUser?.email && (
-              <p className="font-roboto text-xs text-zinc-500 dark:text-zinc-400 truncate mt-0.5">
-                {currentUser.email}
-              </p>
-            )}
-          </div>
-          <Link
-            href={profileHref}
-            onClick={() => {
-              setProfileMenuOpen(false);
-              setMobileOpen(false);
-            }}
-            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <button
+            type="button"
+            className="group flex h-14 w-full items-center gap-2 pl-2 pr-3 rounded-r-full text-left transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+            aria-label={`User profile for ${resolvedName}`}
+          >
+            <div
+              className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-cv-accent text-cv-on-accent"
+              aria-hidden="true"
+            >
+              {currentUser?.avatar ? (
+                <Image
+                  src={currentUser.avatar}
+                  alt={resolvedName}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              ) : (
+                <span className="font-roboto text-xl font-medium leading-5 uppercase">
+                  {initial}
+                </span>
+              )}
+            </div>
+            <div className="min-w-0 flex-1">
+              <span
+                className="block truncate font-roboto text-base leading-6 tracking-cv text-cv-text dark:text-zinc-100"
+                title={resolvedName}
+              >
+                {resolvedName}
+              </span>
+            </div>
+          </button>
+        }
+      />
+      <DropdownMenuContent
+        side="top"
+        align="start"
+        sideOffset={8}
+        className="w-50  shadow-lg border border-zinc-200 dark:border-zinc-800 bg-[#E2E2E4] dark:bg-zinc-900"
+      >
+        <DropdownMenuGroup className="pt-1">
+          <DropdownMenuItem
+            render={
+              <Link
+                href={profileHref}
+                onClick={() => setMobileOpen(false)}
+                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
+              />
+            }
           >
             <UserIcon className="h-4 w-4" />
             <span>Profile</span>
-          </Link>
-          <button
-            type="button"
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            render={
+              <Link
+                href={profileHref}
+                onClick={() => setMobileOpen(false)}
+                className="flex w-full border-b border-[#AEAEAE] items-center gap-2 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
+              />
+            }
+          >
+            <Settings className="h-4 w-4" />
+            <span>Settings</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            variant="destructive"
             onClick={handleLogout}
             disabled={isLoggingOut}
-            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
+            className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
           >
+            <LogOut className="h-4 w-4" />
             <span>{isLoggingOut ? "Logging out..." : "Log out"}</span>
-          </button>
-        </div>
-      )}
-      <button
-        type="button"
-        onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-        className="group flex h-14 w-full items-center gap-2 pl-2 pr-3 rounded-r-full text-left transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
-        aria-expanded={profileMenuOpen}
-        aria-haspopup="true"
-        aria-label={`User profile for ${resolvedName}`}
-      >
-        <div
-          className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-cv-accent text-cv-on-accent"
-          aria-hidden="true"
-        >
-          {currentUser?.avatar ? (
-            <Image
-              src={currentUser.avatar}
-              alt={resolvedName}
-              fill
-              className="object-cover"
-              unoptimized
-            />
-          ) : (
-            <span className="font-roboto text-xl font-medium leading-5 uppercase">
-              {initial}
-            </span>
-          )}
-        </div>
-        <div className="min-w-0 flex-1">
-          <span
-            className="block truncate font-roboto text-base leading-6 tracking-cv text-cv-text dark:text-zinc-100"
-            title={resolvedName}
-          >
-            {resolvedName}
-          </span>
-        </div>
-      </button>
-    </div>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 
   const renderAsideContent = () => (

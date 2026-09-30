@@ -95,7 +95,7 @@ describe("Navbar / Aside Sidebar", () => {
     });
     fireEvent.click(profileBtn);
 
-    const logoutBtn = screen.getByRole("button", { name: /log out/i });
+    const logoutBtn = await screen.findByRole("menuitem", { name: /log out/i });
     fireEvent.click(logoutBtn);
 
     await waitFor(() => {
@@ -117,7 +117,7 @@ describe("Navbar / Aside Sidebar", () => {
     ).toBeInTheDocument();
   });
 
-  it("links to current user's profile page in user menu", () => {
+  it("links to current user's profile page in user menu", async () => {
     render(<Navbar />);
 
     const profileBtn = screen.getByRole("button", {
@@ -125,7 +125,9 @@ describe("Navbar / Aside Sidebar", () => {
     });
     fireEvent.click(profileBtn);
 
-    const profileLink = screen.getByRole("link", { name: /profile/i });
+    const profileLink = await screen.findByRole("menuitem", {
+      name: /profile/i,
+    });
     expect(profileLink).toHaveAttribute("href", "/users/user-123/profile");
     expect(screen.getByText("rostislav@example.com")).toBeInTheDocument();
   });
