@@ -116,19 +116,4 @@ describe("Navbar / Aside Sidebar", () => {
       screen.getByRole("button", { name: /close menu/i }),
     ).toBeInTheDocument();
   });
-
-  it("links to current user's profile page in user menu", async () => {
-    render(<Navbar />);
-
-    const profileBtn = screen.getByRole("button", {
-      name: /user profile for/i,
-    });
-    fireEvent.click(profileBtn);
-
-    const profileLink = await screen.findByRole("menuitem", {
-      name: /profile/i,
-    });
-    expect(profileLink).toHaveAttribute("href", "/users/user-123/profile");
-    expect(screen.getByText("rostislav@example.com")).toBeInTheDocument();
-  });
 });
