@@ -2,6 +2,7 @@
 
 import { Plus } from "lucide-react";
 import { TrashXIcon } from "@/components/ui/icons";
+import { useTranslation } from "@/i18n";
 
 interface CVSkillsActionsProps {
   isDeleteMode: boolean;
@@ -22,6 +23,8 @@ export function CVSkillsActions({
   onCancelDeleteMode,
   onConfirmDeleteClick,
 }: CVSkillsActionsProps) {
+  const { t } = useTranslation();
+
   return (
     <div
       data-slot="skills-actions"
@@ -37,7 +40,7 @@ export function CVSkillsActions({
               className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer select-none"
             >
               <Plus className="h-4 w-4 stroke-[2.5]" />
-              <span>Add Skill</span>
+              <span>{t("skills.addSkill")}</span>
             </button>
           </div>
 
@@ -48,7 +51,7 @@ export function CVSkillsActions({
               className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium uppercase tracking-wider text-cv-accent dark:text-[#E04B4C] hover:opacity-80 transition-opacity cursor-pointer select-none"
             >
               <TrashXIcon className="h-4 w-4" />
-              <span>Remove Skills</span>
+              <span>{t("skills.removeSkills")}</span>
             </button>
           </div>
         </>
@@ -60,7 +63,7 @@ export function CVSkillsActions({
               onClick={onCancelDeleteMode}
               className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer select-none"
             >
-              <span>Cancel</span>
+              <span>{t("common.cancel")}</span>
             </button>
           </div>
 
@@ -73,7 +76,9 @@ export function CVSkillsActions({
             >
               <TrashXIcon className="h-4 w-4" />
               <span>
-                {selectedCount > 0 ? `Remove (${selectedCount})` : "Remove"}
+                {selectedCount > 0
+                  ? `${t("common.remove")} (${selectedCount})`
+                  : t("common.remove")}
               </span>
             </button>
           </div>

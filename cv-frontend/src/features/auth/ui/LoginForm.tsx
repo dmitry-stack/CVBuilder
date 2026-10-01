@@ -11,8 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
 import { loginAction } from "../actions/login.action";
+import { useTranslation } from "@/i18n";
 
 export default function LoginForm() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -64,7 +66,7 @@ export default function LoginForm() {
               id="email"
               type="email"
               autoComplete="email"
-              placeholder="Email"
+              placeholder={t("auth.email")}
               disabled={isPending}
               aria-invalid={errors.email ? "true" : undefined}
               className="h-12 w-full border border-cv-border bg-transparent px-3 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
@@ -84,7 +86,7 @@ export default function LoginForm() {
               id="password"
               type={showPassword ? "text" : "password"}
               autoComplete="current-password"
-              placeholder="Password"
+              placeholder={t("auth.password")}
               disabled={isPending}
               aria-invalid={errors.password ? "true" : undefined}
               className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
@@ -123,7 +125,7 @@ export default function LoginForm() {
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             </>
           ) : (
-            "SIGN IN"
+            t("auth.signIn")
           )}
         </Button>
 
@@ -131,7 +133,7 @@ export default function LoginForm() {
           href="/forgot-password"
           className="flex h-12 w-55 items-center justify-center rounded-full font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-muted hover:text-cv-text dark:text-[#C4C4C6] dark:hover:text-[#F5F5F7] transition-colors"
         >
-          FORGOT PASSWORD
+          {t("auth.forgotPassword")}
         </Link>
       </div>
     </form>

@@ -11,8 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { signupSchema, type SignupFormData } from "../schemas/auth.schema";
 import { signupAction } from "../actions/signup.action";
+import { useTranslation } from "@/i18n";
 
 export default function SignupForm() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -66,7 +68,7 @@ export default function SignupForm() {
               id="email"
               type="email"
               autoComplete="email"
-              placeholder="Email"
+              placeholder={t("auth.email")}
               disabled={isPending}
               aria-invalid={errors.email ? "true" : undefined}
               className="h-12 w-full border border-cv-border bg-transparent px-3 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
@@ -86,7 +88,7 @@ export default function SignupForm() {
               id="password"
               type={showPassword ? "text" : "password"}
               autoComplete="new-password"
-              placeholder="Password"
+              placeholder={t("auth.password")}
               disabled={isPending}
               aria-invalid={errors.password ? "true" : undefined}
               className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
@@ -120,7 +122,7 @@ export default function SignupForm() {
               id="confirmPassword"
               type={showConfirmPassword ? "text" : "password"}
               autoComplete="new-password"
-              placeholder="Confirm Password"
+              placeholder={t("auth.confirmPassword")}
               disabled={isPending}
               aria-invalid={errors.confirmPassword ? "true" : undefined}
               className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
@@ -161,7 +163,7 @@ export default function SignupForm() {
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             </>
           ) : (
-            "CREATE ACCOUNT"
+            t("auth.createAccount")
           )}
         </Button>
 
@@ -169,7 +171,7 @@ export default function SignupForm() {
           href="/signin"
           className="flex h-12 w-55 items-center justify-center rounded-full font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-muted hover:text-cv-text dark:text-[#C4C4C6] dark:hover:text-[#F5F5F7] transition-colors"
         >
-          I HAVE AN ACCOUNT
+          {t("auth.haveAccount")}
         </Link>
       </div>
     </form>

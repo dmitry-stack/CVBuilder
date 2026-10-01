@@ -1,46 +1,13 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import { ChevronDown } from "lucide-react";
 import { ChangePasswordForm } from "@/features/settings";
 import { useTheme } from "next-themes";
-
-const LANGUAGES: string[] = [
-  "English",
-  "French",
-  "German",
-  "Italian",
-  "Polish",
-  "Portuguese",
-  "Russian",
-  "Spanish",
-  "Ukrainian",
-];
-
-function subscribeLanguage(callback: () => void) {
-  window.addEventListener("storage", callback);
-  window.addEventListener("languagechange", callback);
-  return () => {
-    window.removeEventListener("storage", callback);
-    window.removeEventListener("languagechange", callback);
-  };
-}
-
-function getLanguageSnapshot() {
-  return localStorage.getItem("app_language") || "English";
-}
-
-function getServerSnapshot() {
-  return "English";
-}
+import { useTranslation, LANGUAGES, type Language } from "@/i18n";
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
-  const language = useSyncExternalStore(
-    subscribeLanguage,
-    getLanguageSnapshot,
-    getServerSnapshot,
-  );
+  const { language, setLanguage, t } = useTranslation();
   const currentTheme = theme === "system" ? "device" : theme;
 
   const handleThemeChange = (val: string) => {
@@ -48,8 +15,7 @@ export default function SettingsPage() {
   };
 
   const handleLanguageChange = (val: string) => {
-    localStorage.setItem("app_language", val);
-    window.dispatchEvent(new Event("languagechange"));
+    setLanguage(val as Language);
   };
 
   return (
@@ -59,7 +25,7 @@ export default function SettingsPage() {
           htmlFor="theme_select"
           className="block text-xs font-normal text-[#626262] dark:text-[#AEAEAE] mb-1 tracking-[0.15px]"
         >
-          Theme
+          {t("settings.theme")}
         </label>
 
         <div className="relative">
@@ -69,9 +35,9 @@ export default function SettingsPage() {
             onChange={(e) => handleThemeChange(e.target.value)}
             className="w-full h-12 px-3.5 pr-9 border border-[#AEAEAE] dark:border-[#AEAEAE] bg-white dark:bg-[#2E2E2E] text-sm text-[#2E2E2E] dark:text-[#F5F5F7] focus:outline-hidden focus:border-cv-accent appearance-none cursor-pointer"
           >
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-            <option value="device">Device Settings</option>
+            <option value="light">{t("settings.themeLight")}</option>
+            <option value="dark">{t("settings.themeDark")}</option>
+            <option value="device">{t("settings.themeDevice")}</option>
           </select>
           <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#626262] dark:text-[#AEAEAE] pointer-events-none" />
         </div>
@@ -82,7 +48,7 @@ export default function SettingsPage() {
           htmlFor="language_select"
           className="block text-xs font-normal text-[#626262] dark:text-[#AEAEAE] mb-1 tracking-[0.15px]"
         >
-          Language
+          {t("settings.language")}
         </label>
 
         <div className="relative">
@@ -104,7 +70,7 @@ export default function SettingsPage() {
 
       <div className="pt-5">
         <h2 className="font-roboto text-base font-normal pb-9 text-[#2E2E2E] dark:text-[#F5F5F7]">
-          Change Password
+          {t("settings.changePassword")}
         </h2>
         <ChangePasswordForm />
       </div>

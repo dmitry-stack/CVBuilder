@@ -13,6 +13,7 @@ import {
   type ProficiencyType,
 } from "../schemas/language.schema";
 import { DeleteLanguageDialog } from "./DeleteLanguageDialog";
+import { useTranslation } from "@/i18n";
 
 interface CatalogLanguageOption {
   name: string;
@@ -46,6 +47,7 @@ export function LanguageDialog({
   initialData,
   catalogLanguages = [],
 }: LanguageDialogProps) {
+  const { t } = useTranslation();
   const isEdit = Boolean(initialData);
 
   const {
@@ -117,7 +119,7 @@ export function LanguageDialog({
             id="language-dialog-title"
             className="text-base font-medium text-zinc-900 dark:text-zinc-100 font-roboto"
           >
-            {isEdit ? "Edit Language" : "Add Language"}
+            {isEdit ? t("languages.editLanguage") : t("languages.addLanguage")}
           </h2>
           <button
             type="button"
@@ -135,12 +137,12 @@ export function LanguageDialog({
               htmlFor="language_name"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              Language Name
+              {t("languages.languageName")}
             </label>
             <input
               id="language_name"
               type="text"
-              placeholder="e.g. English, German, Spanish"
+              placeholder={t("languages.languagePlaceholder")}
               disabled={isEdit || isSubmitting}
               list="catalog-languages-list"
               {...register("name")}
@@ -171,7 +173,7 @@ export function LanguageDialog({
               htmlFor="language_proficiency"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              Proficiency Level
+              {t("languages.proficiency")}
             </label>
             <div className="space-y-2">
               <select
@@ -189,7 +191,7 @@ export function LanguageDialog({
 
               <div className="flex items-center gap-3 px-3 py-2 bg-zinc-100 dark:bg-zinc-800/50">
                 <span className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto">
-                  Preview:
+                  {t("common.preview")}
                 </span>
                 <LanguageProficiencyBar
                   proficiency={selectedProficiency || "A1"}
@@ -218,7 +220,7 @@ export function LanguageDialog({
                 className="inline-flex items-center gap-1.5 text-xs text-destructive hover:text-red-700 dark:hover:text-red-400 font-medium transition-colors cursor-pointer"
               >
                 <Trash2 className="h-3.5 w-3.5" />
-                <span>Delete</span>
+                <span>{t("common.delete")}</span>
               </button>
             ) : (
               <div />
@@ -232,7 +234,7 @@ export function LanguageDialog({
                 disabled={isSubmitting}
                 className="rounded-full px-4 h-9 text-xs font-medium cursor-pointer"
               >
-                Cancel
+                {t("common.cancel")}
               </Button>
               <button
                 type="submit"
@@ -240,10 +242,10 @@ export function LanguageDialog({
                 className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white px-6 h-9 text-xs font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {isSubmitting
-                  ? "Saving..."
+                  ? t("common.saving")
                   : isEdit
-                    ? "Save Changes"
-                    : "Add Language"}
+                    ? t("common.saveChanges")
+                    : t("languages.addLanguage")}
               </button>
             </div>
           </div>

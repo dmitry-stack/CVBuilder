@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/i18n";
 
 export function AuthTabs() {
   const pathname = usePathname();
   const isSignIn = pathname === "/signin";
   const isSignUp = pathname === "/signup";
+  const { t } = useTranslation();
 
   return (
     <header className="flex h-14 w-full justify-center">
@@ -23,7 +25,7 @@ export function AuthTabs() {
             )}
             aria-current={isSignIn ? "page" : undefined}
           >
-            SIGN IN
+            {t("auth.signIn")}
           </Link>
           <div
             className={cn(
@@ -44,7 +46,7 @@ export function AuthTabs() {
             )}
             aria-current={isSignUp ? "page" : undefined}
           >
-            SIGN UP
+            {t("auth.signUp")}
           </Link>
           <div
             className={cn(

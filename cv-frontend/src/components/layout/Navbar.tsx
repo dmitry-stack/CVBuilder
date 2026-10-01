@@ -27,31 +27,32 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { useTranslation, type TranslationKey } from "@/i18n";
 
 interface NavItem {
-  label: string;
+  key: TranslationKey;
   href: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
 const NAV_ITEMS: NavItem[] = [
   {
-    label: "Employees",
+    key: "nav.employees",
     href: "/users",
     icon: Users,
   },
   {
-    label: "Skills",
+    key: "nav.skills",
     href: "/skills",
     icon: TrendingUp,
   },
   {
-    label: "Languages",
+    key: "nav.languages",
     href: "/languages",
     icon: Languages,
   },
   {
-    label: "CVs",
+    key: "nav.cvs",
     href: "/cvs",
     icon: FileUser,
   },
@@ -93,6 +94,7 @@ export function Navbar({
   const client = useApolloClient();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const { t } = useTranslation();
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
@@ -136,7 +138,7 @@ export function Navbar({
                   : "text-cv-muted dark:text-[#AEAEAE] group-hover:text-cv-text dark:group-hover:text-[#F5F5F7]",
               )}
             />
-            <span className="font-roboto">{item.label}</span>
+            <span className="font-roboto">{t(item.key)}</span>
           </Link>
         );
       })}
@@ -200,7 +202,7 @@ export function Navbar({
               <UserIcon className="h-4 w-4 text-cv-text dark:text-[#F5F5F7]" />
             </div>
             <span className="font-roboto font-normal text-base leading-6 tracking-cv">
-              Profile
+              {t("nav.profile")}
             </span>
           </DropdownMenuItem>
 
@@ -214,7 +216,7 @@ export function Navbar({
               <Settings className="h-4 w-4 text-cv-text dark:text-[#F5F5F7]" />
             </div>
             <span className="font-roboto font-normal text-base leading-6 tracking-cv">
-              Settings
+              {t("nav.settings")}
             </span>
           </DropdownMenuItem>
 
@@ -229,7 +231,7 @@ export function Navbar({
               <LogOut className="h-4 w-4 text-cv-text dark:text-[#F5F5F7]" />
             </div>
             <span className="font-roboto font-normal text-base leading-6 tracking-cv">
-              {isLoggingOut ? "Logging out..." : "Log out"}
+              {isLoggingOut ? t("nav.loggingOut") : t("nav.logout")}
             </span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -254,7 +256,7 @@ export function Navbar({
             className="h-6 w-6 shrink-0"
           />
           <span className="font-roboto text-base font-medium leading-6 tracking-cv text-cv-text dark:text-[#F5F5F7]">
-            CV Builder
+            {t("nav.brand")}
           </span>
         </Link>
 
@@ -278,7 +280,7 @@ export function Navbar({
             className="h-6 w-6 shrink-0"
           />
           <span className="font-roboto text-base font-medium text-cv-text dark:text-[#F5F5F7]">
-            CV Builder
+            {t("nav.brand")}
           </span>
         </Link>
         <button

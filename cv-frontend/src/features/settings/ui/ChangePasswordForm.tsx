@@ -4,8 +4,10 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useTranslation } from "@/i18n";
 
 export function ChangePasswordForm() {
+  const { t } = useTranslation();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -33,7 +35,7 @@ export function ChangePasswordForm() {
             id="currentPassword"
             type={showCurrentPassword ? "text" : "password"}
             autoComplete="current-password"
-            placeholder="Current Password"
+            placeholder={t("settings.currentPassword")}
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
             className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors rounded-none"
@@ -64,7 +66,7 @@ export function ChangePasswordForm() {
             id="newPassword"
             type={showNewPassword ? "text" : "password"}
             autoComplete="new-password"
-            placeholder="New Password"
+            placeholder={t("settings.newPassword")}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors rounded-none"
@@ -93,7 +95,7 @@ export function ChangePasswordForm() {
             id="confirmPassword"
             type={showConfirmPassword ? "text" : "password"}
             autoComplete="new-password"
-            placeholder="Confirm Password"
+            placeholder={t("settings.confirmPassword")}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors rounded-none"
@@ -123,7 +125,7 @@ export function ChangePasswordForm() {
           type="submit"
           className="h-12 w-55 rounded-full bg-cv-accent font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-on-accent shadow-cv-button hover:bg-cv-accent-hover transition-all cursor-pointer"
         >
-          CHANGE PASSWORD
+          {t("settings.changePasswordBtn")}
         </Button>
 
         <button
@@ -131,7 +133,7 @@ export function ChangePasswordForm() {
           onClick={handleReset}
           className="flex h-12 w-55 items-center justify-center rounded-full font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-muted hover:text-cv-text dark:text-[#C4C4C6] dark:hover:text-[#F5F5F7] transition-colors cursor-pointer"
         >
-          CANCEL
+          {t("settings.cancel")}
         </button>
       </div>
     </form>

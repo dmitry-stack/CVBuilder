@@ -4,6 +4,7 @@ import {
   formatPreviewPeriod,
   formatResponsibilities,
 } from "../../lib/cv-preview.utils";
+import { useTranslation } from "@/i18n";
 
 export interface PreviewProjectData {
   id: string;
@@ -22,12 +23,14 @@ interface CVPreviewProjectsProps {
 }
 
 export function CVPreviewProjects({ projects }: CVPreviewProjectsProps) {
+  const { t } = useTranslation();
+
   if (projects.length === 0) return null;
 
   return (
     <div className="pt-10">
       <h2 className="text-xl sm:text-2xl font-normal text-zinc-900 dark:text-zinc-100 font-roboto mb-6">
-        Projects
+        {t("header.projects")}
       </h2>
 
       <div className="space-y-8">
@@ -59,7 +62,7 @@ export function CVPreviewProjects({ projects }: CVPreviewProjectsProps) {
               <div className="w-full md:w-[68%] pl-0 md:pl-6 border-l-0 md:border-l-2 border-[#E57373] dark:border-red-900/60 space-y-4 cv-preview-col-right">
                 <div>
                   <h4 className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 font-roboto">
-                    Project roles
+                    {t("preview.projectRoles")}
                   </h4>
                   <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 font-roboto mt-0.5 leading-relaxed">
                     {rolesStr}
@@ -68,7 +71,7 @@ export function CVPreviewProjects({ projects }: CVPreviewProjectsProps) {
 
                 <div>
                   <h4 className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 font-roboto">
-                    Period
+                    {t("preview.period")}
                   </h4>
                   <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 font-roboto mt-0.5 leading-relaxed">
                     {periodStr}
@@ -78,7 +81,7 @@ export function CVPreviewProjects({ projects }: CVPreviewProjectsProps) {
                 {responsibilitiesList.length > 0 && (
                   <div>
                     <h4 className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 font-roboto">
-                      Responsibilities
+                      {t("preview.responsibilities")}
                     </h4>
                     <ul className="mt-1 space-y-1 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 font-roboto leading-relaxed">
                       {responsibilitiesList.map((resp, idx) => (
@@ -93,7 +96,7 @@ export function CVPreviewProjects({ projects }: CVPreviewProjectsProps) {
 
                 <div>
                   <h4 className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 font-roboto">
-                    Environment
+                    {t("preview.environment")}
                   </h4>
                   <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 font-roboto mt-0.5 leading-relaxed">
                     {envStr}

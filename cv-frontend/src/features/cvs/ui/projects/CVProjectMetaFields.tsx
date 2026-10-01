@@ -2,6 +2,7 @@
 
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { ChevronDown, Calendar, AlertCircle } from "lucide-react";
+import { useTranslation } from "@/i18n";
 import type { CvProjectFormData } from "../../schemas/cv-project.schema";
 import type { CvProjectItem } from "../../lib/cv-projects.utils";
 import type { AvailableProjectItem } from "./CVProjectDialog";
@@ -27,6 +28,8 @@ export function CVProjectMetaFields({
   register,
   errors,
 }: CVProjectMetaFieldsProps) {
+  const { t } = useTranslation();
+
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -35,7 +38,7 @@ export function CVProjectMetaFields({
             htmlFor="proj_name_select"
             className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
           >
-            Name
+            {t("common.name")}
           </label>
           {initialData ? (
             <div className="h-12 px-3.5 border border-[#AEAEAE] dark:border-zinc-700 bg-white dark:bg-zinc-900 flex items-center justify-between text-sm text-[#2E2E2E] dark:text-zinc-100">
@@ -76,7 +79,7 @@ export function CVProjectMetaFields({
             htmlFor="proj_domain"
             className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
           >
-            Domain
+            {t("projects.domain")}
           </label>
           <div
             id="proj_domain"
@@ -93,7 +96,7 @@ export function CVProjectMetaFields({
             htmlFor="p_start"
             className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
           >
-            Start Date
+            {t("projects.startDate")}
           </label>
           <div className="relative">
             <input
@@ -116,7 +119,7 @@ export function CVProjectMetaFields({
             htmlFor="p_end"
             className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
           >
-            End Date
+            {t("projects.endDate")}
           </label>
           <div className="relative">
             <input

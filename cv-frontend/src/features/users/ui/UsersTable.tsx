@@ -11,6 +11,7 @@ import {
 } from "@/graphql/__generated__/graphql";
 import { UsersTableRowSkeleton } from "./UsersTableRowSkeleton";
 import { DropdownMenuButton } from "../../../components/ui/DropDownButton";
+import { useTranslation } from "@/i18n";
 
 export interface UserItem {
   id: string;
@@ -27,6 +28,7 @@ type SortField =
 type SortOrder = "asc" | "desc";
 
 export function UsersTable() {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState<SortField>("first_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
@@ -115,11 +117,11 @@ export function UsersTable() {
           />
           <input
             type="text"
-            placeholder="Search"
+            placeholder={t("users.searchPlaceholder")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full h-10 pl-10 pr-4 rounded-full border border-cv-border dark:border-zinc-700 bg-transparent text-base leading-cv-input text-cv-text dark:text-zinc-100 placeholder:text-cv-placeholder focus:outline-hidden focus:border-cv-text dark:focus:border-zinc-400 transition-colors"
-            aria-label="Search employees"
+            aria-label={t("users.searchAria")}
           />
         </div>
       </div>
@@ -136,7 +138,7 @@ export function UsersTable() {
                   onClick={() => handleSort("first_name")}
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden"
                 >
-                  <span>First Name</span>
+                  <span>{t("users.firstName")}</span>
                   <ChevronDown className="h-4 w-4 text-cv-muted" />
                 </button>
               </th>
@@ -147,7 +149,7 @@ export function UsersTable() {
                   onClick={() => handleSort("last_name")}
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden"
                 >
-                  <span>Last Name</span>
+                  <span>{t("users.lastName")}</span>
                   <ChevronDown className="h-4 w-4 text-cv-muted" />
                 </button>
               </th>
@@ -158,7 +160,7 @@ export function UsersTable() {
 
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden"
                 >
-                  <span>Email</span>
+                  <span>{t("users.email")}</span>
                 </button>
               </th>
 
@@ -168,7 +170,7 @@ export function UsersTable() {
                   onClick={() => handleSort("department")}
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden"
                 >
-                  <span>Department</span>
+                  <span>{t("users.department")}</span>
                   <ChevronDown className="h-4 w-4 text-cv-muted" />
                 </button>
               </th>
@@ -179,7 +181,7 @@ export function UsersTable() {
                   onClick={() => handleSort("position")}
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden"
                 >
-                  <span>Position</span>
+                  <span>{t("users.position")}</span>
                   <ChevronDown className="h-4 w-4 text-cv-muted" />
                 </button>
               </th>
@@ -202,7 +204,7 @@ export function UsersTable() {
                   <div className="flex flex-col items-center justify-center gap-2">
                     <UserIcon className="h-8 w-8 text-zinc-400" />
                     <p className="font-roboto text-base">
-                      No employees found matching &quot;{search}&quot;
+                      {t("users.noEmployeesFound", { search })}
                     </p>
                   </div>
                 </td>

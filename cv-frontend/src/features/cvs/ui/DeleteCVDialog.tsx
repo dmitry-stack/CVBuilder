@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { X, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/i18n";
 
 export interface DeleteCVDialogProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export function DeleteCVDialog({
   cvName,
   isDeleting: propIsDeleting = false,
 }: DeleteCVDialogProps) {
+  const { t } = useTranslation();
   const [internalDeleting, setInternalDeleting] = useState(false);
   const isDeleting = propIsDeleting || internalDeleting;
 
@@ -59,7 +61,7 @@ export function DeleteCVDialog({
               id="delete-cv-dialog-title"
               className="text-base font-medium text-zinc-900 dark:text-zinc-100 font-roboto"
             >
-              Delete CV
+              {t("cvs.deleteConfirmTitle")}
             </h2>
           </div>
           <button
@@ -78,19 +80,12 @@ export function DeleteCVDialog({
             id="delete-cv-dialog-description"
             className="text-sm text-zinc-600 dark:text-zinc-300 font-roboto leading-relaxed"
           >
-            Are you sure you want to delete{" "}
-            {cvName ? (
-              <span className="font-semibold text-zinc-900 dark:text-zinc-100">
-                &ldquo;{cvName}&rdquo;
-              </span>
-            ) : (
-              "this CV"
-            )}
-            ?
+            {t("cvs.deleteConfirmText", {
+              name: cvName ? `"${cvName}"` : t("cvs.deleteThisCv"),
+            })}
           </p>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto">
-            This action cannot be undone. All skills, projects, and custom
-            sections associated with this CV will be permanently removed.
+            {t("cvs.deleteWarning")}
           </p>
         </div>
 
@@ -102,7 +97,7 @@ export function DeleteCVDialog({
             disabled={isDeleting}
             className="rounded-full px-4 h-9 text-xs font-medium cursor-pointer"
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
           <button
             type="button"
@@ -110,7 +105,7 @@ export function DeleteCVDialog({
             disabled={isDeleting}
             className="rounded-full bg-destructive hover:bg-destructive/90 text-white px-5 h-9 text-xs font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 cursor-pointer inline-flex items-center gap-1.5"
           >
-            {isDeleting ? "Deleting..." : "Delete CV"}
+            {isDeleting ? t("common.deleting") : t("cvs.deleteCv")}
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { X, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/i18n";
 
 export interface DeleteSkillDialogProps {
   isOpen: boolean;
@@ -19,13 +20,14 @@ export function DeleteSkillDialog({
   skillNames,
   isDeleting: propIsDeleting = false,
 }: DeleteSkillDialogProps) {
+  const { t } = useTranslation();
   const [internalDeleting, setInternalDeleting] = useState(false);
   const isDeleting = propIsDeleting || internalDeleting;
 
   if (!isOpen) return null;
 
   const isSingle = skillNames.length === 1;
-  const title = isSingle ? "Delete Skill" : "Delete Skills";
+  const title = isSingle ? t("skills.deleteSkill") : t("skills.deleteSkills");
 
   const handleConfirm = async () => {
     try {
@@ -81,15 +83,18 @@ export function DeleteSkillDialog({
             id="delete-skill-dialog-description"
             className="text-sm text-zinc-600 dark:text-zinc-300 font-roboto leading-relaxed"
           >
-            Are you sure you want to delete{" "}
             {isSingle ? (
               <span className="font-semibold text-zinc-900 dark:text-zinc-100">
-                &ldquo;{skillNames[0]}&rdquo;
+                {t("skills.deleteConfirmText", {
+                  name: `“${skillNames[0]}”`,
+                })}
               </span>
             ) : (
               <>
                 <span className="font-semibold text-zinc-900 dark:text-zinc-100">
-                  {skillNames.length} selected skills
+                  {t("skills.deleteCountConfirmText", {
+                    count: skillNames.length,
+                  })}
                 </span>
                 {skillNames.length > 0 && (
                   <span className="text-zinc-500 dark:text-zinc-400">
@@ -99,12 +104,11 @@ export function DeleteSkillDialog({
                 )}
               </>
             )}
-            ?
           </p>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto">
-            This action cannot be undone. The selected{" "}
-            {isSingle ? "skill" : "skills"} will be permanently removed from
-            this profile.
+            {t("skills.deleteWarning", {
+              item: isSingle ? t("skills.skill") : t("skills.skills"),
+            })}
           </p>
         </div>
 
@@ -116,7 +120,7 @@ export function DeleteSkillDialog({
             disabled={isDeleting}
             className="rounded-full px-4 h-9 text-xs font-medium cursor-pointer"
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
           <button
             type="button"
@@ -125,10 +129,10 @@ export function DeleteSkillDialog({
             className="rounded-full bg-destructive hover:bg-destructive/90 text-white px-5 h-9 text-xs font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 cursor-pointer inline-flex items-center gap-1.5"
           >
             {isDeleting
-              ? "Deleting..."
+              ? t("common.deleting")
               : isSingle
-                ? "Delete Skill"
-                : `Delete Skills (${skillNames.length})`}
+                ? t("skills.deleteSkill")
+                : t("skills.deleteSkillCount", { count: skillNames.length })}
           </button>
         </div>
       </div>

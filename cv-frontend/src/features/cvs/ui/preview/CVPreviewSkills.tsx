@@ -1,6 +1,7 @@
 "use client";
 
 import type { GroupedSkillCategory } from "../../lib/cv-skills.utils";
+import { useTranslation } from "@/i18n";
 import {
   calculateSkillMetrics,
   type PreviewProjectItem,
@@ -15,27 +16,29 @@ export function CVPreviewSkills({
   skillsGrouped,
   projects,
 }: CVPreviewSkillsProps) {
+  const { t } = useTranslation();
+
   if (skillsGrouped.length === 0) return null;
 
   return (
     <div className="pt-10 pb-16">
       <h2 className="text-xl sm:text-2xl font-normal text-zinc-900 dark:text-zinc-100 font-roboto mb-6">
-        Professional skills
+        {t("preview.professionalSkills")}
       </h2>
 
       <div className="w-full font-roboto overflow-x-auto">
         <table className="w-full table-fixed text-left border-collapse min-w-[540px]">
           <thead>
             <tr className="border-b-2 border-[#E57373] dark:border-red-900/60 pb-2 text-[11px] font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
-              <th className="py-2.5 font-bold w-[30%]">Skills</th>
+              <th className="py-2.5 font-bold w-[30%]">
+                {t("preview.skills")}
+              </th>
               <th className="py-2.5 font-bold w-[35%]"></th>
               <th className="py-2.5 font-bold w-[18%] text-center leading-tight">
-                Experience
-                <br />
-                in years
+                {t("preview.experienceYears")}
               </th>
               <th className="py-2.5 font-bold w-[17%] text-center leading-tight">
-                Last used
+                {t("preview.lastUsed")}
               </th>
             </tr>
           </thead>

@@ -15,12 +15,14 @@ import {
 } from "@/graphql/__generated__/graphql";
 import { cvFormSchema, type CvFormData } from "../../schemas/cv.schema";
 import { CVDetailsSkeleton } from "./CVDetailsSkeleton";
+import { useTranslation } from "@/i18n";
 
 interface CVDetailsViewProps {
   cvId: string;
 }
 
 export function CVDetailsView({ cvId }: CVDetailsViewProps) {
+  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
 
   const { data, loading } = useQuery(CvDocument, {
@@ -113,14 +115,14 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
             htmlFor="cv_name"
             className="block text-xs font-normal text-[#757575] dark:text-zinc-400 mb-1.5 font-roboto"
           >
-            Name
+            {t("common.name")}
           </label>
           <input
             id="cv_name"
             type="text"
             disabled={!isOwner}
             aria-invalid={Boolean(errors.name)}
-            placeholder="e.g. Software Engineer with 5+ years of experience"
+            placeholder={t("cvDetails.namePlaceholder")}
             {...register("name")}
             className="w-full h-12 px-4 border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
           />
@@ -137,14 +139,14 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
             htmlFor="cv_education"
             className="block text-xs font-normal text-[#757575] dark:text-zinc-400 mb-1.5 font-roboto"
           >
-            Education
+            {t("cvs.education")}
           </label>
           <input
             id="cv_education"
             type="text"
             disabled={!isOwner}
             aria-invalid={Boolean(errors.education)}
-            placeholder="e.g. Computer Systems Design"
+            placeholder={t("cvDetails.educationPlaceholder")}
             {...register("education")}
             className="w-full h-12 px-4 border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
           />
@@ -161,14 +163,14 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
             htmlFor="cv_description"
             className="block text-xs font-normal text-[#757575] dark:text-zinc-400 mb-1.5 font-roboto"
           >
-            Description
+            {t("common.description")}
           </label>
           <textarea
             id="cv_description"
             rows={6}
             disabled={!isOwner}
             aria-invalid={Boolean(errors.description)}
-            placeholder="Brief overview of professional background..."
+            placeholder={t("cvDetails.descriptionPlaceholder")}
             {...register("description")}
             className="w-full min-h-[160px] p-4 border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base leading-relaxed text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed resize-y"
           />
@@ -187,7 +189,7 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
               disabled={!isDirty || isSubmitting}
               className="rounded-full min-w-[140px] px-8 h-10 font-roboto text-sm font-medium uppercase tracking-wider text-white transition-colors disabled:bg-[#AEAEAE] disabled:cursor-not-allowed bg-cv-accent hover:bg-cv-accent-hover shadow-cv-button cursor-pointer focus:outline-hidden"
             >
-              {isSubmitting ? "Updating..." : "Update"}
+              {isSubmitting ? t("common.updating") : t("common.update")}
             </button>
           </div>
         )}
