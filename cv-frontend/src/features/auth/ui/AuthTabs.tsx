@@ -19,7 +19,7 @@ export function AuthTabs() {
               "flex h-auth-link w-full items-center justify-center text-center font-roboto text-sm leading-cv-label uppercase tracking-cv-wide transition-colors",
               isSignIn
                 ? "font-semibold text-cv-accent"
-                : "font-medium text-cv-text hover:text-black dark:text-zinc-400 dark:hover:text-zinc-200",
+                : "font-medium text-cv-text hover:text-black dark:text-[#F5F5F7] dark:hover:text-white",
             )}
             aria-current={isSignIn ? "page" : undefined}
           >
@@ -40,7 +40,7 @@ export function AuthTabs() {
               "flex h-auth-link w-full items-center justify-center text-center font-roboto text-sm leading-cv-label uppercase tracking-cv-wide transition-colors",
               isSignUp
                 ? "font-semibold text-cv-accent"
-                : "font-medium text-cv-text hover:text-black dark:text-zinc-400 dark:hover:text-zinc-200",
+                : "font-medium text-cv-text hover:text-black dark:text-[#F5F5F7] dark:hover:text-white",
             )}
             aria-current={isSignUp ? "page" : undefined}
           >

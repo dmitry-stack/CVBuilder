@@ -69,7 +69,7 @@ export default function SignupForm() {
               placeholder="Email"
               disabled={isPending}
               aria-invalid={errors.email ? "true" : undefined}
-              className="h-12 w-full border border-cv-border bg-transparent px-3 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus-visible:border-zinc-300 focus-visible:ring-0 focus:outline-hidden transition-colors"
+              className="h-12 w-full border border-cv-border bg-transparent px-3 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
             />
           </div>
           {errors.email && (
@@ -89,12 +89,12 @@ export default function SignupForm() {
               placeholder="Password"
               disabled={isPending}
               aria-invalid={errors.password ? "true" : undefined}
-              className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus-visible:border-zinc-300 focus-visible:ring-0 focus:outline-hidden transition-colors"
+              className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
             />
 
             <button
               type="button"
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:text-cv-text dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors focus:outline-hidden"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:text-cv-text dark:text-[#AEAEAE] dark:hover:text-[#F5F5F7] transition-colors focus:outline-hidden"
               onClick={() => setShowPassword((prev) => !prev)}
               tabIndex={-1}
               aria-label={showPassword ? "Hide password" : "Show password"}
@@ -123,12 +123,12 @@ export default function SignupForm() {
               placeholder="Confirm Password"
               disabled={isPending}
               aria-invalid={errors.confirmPassword ? "true" : undefined}
-              className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-zinc-700 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus-visible:border-zinc-300 focus-visible:ring-0 focus:outline-hidden transition-colors"
+              className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-cv-input tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
             />
 
             <button
               type="button"
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:text-cv-text dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors focus:outline-hidden"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:text-cv-text dark:text-[#AEAEAE] dark:hover:text-[#F5F5F7] transition-colors focus:outline-hidden"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
               tabIndex={-1}
               aria-label={
@@ -167,7 +167,7 @@ export default function SignupForm() {
 
         <Link
           href="/signin"
-          className="flex h-12 w-55 items-center justify-center rounded-full font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-muted hover:text-cv-text dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
+          className="flex h-12 w-55 items-center justify-center rounded-full font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-muted hover:text-cv-text dark:text-[#C4C4C6] dark:hover:text-[#F5F5F7] transition-colors"
         >
           I HAVE AN ACCOUNT
         </Link>

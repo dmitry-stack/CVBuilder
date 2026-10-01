@@ -139,7 +139,7 @@ export function Header() {
 
   return (
     <header data-slot="app-header" className="h-14 px-6 flex items-center">
-      <span className="font-roboto text-base leading-6 tracking-cv capitalize text-cv-muted dark:text-zinc-400">
+      <span className="font-roboto text-base leading-6 tracking-cv capitalize text-cv-muted dark:text-[#AEAEAE]">
         {headerTitle}
       </span>
     </header>
