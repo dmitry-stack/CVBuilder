@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { X, AlertCircle, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cvFormSchema, type CvFormData } from "../schemas/cv.schema";
+import { useTranslation } from "@/i18n";
 
 export interface CVDialogInitialData extends CvFormData {
   id?: string;
@@ -28,6 +29,7 @@ export function CVDialog({
   initialData,
   title,
 }: CVDialogProps) {
+  const { t } = useTranslation();
   const isEdit = Boolean(initialData?.id || initialData);
 
   const {
@@ -70,7 +72,7 @@ export function CVDialog({
     onClose();
   };
 
-  const dialogTitle = title || (isEdit ? "Update CV" : "Create CV");
+  const dialogTitle = title || (isEdit ? t("cvs.updateCv") : t("cvs.createCv"));
 
   return (
     <div
@@ -96,9 +98,7 @@ export function CVDialog({
               {dialogTitle}
             </h2>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto mt-0.5">
-              {isEdit
-                ? "Update your resume details and summary"
-                : "Fill in the details below to create a new CV"}
+              {isEdit ? t("cvs.updateSub") : t("cvs.createSub")}
             </p>
           </div>
           <button
@@ -122,12 +122,12 @@ export function CVDialog({
               htmlFor="cv_name"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              CV Name <span className="text-destructive">*</span>
+              {t("cvs.cvName")} <span className="text-destructive">*</span>
             </label>
             <input
               id="cv_name"
               type="text"
-              placeholder="e.g. Senior Frontend Engineer"
+              placeholder={t("cvs.namePlaceholder")}
               disabled={isSubmitting}
               defaultValue={initialData?.name || ""}
               {...register("name")}
@@ -147,12 +147,12 @@ export function CVDialog({
               htmlFor="cv_education"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              Education
+              {t("cvs.education")}
             </label>
             <input
               id="cv_education"
               type="text"
-              placeholder="e.g. Bachelor of Science in Computer Science"
+              placeholder={t("cvs.educationPlaceholder")}
               disabled={isSubmitting}
               defaultValue={initialData?.education || ""}
               {...register("education")}
@@ -172,12 +172,13 @@ export function CVDialog({
               htmlFor="cv_description"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              Description <span className="text-destructive">*</span>
+              {t("common.description")}{" "}
+              <span className="text-destructive">*</span>
             </label>
             <textarea
               id="cv_description"
               rows={4}
-              placeholder="Summarize your professional background, key achievements, and career focus..."
+              placeholder={t("cvs.descriptionPlaceholder")}
               disabled={isSubmitting}
               defaultValue={initialData?.description || ""}
               {...register("description")}
@@ -202,7 +203,7 @@ export function CVDialog({
                 className="inline-flex items-center gap-1.5 text-xs text-destructive hover:text-red-700 dark:hover:text-red-400 font-medium transition-colors cursor-pointer"
               >
                 <Trash2 className="h-3.5 w-3.5" />
-                <span>Delete</span>
+                <span>{t("common.delete")}</span>
               </button>
             ) : (
               <div />
@@ -216,7 +217,7 @@ export function CVDialog({
                 disabled={isSubmitting}
                 className="rounded-full px-4 h-9 text-xs font-medium cursor-pointer"
               >
-                Cancel
+                {t("common.cancel")}
               </Button>
               <button
                 type="submit"
@@ -224,10 +225,10 @@ export function CVDialog({
                 className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white px-6 h-9 text-xs font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {isSubmitting
-                  ? "Saving..."
+                  ? t("common.saving")
                   : isEdit
-                    ? "Save Changes"
-                    : "Create CV"}
+                    ? t("common.saveChanges")
+                    : t("cvs.createCv")}
               </button>
             </div>
           </div>
@@ -240,9 +241,9 @@ export function CVDialog({
 export function CreateCVDialog(
   props: Omit<CVDialogProps, "initialData" | "title">,
 ) {
-  return <CVDialog {...props} initialData={null} title="Create CV" />;
+  return <CVDialog {...props} initialData={null} />;
 }
 
 export function UpdateCVDialog(props: CVDialogProps) {
-  return <CVDialog {...props} title={props.title || "Update CV"} />;
+  return <CVDialog {...props} />;
 }

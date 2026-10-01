@@ -15,6 +15,7 @@ import { notify } from "@/components/ui/toast";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { CVDialog } from "@/features/cvs/ui/CVDialog";
 import { DeleteCVDialog } from "@/features/cvs/ui/DeleteCVDialog";
+import { useTranslation } from "@/i18n";
 import type { CvFormData } from "../../users/schemas/cv.schema";
 
 export interface CVItem {
@@ -42,6 +43,7 @@ export interface CVTableProps {
 }
 
 export function CVTable({ initialCvs }: CVTableProps = {}) {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState<SortField>("name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
@@ -249,7 +251,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
     if (cv.user?.email) {
       return cv.user.email;
     }
-    return "Unknown Employee";
+    return t("cvs.unknownEmployee");
   };
 
   return (
@@ -262,11 +264,11 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
           />
           <input
             type="text"
-            placeholder="Search CVs..."
+            placeholder={t("cvs.searchPlaceholder")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full h-10 pl-10 pr-4 rounded-full border border-cv-border dark:border-zinc-700 bg-transparent text-base leading-cv-input text-cv-text dark:text-zinc-100 placeholder:text-cv-placeholder focus:outline-hidden focus:border-cv-text dark:focus:border-zinc-400 transition-colors"
-            aria-label="Search CVs"
+            aria-label={t("cvs.searchAria")}
           />
         </div>
 
@@ -277,7 +279,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
             className=" text-cv-accent bg-transparent  hover:bg-transparent text-xs px-4 h-8 uppercase font-medium tracking-wider cursor-pointer inline-flex items-center gap-1.5"
           >
             <Plus className="h-3.5 w-3.5" />
-            <span>Create CV</span>
+            <span>{t("cvs.createCv")}</span>
           </Button>
         </div>
       </div>
@@ -292,7 +294,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
                   onClick={() => handleSort("name")}
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden cursor-pointer"
                 >
-                  <span>Name</span>
+                  <span>{t("common.name")}</span>
                   {sortField === "name" &&
                     (sortOrder === "asc" ? (
                       <ChevronDown className="h-4 w-4 text-cv-muted" />
@@ -308,7 +310,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
                   onClick={() => handleSort("education")}
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden cursor-pointer"
                 >
-                  <span>Education</span>
+                  <span>{t("cvs.education")}</span>
                   {sortField === "education" &&
                     (sortOrder === "asc" ? (
                       <ChevronDown className="h-4 w-4 text-cv-muted" />
@@ -324,7 +326,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
                   onClick={() => handleSort("employee")}
                   className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden cursor-pointer"
                 >
-                  <span>Employee</span>
+                  <span>{t("cvs.employee")}</span>
                   {sortField === "employee" &&
                     (sortOrder === "asc" ? (
                       <ChevronDown className="h-4 w-4 text-cv-muted" />
@@ -345,7 +347,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
                   colSpan={4}
                   className="px-4 py-8 text-center text-sm text-cv-muted dark:text-zinc-400"
                 >
-                  No CVs found. Click &ldquo;Create CV&rdquo; to add one.
+                  {t("cvs.noCvsFound")}
                 </td>
               </tr>
             ) : (

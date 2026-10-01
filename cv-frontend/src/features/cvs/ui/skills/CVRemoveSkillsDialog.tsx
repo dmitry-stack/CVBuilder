@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/i18n";
 
 export interface CVRemoveSkillsDialogProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export function CVRemoveSkillsDialog({
   skillNames,
   isDeleting: propIsDeleting = false,
 }: CVRemoveSkillsDialogProps) {
+  const { t } = useTranslation();
   const [internalDeleting, setInternalDeleting] = useState(false);
   const isDeleting = propIsDeleting || internalDeleting;
 
@@ -72,7 +74,7 @@ export function CVRemoveSkillsDialog({
               id="remove-skills-dialog-title"
               className="text-base font-medium text-zinc-900 dark:text-zinc-100 font-roboto"
             >
-              Remove skills
+              {t("cvSkills.removeSkillsTitle")}
             </h2>
           </div>
           <button
@@ -91,7 +93,7 @@ export function CVRemoveSkillsDialog({
             id="remove-skills-dialog-description"
             className="text-sm text-zinc-600 dark:text-zinc-300 font-roboto leading-relaxed"
           >
-            Are you sure you want to remove {count} skills?
+            {t("cvSkills.removeConfirmCount", { count })}
           </p>
           {skillNames.length > 0 && (
             <p className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto">
@@ -108,7 +110,7 @@ export function CVRemoveSkillsDialog({
             disabled={isDeleting}
             className="rounded-full px-4 h-9 text-xs font-medium uppercase tracking-wider cursor-pointer"
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
           <button
             type="button"
@@ -116,7 +118,7 @@ export function CVRemoveSkillsDialog({
             disabled={isDeleting}
             className="rounded-full bg-destructive hover:bg-destructive/90 text-white px-5 h-9 text-xs font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 cursor-pointer inline-flex items-center gap-1.5"
           >
-            {isDeleting ? "Removing..." : "Confirm"}
+            {isDeleting ? t("common.removing") : t("common.confirm")}
           </button>
         </div>
       </div>

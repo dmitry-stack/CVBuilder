@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { X, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/i18n";
 
 export interface DeleteLanguageDialogProps {
   isOpen: boolean;
@@ -19,13 +20,16 @@ export function DeleteLanguageDialog({
   languageNames,
   isDeleting: propIsDeleting = false,
 }: DeleteLanguageDialogProps) {
+  const { t } = useTranslation();
   const [internalDeleting, setInternalDeleting] = useState(false);
   const isDeleting = propIsDeleting || internalDeleting;
 
   if (!isOpen) return null;
 
   const isSingle = languageNames.length === 1;
-  const title = isSingle ? "Delete Language" : "Delete Languages";
+  const title = isSingle
+    ? t("languages.deleteLanguage")
+    : t("languages.deleteLanguages");
 
   const handleConfirm = async () => {
     try {
@@ -81,15 +85,18 @@ export function DeleteLanguageDialog({
             id="delete-language-dialog-description"
             className="text-sm text-zinc-600 dark:text-zinc-300 font-roboto leading-relaxed"
           >
-            Are you sure you want to delete{" "}
             {isSingle ? (
               <span className="font-semibold text-zinc-900 dark:text-zinc-100">
-                &ldquo;{languageNames[0]}&rdquo;
+                {t("languages.deleteConfirmText", {
+                  name: `“${languageNames[0]}”`,
+                })}
               </span>
             ) : (
               <>
                 <span className="font-semibold text-zinc-900 dark:text-zinc-100">
-                  {languageNames.length} selected languages
+                  {t("languages.deleteCountConfirmText", {
+                    count: languageNames.length,
+                  })}
                 </span>
                 {languageNames.length > 0 && (
                   <span className="text-zinc-500 dark:text-zinc-400">
@@ -99,12 +106,13 @@ export function DeleteLanguageDialog({
                 )}
               </>
             )}
-            ?
           </p>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto">
-            This action cannot be undone. The selected{" "}
-            {isSingle ? "language" : "languages"} will be permanently removed
-            from this profile.
+            {t("languages.deleteWarning", {
+              item: isSingle
+                ? t("languages.language")
+                : t("languages.languages"),
+            })}
           </p>
         </div>
 
@@ -116,7 +124,7 @@ export function DeleteLanguageDialog({
             disabled={isDeleting}
             className="rounded-full px-4 h-9 text-xs font-medium cursor-pointer"
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
           <button
             type="button"
@@ -125,10 +133,12 @@ export function DeleteLanguageDialog({
             className="rounded-full bg-destructive hover:bg-destructive/90 text-white px-5 h-9 text-xs font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 cursor-pointer inline-flex items-center gap-1.5"
           >
             {isDeleting
-              ? "Deleting..."
+              ? t("common.deleting")
               : isSingle
-                ? "Delete Language"
-                : `Delete Languages (${languageNames.length})`}
+                ? t("languages.deleteLanguage")
+                : t("languages.deleteLanguageCount", {
+                    count: languageNames.length,
+                  })}
           </button>
         </div>
       </div>

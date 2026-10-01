@@ -1,6 +1,7 @@
 "use client";
 
 import { Search, Plus } from "lucide-react";
+import { useTranslation } from "@/i18n";
 
 interface CVProjectsHeaderProps {
   search: string;
@@ -15,6 +16,8 @@ export function CVProjectsHeader({
   isOwner,
   onAddClick,
 }: CVProjectsHeaderProps) {
+  const { t } = useTranslation();
+
   return (
     <div
       data-slot="cv-projects-header"
@@ -27,10 +30,10 @@ export function CVProjectsHeader({
         />
         <input
           type="text"
-          placeholder="Search"
+          placeholder={t("projects.searchPlaceholder")}
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          aria-label="Search projects"
+          aria-label={t("projects.searchAria")}
           className="w-full h-10 pl-10 pr-4 rounded-full border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm text-[#2E2E2E] dark:text-zinc-100 placeholder:text-cv-placeholder focus:outline-hidden focus:border-cv-accent transition-colors"
         />
       </div>
@@ -42,7 +45,7 @@ export function CVProjectsHeader({
           className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium uppercase tracking-wider text-cv-accent dark:text-[#E04B4C] hover:opacity-80 transition-opacity cursor-pointer self-start sm:self-auto py-2"
         >
           <Plus className="h-4 w-4 stroke-[2.5]" />
-          <span>Add Project</span>
+          <span>{t("projects.addProject")}</span>
         </button>
       )}
     </div>

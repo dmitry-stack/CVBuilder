@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { useTranslation } from "@/i18n";
 import {
   formatProjectDate,
   type CvProjectItem,
@@ -20,6 +21,7 @@ export function CVProjectCard({
   onEdit,
   onDelete,
 }: CVProjectCardProps) {
+  const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -86,7 +88,7 @@ export function CVProjectCard({
                     className="w-full px-3 py-2 text-left text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-2 cursor-pointer"
                   >
                     <Pencil className="h-3.5 w-3.5" />
-                    <span>Edit</span>
+                    <span>{t("common.edit")}</span>
                   </button>
 
                   <button
@@ -99,7 +101,7 @@ export function CVProjectCard({
                     className="w-full px-3 py-2 text-left text-xs text-destructive hover:bg-red-50 dark:hover:bg-red-950/30 flex items-center gap-2 cursor-pointer"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
-                    <span>Remove</span>
+                    <span>{t("common.remove")}</span>
                   </button>
                 </div>
               )}

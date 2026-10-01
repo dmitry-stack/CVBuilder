@@ -13,6 +13,7 @@ import { LanguageProficiencyBar } from "./LanguageProficiencyBar";
 import { LanguagesSkeleton } from "./LanguagesSkeleton";
 import { LanguageDialog } from "./LanguageDialog";
 import { DeleteLanguageDialog } from "./DeleteLanguageDialog";
+import { useTranslation } from "@/i18n";
 import type {
   LanguageFormData,
   ProficiencyType,
@@ -49,6 +50,7 @@ export function UserLanguagesView({
   initialProfile,
   isOwner: propIsOwner,
 }: UserLanguagesViewProps) {
+  const { t } = useTranslation();
   const { isOwnProfile } = useCurrentUser();
   const isOwner =
     typeof propIsOwner === "boolean" ? propIsOwner : isOwnProfile(userId);
@@ -281,7 +283,7 @@ export function UserLanguagesView({
           className="w-full py-16 flex flex-col items-center justify-center text-center rounded-lg border border-dashed border-zinc-200 dark:border-zinc-800"
         >
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
-            No languages have been added yet.
+            {t("languages.noLanguages")}
           </p>
           {isOwner && (
             <Button
@@ -289,14 +291,14 @@ export function UserLanguagesView({
               onClick={handleOpenAdd}
               className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white text-xs px-5 h-9 uppercase font-medium tracking-wider cursor-pointer"
             >
-              Add Your First Language
+              {t("languages.addFirstLanguage")}
             </Button>
           )}
         </div>
       ) : (
         <section data-slot="languages-section" className="space-y-4">
           <h2 className="text-base font-normal text-[#2E2E2E] dark:text-zinc-100 font-roboto">
-            Languages
+            {t("header.languages")}
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
@@ -397,7 +399,7 @@ export function UserLanguagesView({
                     className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer select-none"
                   >
                     <Plus className="h-4 w-4 stroke-[2.5]" />
-                    <span>Add Language</span>
+                    <span>{t("languages.addLanguage")}</span>
                   </button>
 
                   <button
@@ -406,7 +408,7 @@ export function UserLanguagesView({
                     className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-[#C63031] dark:text-[#E04B4C] hover:opacity-80 transition-opacity cursor-pointer select-none"
                   >
                     <TrashXIcon className="h-4 w-4" />
-                    <span>Remove Languages</span>
+                    <span>{t("languages.removeLanguages")}</span>
                   </button>
                 </>
               ) : (
@@ -416,7 +418,7 @@ export function UserLanguagesView({
                     onClick={handleCancelDeleteMode}
                     className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer select-none"
                   >
-                    <span>Cancel</span>
+                    <span>{t("common.cancel")}</span>
                   </button>
 
                   <button
@@ -428,8 +430,8 @@ export function UserLanguagesView({
                     <TrashXIcon className="h-4 w-4" />
                     <span>
                       {selectedLanguages.size > 0
-                        ? `Delete (${selectedLanguages.size})`
-                        : "Delete"}
+                        ? `${t("common.delete")} (${selectedLanguages.size})`
+                        : t("common.delete")}
                     </span>
                   </button>
                 </>
