@@ -58,13 +58,41 @@ export function useCvPreview(cvId: string) {
     ? cv.languages
     : profile?.languages || [];
 
+  const getPageStyles = (): string => {
+    let cssText = "";
+    try {
+      for (const sheet of Array.from(document.styleSheets)) {
+        try {
+          if (sheet.cssRules) {
+            for (const rule of Array.from(sheet.cssRules)) {
+              cssText += rule.cssText + "\n";
+            }
+          }
+        } catch (e) {
+          console.warn("Could not read stylesheet rules:", e);
+        }
+      }
+    } catch (err) {
+      console.error("Error gathering stylesheets:", err);
+    }
+    return cssText;
+  };
+
   const handleExportPdf = async () => {
     if (!cv) return;
     setIsExporting(true);
 
     try {
       const container = document.getElementById("cv-preview-content");
-      const htmlContent = container ? container.outerHTML : "";
+      if (!container) return;
+
+      const clone = container.cloneNode(true) as HTMLElement;
+      clone
+        .querySelectorAll("[data-no-export], [data-no-print], button")
+        .forEach((el) => el.remove());
+      const htmlContent = clone.outerHTML;
+
+      const activeStyles = getPageStyles();
 
       const fullHtml = `
         <!DOCTYPE html>
@@ -72,9 +100,50 @@ export function useCvPreview(cvId: string) {
           <head>
             <meta charset="utf-8" />
             <title>${cv.name || "CV"}</title>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+            <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet" />
             <style>
-              body { font-family: Roboto, sans-serif; margin: 0; padding: 24px; color: #18181b; }
-              * { box-sizing: border-box; }
+              @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
+              * {
+                font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                box-sizing: border-box;
+              }
+              body {
+                background: #ffffff !important;
+                color: #2e2e2e !important;
+              }
+              [data-no-export], [data-no-print], button {
+                display: none !important;
+              }
+
+              /* Preserve two-column layout and red vertical dividers in PDF export */
+              .cv-preview-two-col {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 2rem !important;
+              }
+              .cv-preview-col-left {
+                width: 32% !important;
+                flex-shrink: 0 !important;
+              }
+              .cv-preview-col-right {
+                width: 68% !important;
+                padding-left: 1.5rem !important;
+                border-left: 2px solid #E57373 !important;
+              }
+
+              /* Table red dividers in PDF */
+              table thead tr {
+                border-bottom: 2px solid #E57373 !important;
+              }
+              table tbody tr {
+                border-bottom: 1px solid rgba(229, 115, 115, 0.4) !important;
+              }
+
+              ${activeStyles}
             </style>
           </head>
           <body>

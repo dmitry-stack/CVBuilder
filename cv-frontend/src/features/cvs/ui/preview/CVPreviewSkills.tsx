@@ -24,9 +24,9 @@ export function CVPreviewSkills({
       </h2>
 
       <div className="w-full font-roboto overflow-x-auto">
-        <table className="w-full text-left border-collapse min-w-[540px]">
+        <table className="w-full table-fixed text-left border-collapse min-w-[540px]">
           <thead>
-            <tr className="border-b border-[#E57373] dark:border-red-900/60 pb-2 text-[11px] font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+            <tr className="border-b-2 border-[#E57373] dark:border-red-900/60 pb-2 text-[11px] font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
               <th className="py-2.5 font-bold w-[30%]">Skills</th>
               <th className="py-2.5 font-bold w-[35%]"></th>
               <th className="py-2.5 font-bold w-[18%] text-center leading-tight">
@@ -39,9 +39,12 @@ export function CVPreviewSkills({
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+          <tbody className="divide-y divide-[#E57373]/40 dark:divide-red-900/40">
             {skillsGrouped.map((cat) => (
-              <tr key={cat.categoryName} className="align-top">
+              <tr
+                key={cat.categoryName}
+                className="align-top border-b border-[#E57373]/40 dark:border-red-900/40"
+              >
                 <td className="py-3 pr-4 text-xs font-semibold text-cv-accent">
                   {cat.categoryName}
                 </td>

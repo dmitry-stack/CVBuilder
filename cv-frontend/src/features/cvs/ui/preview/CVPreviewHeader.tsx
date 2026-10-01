@@ -28,10 +28,11 @@ export function CVPreviewHeader({
 
       <button
         type="button"
+        data-no-export
         onClick={onExportPdf}
         disabled={isExporting}
         aria-label="Export PDF"
-        className="self-start sm:self-center inline-flex items-center justify-center gap-2 rounded-full border border-cv-accent text-cv-accent hover:bg-cv-accent/5 active:bg-cv-accent/10 px-6 py-2 text-xs font-medium uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-50"
+        className="print:hidden self-start sm:self-center inline-flex items-center justify-center gap-2 rounded-full border border-cv-accent text-cv-accent hover:bg-cv-accent/5 active:bg-cv-accent/10 px-6 py-2 text-xs font-medium uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-50"
       >
         {isExporting ? (
           <>

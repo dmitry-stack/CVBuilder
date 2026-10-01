@@ -45,9 +45,9 @@ export function CVPreviewProjects({ projects }: CVPreviewProjectsProps) {
           return (
             <div
               key={project.id}
-              className="flex flex-col md:flex-row gap-6 md:gap-8"
+              className="flex flex-col md:flex-row gap-6 md:gap-8 cv-preview-two-col"
             >
-              <div className="w-full md:w-[32%] shrink-0">
+              <div className="w-full md:w-[32%] shrink-0 cv-preview-col-left">
                 <h3 className="text-sm font-bold text-cv-accent uppercase tracking-wide font-roboto">
                   {project.name}
                 </h3>
@@ -56,7 +56,7 @@ export function CVPreviewProjects({ projects }: CVPreviewProjectsProps) {
                 </p>
               </div>
 
-              <div className="w-full md:w-[68%] pl-0 md:pl-6 border-l-0 md:border-l-2 border-[#E57373] dark:border-red-900/60 space-y-4">
+              <div className="w-full md:w-[68%] pl-0 md:pl-6 border-l-0 md:border-l-2 border-[#E57373] dark:border-red-900/60 space-y-4 cv-preview-col-right">
                 <div>
                   <h4 className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 font-roboto">
                     Project roles

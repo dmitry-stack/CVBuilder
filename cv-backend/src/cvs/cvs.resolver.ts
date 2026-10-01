@@ -62,7 +62,8 @@ export class CvsResolver {
       browserWSEndpoint: process.env.CHROME_WS,
     });
     const page = await browser.newPage();
-    await page.setContent(args.html);
+    await page.setContent(args.html, { waitUntil: ["load", "networkidle0"] });
+    await page.evaluateHandle("document.fonts.ready");
     const buffer = await page.pdf({
       format: "A4",
       margin: args.margin,
