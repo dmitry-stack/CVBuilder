@@ -12,7 +12,7 @@ import { profileSchema, type ProfileFormData } from "../schemas/profile.schema";
 import { notify } from "@/components/ui/toast";
 import { HeaderSync } from "@/components/layout/HeaderContext";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
-import { useTranslation } from "@/i18n";
+import { useTranslation, type TranslationKey } from "@/i18n";
 import {
   UserDocument,
   DepartmentsDocument,
@@ -67,7 +67,7 @@ const DEFAULT_POSITIONS = [
 ];
 
 function formatMemberSince(
-  t: (key: string, params?: { date: string }) => string,
+  t: (key: TranslationKey, params?: Record<string, string | number>) => string,
   dateString?: string,
 ): string {
   let dateText = "Sun Jan 14 2024";
@@ -291,7 +291,7 @@ export function ProfileForm({
         </p>
 
         <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500 font-roboto">
-          {/* {formatMemberSince(t, activeUser.created_at)} */}
+          {formatMemberSince(t, activeUser.created_at)}
         </p>
       </div>
 

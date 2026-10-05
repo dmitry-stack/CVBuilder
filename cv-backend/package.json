@@ -9,7 +9,7 @@
   },
   "scripts": {
     "schema": "ts-node create-definitions",
-    "start": "pnpm run schema && nest start --watch",
+    "start": "ts-node create-definitions && nest start --watch",
     "build": "nest build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",

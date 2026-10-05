@@ -65,7 +65,7 @@ function CVProjectDialogContent({
           id="dialog-title"
           className="text-xl font-medium leading-6 tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100"
         >
-          {initialData ? t("projects.updateProject") : t("projects.addProject")}
+          {initialData ? t("projects.updateProject") : t("projects.addProjectTitle")}
         </h2>
         <button
           type="button"
@@ -125,7 +125,7 @@ function CVProjectDialogContent({
               htmlFor="p_roles"
               className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
             >
-              {t("preview.projectRoles")}
+              {t("projects.roles")}
             </label>
             <CVProjectRoleInput value={rolesText} onChange={setRolesText} />
           </div>
