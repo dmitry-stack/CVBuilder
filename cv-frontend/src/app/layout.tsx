@@ -5,6 +5,8 @@ import { roboto } from "./fonts";
 import { ReactNode } from "react";
 import { ApolloProviderWrapper } from "@/lib/apollo-provider";
 import { AppToastContainer } from "@/components/ui/toast";
+import { ThemeProvider } from "next-themes";
+import { LanguageProvider } from "@/i18n";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,12 +15,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`min-h-full flex flex-col ${roboto.variable} ${roboto.className} font-sans antialiased`}
       >
-        <ApolloProviderWrapper>{children}</ApolloProviderWrapper>
-        <AppToastContainer />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <LanguageProvider>
+            <ApolloProviderWrapper>{children}</ApolloProviderWrapper>
+            <AppToastContainer />
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

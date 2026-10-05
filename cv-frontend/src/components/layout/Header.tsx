@@ -4,20 +4,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight, User } from "lucide-react";
 import { useHeaderContext } from "./HeaderContext";
+import { useTranslation } from "@/i18n";
 
 export function Header() {
   const pathname = usePathname() || "";
   const { userName } = useHeaderContext();
+  const { t } = useTranslation();
 
   const userMatch = pathname.match(/^\/users\/([^/]+)(?:\/([^/]+))?$/);
 
   if (userMatch) {
     const [, userId, subRoute] = userMatch;
     if (userId && userId !== "loading") {
-      let subPageTitle = "Profile";
-      if (subRoute === "skills") subPageTitle = "Skills";
-      else if (subRoute === "languages") subPageTitle = "Languages";
-      else if (subRoute === "cvs") subPageTitle = "CVs";
+      let subPageTitle = t("header.profile");
+      if (subRoute === "skills") subPageTitle = t("header.skills");
+      else if (subRoute === "languages") subPageTitle = t("header.languages");
+      else if (subRoute === "cvs") subPageTitle = t("header.cvs");
 
       return (
         <header
@@ -33,7 +35,7 @@ export function Header() {
               href="/users"
               className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
             >
-              Employees
+              {t("header.employees")}
             </Link>
 
             <ChevronRight
@@ -73,10 +75,10 @@ export function Header() {
   if (cvMatch) {
     const [, cvId, subRoute] = cvMatch;
     if (cvId && cvId !== "loading") {
-      let subPageTitle = "Details";
-      if (subRoute === "skills") subPageTitle = "Skills";
-      else if (subRoute === "projects") subPageTitle = "Projects";
-      else if (subRoute === "preview") subPageTitle = "Preview";
+      let subPageTitle = t("header.details");
+      if (subRoute === "skills") subPageTitle = t("header.skills");
+      else if (subRoute === "projects") subPageTitle = t("header.projects");
+      else if (subRoute === "preview") subPageTitle = t("header.preview");
 
       return (
         <header
@@ -92,7 +94,7 @@ export function Header() {
               href="/cvs"
               className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
             >
-              CVs
+              {t("header.cvs")}
             </Link>
 
             <ChevronRight
@@ -126,20 +128,20 @@ export function Header() {
     }
   }
 
-  let headerTitle = "Employees";
+  let headerTitle = t("header.employees");
   if (pathname.startsWith("/skills")) {
-    headerTitle = "Skills";
+    headerTitle = t("header.skills");
   } else if (pathname.startsWith("/languages")) {
-    headerTitle = "Languages";
+    headerTitle = t("header.languages");
   } else if (pathname.startsWith("/cvs")) {
-    headerTitle = "CVs";
+    headerTitle = t("header.cvs");
   } else if (pathname.startsWith("/settings")) {
-    headerTitle = "Settings";
+    headerTitle = t("header.settings");
   }
 
   return (
     <header data-slot="app-header" className="h-14 px-6 flex items-center">
-      <span className="font-roboto text-base leading-6 tracking-cv capitalize text-cv-muted dark:text-zinc-400">
+      <span className="font-roboto text-base leading-6 tracking-cv capitalize text-cv-muted dark:text-[#AEAEAE]">
         {headerTitle}
       </span>
     </header>

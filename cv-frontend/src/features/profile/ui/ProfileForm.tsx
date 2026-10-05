@@ -12,6 +12,7 @@ import { profileSchema, type ProfileFormData } from "../schemas/profile.schema";
 import { notify } from "@/components/ui/toast";
 import { HeaderSync } from "@/components/layout/HeaderContext";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { useTranslation, type TranslationKey } from "@/i18n";
 import {
   UserDocument,
   DepartmentsDocument,
@@ -65,15 +66,22 @@ const DEFAULT_POSITIONS = [
   "UI/UX Designer",
 ];
 
-function formatMemberSince(dateString?: string): string {
-  if (!dateString) return "A member since Sun Jan 14 2024";
-  try {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return "A member since Sun Jan 14 2024";
-    return `A member since ${date.toDateString()}`;
-  } catch {
-    return "A member since Sun Jan 14 2024";
+function formatMemberSince(
+  t: (key: TranslationKey, params?: Record<string, string | number>) => string,
+  dateString?: string,
+): string {
+  let dateText = "Sun Jan 14 2024";
+  if (dateString) {
+    try {
+      const date = new Date(dateString);
+      if (!isNaN(date.getTime())) {
+        dateText = date.toDateString();
+      }
+    } catch {
+      // keep fallback
+    }
   }
+  return t("profile.memberSince", { date: dateText });
 }
 
 export function ProfileForm({
@@ -84,6 +92,7 @@ export function ProfileForm({
   isOwner: propIsOwner,
   onSave,
 }: ProfileFormProps) {
+  const { t } = useTranslation();
   const { isOwnProfile } = useCurrentUser();
   const effectiveUserId = userId || initialData?.id;
   const isOwner =
@@ -282,7 +291,7 @@ export function ProfileForm({
         </p>
 
         <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500 font-roboto">
-          {formatMemberSince(activeUser.created_at)}
+          {formatMemberSince(t, activeUser.created_at)}
         </p>
       </div>
 
@@ -296,12 +305,12 @@ export function ProfileForm({
               htmlFor="first_name"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              First Name
+              {t("profile.firstName")}
             </label>
             <input
               id="first_name"
               type="text"
-              placeholder="First Name"
+              placeholder={t("profile.firstName")}
               disabled={!isOwner}
               {...register("first_name")}
               aria-invalid={!!errors.first_name}
@@ -320,12 +329,12 @@ export function ProfileForm({
               htmlFor="last_name"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              Last Name
+              {t("profile.lastName")}
             </label>
             <input
               id="last_name"
               type="text"
-              placeholder="Last Name"
+              placeholder={t("profile.lastName")}
               disabled={!isOwner}
               {...register("last_name")}
               aria-invalid={!!errors.last_name}
@@ -344,7 +353,7 @@ export function ProfileForm({
               htmlFor="department"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              Department
+              {t("profile.department")}
             </label>
             <div className="relative">
               <select
@@ -382,7 +391,7 @@ export function ProfileForm({
               htmlFor="position"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              Position
+              {t("profile.position")}
             </label>
             <div className="relative">
               <select
@@ -428,14 +437,14 @@ export function ProfileForm({
               disabled={!isDirty || isSubmitting}
               className="rounded-full px-6 h-10 text-sm font-medium cursor-pointer"
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
             <button
               type="submit"
               disabled={!isDirty || isSubmitting}
               className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white px-8 h-10 text-sm font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus:outline-hidden"
             >
-              {isSubmitting ? "Saving..." : "Save"}
+              {isSubmitting ? t("common.saving") : t("common.save")}
             </button>
           </div>
         )}

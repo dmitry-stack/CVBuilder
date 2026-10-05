@@ -7,6 +7,7 @@ import { CVProjectEnvironmentInput } from "./CVProjectEnvironmentInput";
 import { CVProjectRoleInput } from "./CVProjectRoleInput";
 import { CVProjectMetaFields } from "./CVProjectMetaFields";
 import { useCVProjectDialogForm } from "../../hooks/useCVProjectDialogForm";
+import { useTranslation } from "@/i18n";
 
 export interface AvailableProjectItem {
   id: string;
@@ -32,6 +33,7 @@ function CVProjectDialogContent({
   onClose,
   onSave,
 }: Omit<CVProjectDialogProps, "isOpen">) {
+  const { t } = useTranslation();
   const {
     selectedProjectId,
     currentDomain,
@@ -63,7 +65,7 @@ function CVProjectDialogContent({
           id="dialog-title"
           className="text-xl font-medium leading-6 tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100"
         >
-          {initialData ? "Update project" : "Add project"}
+          {initialData ? t("projects.updateProject") : t("projects.addProjectTitle")}
         </h2>
         <button
           type="button"
@@ -96,7 +98,7 @@ function CVProjectDialogContent({
               htmlFor="p_desc"
               className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
             >
-              Description
+              {t("common.description")}
             </label>
             <textarea
               id="p_desc"
@@ -110,7 +112,7 @@ function CVProjectDialogContent({
 
           <div>
             <label className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]">
-              Environment
+              {t("preview.environment")}
             </label>
             <CVProjectEnvironmentInput
               tags={environmentTags}
@@ -123,7 +125,7 @@ function CVProjectDialogContent({
               htmlFor="p_roles"
               className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
             >
-              Roles
+              {t("projects.roles")}
             </label>
             <CVProjectRoleInput value={rolesText} onChange={setRolesText} />
           </div>
@@ -133,7 +135,7 @@ function CVProjectDialogContent({
               htmlFor="p_resp"
               className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
             >
-              Responsibilities
+              {t("preview.responsibilities")}
             </label>
             <input
               id="p_resp"
@@ -153,14 +155,18 @@ function CVProjectDialogContent({
             disabled={isSubmitting}
             className="w-40 h-12 rounded-[40px] text-sm font-medium tracking-[0.4px] uppercase border border-[#2E2E2E] dark:border-zinc-300 text-[#2E2E2E] dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors cursor-pointer disabled:opacity-50"
           >
-            Cancel
+            {t("common.cancel")}
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
             className="w-40 h-12 rounded-[40px] text-sm font-medium tracking-[0.4px] uppercase text-[#F5F5F7] bg-cv-accent hover:bg-cv-accent-hover shadow-cv-button transition-colors cursor-pointer disabled:opacity-50"
           >
-            {isSubmitting ? "Saving..." : initialData ? "Update" : "Add"}
+            {isSubmitting
+              ? t("common.saving")
+              : initialData
+                ? t("common.update")
+                : t("common.add")}
           </button>
         </div>
       </form>

@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTranslation } from "@/i18n";
 
 export interface DropdownMenuButtonProps {
   id?: string;
@@ -25,6 +26,7 @@ export function DropdownMenuButton({
   onUpdate,
   onDelete,
 }: DropdownMenuButtonProps) {
+  const { t } = useTranslation();
   const targetId = id || userId || "";
   const targetHref = viewHref || `/users/${targetId}/profile`;
 
@@ -45,19 +47,23 @@ export function DropdownMenuButton({
       <DropdownMenuContent align="end" className="w-32">
         <DropdownMenuGroup>
           <DropdownMenuItem render={<Link href={targetHref} />}>
-            View
+            {t("common.view")}
           </DropdownMenuItem>
           {onUpdate ? (
-            <DropdownMenuItem onClick={onUpdate}>Update</DropdownMenuItem>
+            <DropdownMenuItem onClick={onUpdate}>
+              {t("common.update")}
+            </DropdownMenuItem>
           ) : (
-            <DropdownMenuItem>Update</DropdownMenuItem>
+            <DropdownMenuItem>{t("common.update")}</DropdownMenuItem>
           )}
           {onDelete ? (
             <DropdownMenuItem variant="destructive" onClick={onDelete}>
-              Delete
+              {t("common.delete")}
             </DropdownMenuItem>
           ) : (
-            <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive">
+              {t("common.delete")}
+            </DropdownMenuItem>
           )}
         </DropdownMenuGroup>
       </DropdownMenuContent>

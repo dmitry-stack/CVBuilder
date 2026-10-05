@@ -7,6 +7,7 @@ import { X, AlertCircle, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SkillMasteryBar } from "./SkillMasteryBar";
 import { DeleteSkillDialog } from "./DeleteSkillDialog";
+import { useTranslation } from "@/i18n";
 import {
   skillFormSchema,
   masteryLevels,
@@ -38,6 +39,7 @@ export function SkillDialog({
   categories,
   catalogSkills = [],
 }: SkillDialogProps) {
+  const { t } = useTranslation();
   const isEdit = Boolean(initialData);
 
   const {
@@ -122,7 +124,7 @@ export function SkillDialog({
             id="skill-dialog-title"
             className="text-base font-medium text-zinc-900 dark:text-zinc-100 font-roboto"
           >
-            {isEdit ? "Edit Skill" : "Add Skill"}
+            {isEdit ? t("skills.editSkill") : t("skills.addSkill")}
           </h2>
           <button
             type="button"
@@ -140,12 +142,12 @@ export function SkillDialog({
               htmlFor="skill_name"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              Skill Name
+              {t("skills.skillName")}
             </label>
             <input
               id="skill_name"
               type="text"
-              placeholder="e.g. React, TypeScript, Docker"
+              placeholder={t("skills.skillPlaceholder")}
               disabled={isEdit || isSubmitting}
               list="catalog-skills-list"
               {...register("name")}
@@ -171,7 +173,7 @@ export function SkillDialog({
               htmlFor="skill_category"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              Category
+              {t("skills.category")}
             </label>
             <select
               id="skill_category"
@@ -179,7 +181,7 @@ export function SkillDialog({
               {...register("categoryId")}
               className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors"
             >
-              <option value="">Select a category</option>
+              <option value="">{t("skills.selectCategory")}</option>
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
@@ -193,7 +195,7 @@ export function SkillDialog({
               htmlFor="skill_mastery"
               className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
             >
-              Mastery Level
+              {t("skills.mastery")}
             </label>
             <div className="space-y-2">
               <select
@@ -211,7 +213,7 @@ export function SkillDialog({
 
               <div className="flex items-center gap-3 px-3 py-2 bg-zinc-100 dark:bg-zinc-800/50">
                 <span className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto">
-                  Preview:
+                  {t("common.preview")}
                 </span>
                 <SkillMasteryBar
                   mastery={selectedMastery || "Novice"}
@@ -239,7 +241,7 @@ export function SkillDialog({
                 className="inline-flex items-center gap-1.5 text-xs text-destructive hover:text-red-700 dark:hover:text-red-400 font-medium transition-colors cursor-pointer"
               >
                 <Trash2 className="h-3.5 w-3.5" />
-                <span>Delete</span>
+                <span>{t("common.delete")}</span>
               </button>
             ) : (
               <div />
@@ -253,7 +255,7 @@ export function SkillDialog({
                 disabled={isSubmitting}
                 className="rounded-full px-4 h-9 text-xs font-medium cursor-pointer"
               >
-                Cancel
+                {t("common.cancel")}
               </Button>
               <button
                 type="submit"
@@ -261,10 +263,10 @@ export function SkillDialog({
                 className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white px-6 h-9 text-xs font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {isSubmitting
-                  ? "Saving..."
+                  ? t("common.saving")
                   : isEdit
-                    ? "Save Changes"
-                    : "Add Skill"}
+                    ? t("common.saveChanges")
+                    : t("skills.addSkill")}
               </button>
             </div>
           </div>

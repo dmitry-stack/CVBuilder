@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { AlertTriangle } from "lucide-react";
+import { useTranslation } from "@/i18n";
 
 interface DeleteCVProjectDialogProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ export function DeleteCVProjectDialog({
   onClose,
   onConfirm,
 }: DeleteCVProjectDialogProps) {
+  const { t } = useTranslation();
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,14 +57,12 @@ export function DeleteCVProjectDialog({
               id="delete-project-title"
               className="text-base font-medium text-zinc-900 dark:text-zinc-100"
             >
-              Remove Project from CV
+              {t("projects.removeTitle")}
             </h3>
             <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              Are you sure you want to remove{" "}
-              <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                {projectName || "this project"}
-              </span>{" "}
-              from this CV?
+              {t("projects.removeConfirm", {
+                name: projectName || t("projects.thisProject"),
+              })}
             </p>
           </div>
         </div>
@@ -74,7 +74,7 @@ export function DeleteCVProjectDialog({
             disabled={isDeleting}
             className="rounded-full px-5 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer disabled:opacity-50"
           >
-            Cancel
+            {t("common.cancel")}
           </button>
           <button
             type="button"
@@ -82,7 +82,7 @@ export function DeleteCVProjectDialog({
             disabled={isDeleting}
             className="rounded-full px-6 py-2 text-sm font-medium uppercase tracking-wider text-white bg-destructive hover:bg-destructive/90 transition-colors cursor-pointer disabled:opacity-50"
           >
-            {isDeleting ? "Removing..." : "Remove"}
+            {isDeleting ? t("common.removing") : t("common.remove")}
           </button>
         </div>
       </div>

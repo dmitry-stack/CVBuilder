@@ -9,6 +9,7 @@ import {
   cvSkillFormSchema,
   type CvSkillFormData,
 } from "../../schemas/cv-skill.schema";
+import { useTranslation } from "@/i18n";
 
 export interface CVSkillOption {
   name: string;
@@ -33,6 +34,7 @@ export function CVSkillDialog({
   availableSkills,
   isSubmitting: propIsSubmitting = false,
 }: CVSkillDialogProps) {
+  const { t } = useTranslation();
   const isEdit = Boolean(initialData?.name);
 
   const {
@@ -81,7 +83,9 @@ export function CVSkillDialog({
     onClose();
   };
 
-  const dialogTitle = isEdit ? "Update skill" : "Add skill";
+  const dialogTitle = isEdit
+    ? t("cvSkills.updateSkill")
+    : t("cvSkills.addSkill");
 
   // Build the list of selectable options:
   // In edit mode, ensure the currently selected skill is in the options even if it was previously filtered
@@ -133,7 +137,7 @@ export function CVSkillDialog({
                 htmlFor="cv-skill-select"
                 className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1 font-roboto"
               >
-                Skill
+                {t("cvSkills.skill")}
               </label>
               <div className="relative">
                 <select
@@ -143,7 +147,7 @@ export function CVSkillDialog({
                   aria-describedby={errors.name ? "cv-skill-error" : undefined}
                   className="w-full h-10 px-3.5 pr-8 bg-[#E2E2E4] dark:bg-zinc-800 text-sm text-zinc-800 dark:text-zinc-200 border border-transparent focus:outline-hidden focus:border-cv-accent appearance-none cursor-pointer"
                 >
-                  <option value="">Select skill</option>
+                  <option value="">{t("cvSkills.selectSkill")}</option>
                   {options.map((opt) => (
                     <option
                       key={opt.name}
@@ -155,7 +159,7 @@ export function CVSkillDialog({
                   ))}
                   {options.length === 0 && (
                     <option value="" disabled>
-                      No skills available in profile
+                      {t("cvSkills.noAvailableSkills")}
                     </option>
                   )}
                 </select>
@@ -181,14 +185,18 @@ export function CVSkillDialog({
               disabled={isSubmitting}
               className="rounded-full px-4 h-9 text-xs font-medium uppercase tracking-wider cursor-pointer"
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
             <button
               type="submit"
               disabled={isSubmitting || !selectedName}
               className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white px-6 h-9 text-xs font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 cursor-pointer"
             >
-              {isSubmitting ? "Saving..." : isEdit ? "Save" : "Add"}
+              {isSubmitting
+                ? t("common.saving")
+                : isEdit
+                  ? t("common.save")
+                  : t("common.add")}
             </button>
           </div>
         </form>

@@ -2,6 +2,7 @@
 
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { CVProjectCard } from "./CVProjectCard";
+import { useTranslation } from "@/i18n";
 import type {
   CvProjectItem,
   ProjectSortField,
@@ -29,6 +30,8 @@ export function CVProjectsList({
   onDelete,
   onAddClick,
 }: CVProjectsListProps) {
+  const { t } = useTranslation();
+
   const renderSortIndicator = (field: ProjectSortField) => {
     if (sortField !== field) {
       return <ArrowDown className="h-3.5 w-3.5 text-zinc-400 opacity-60" />;
@@ -48,12 +51,12 @@ export function CVProjectsList({
           onClick={() => onSort("name")}
           className="col-span-12 sm:col-span-4 flex items-center gap-1 hover:text-cv-accent transition-colors text-left cursor-pointer focus:outline-hidden"
         >
-          <span>Name</span>
+          <span>{t("common.name")}</span>
           {renderSortIndicator("name")}
         </button>
 
         <div className="col-span-6 sm:col-span-3 text-left">
-          <span>Domain</span>
+          <span>{t("projects.domain")}</span>
         </div>
 
         <button
@@ -61,7 +64,7 @@ export function CVProjectsList({
           onClick={() => onSort("start_date")}
           className="col-span-3 sm:col-span-2 flex items-center gap-1 hover:text-cv-accent transition-colors text-left cursor-pointer focus:outline-hidden"
         >
-          <span>Start Date</span>
+          <span>{t("projects.startDate")}</span>
           {renderSortIndicator("start_date")}
         </button>
 
@@ -70,7 +73,7 @@ export function CVProjectsList({
           onClick={() => onSort("end_date")}
           className="col-span-3 sm:col-span-2 flex items-center gap-1 hover:text-cv-accent transition-colors text-left cursor-pointer focus:outline-hidden"
         >
-          <span>End Date</span>
+          <span>{t("projects.endDate")}</span>
           {renderSortIndicator("end_date")}
         </button>
 
@@ -83,7 +86,7 @@ export function CVProjectsList({
           className="text-center py-12 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg mt-6"
         >
           <p className="text-sm text-zinc-500 dark:text-zinc-400 font-roboto mb-4">
-            No projects found in this CV.
+            {t("projects.noProjects")}
           </p>
           {isOwner && onAddClick && (
             <button
@@ -91,7 +94,7 @@ export function CVProjectsList({
               onClick={onAddClick}
               className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white px-6 py-2 text-xs uppercase font-medium tracking-wider shadow-cv-button transition-colors cursor-pointer"
             >
-              Add Your First Project
+              {t("projects.addFirstProject")}
             </button>
           )}
         </div>

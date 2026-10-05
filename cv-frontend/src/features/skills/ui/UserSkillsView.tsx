@@ -13,6 +13,7 @@ import { SkillMasteryBar } from "./SkillMasteryBar";
 import { SkillsSkeleton } from "./SkillsSkeleton";
 import { SkillDialog } from "./SkillDialog";
 import { DeleteSkillDialog } from "./DeleteSkillDialog";
+import { useTranslation } from "@/i18n";
 import type { SkillFormData, MasteryType } from "../schemas/skill.schema";
 import {
   ProfileSkillsDocument,
@@ -94,6 +95,7 @@ export function UserSkillsView({
   initialProfile,
   isOwner: propIsOwner,
 }: UserSkillsViewProps) {
+  const { t } = useTranslation();
   const { isOwnProfile } = useCurrentUser();
   const isOwner =
     typeof propIsOwner === "boolean" ? propIsOwner : isOwnProfile(userId);
@@ -395,7 +397,7 @@ export function UserSkillsView({
           className="w-full py-16 flex flex-col items-center justify-center text-center rounded-lg border border-dashed border-zinc-200 dark:border-zinc-800"
         >
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
-            No skills have been added yet.
+            {t("skills.noSkills")}
           </p>
           {isOwner && (
             <Button
@@ -403,7 +405,7 @@ export function UserSkillsView({
               onClick={handleOpenAdd}
               className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white text-xs px-5 h-9 uppercase font-medium tracking-wider cursor-pointer"
             >
-              Add Your First Skill
+              {t("skills.addFirstSkill")}
             </Button>
           )}
         </div>
@@ -523,7 +525,7 @@ export function UserSkillsView({
                     className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer select-none"
                   >
                     <Plus className="h-4 w-4 stroke-[2.5]" />
-                    <span>Add Skill</span>
+                    <span>{t("skills.addSkill")}</span>
                   </button>
 
                   <button
@@ -532,7 +534,7 @@ export function UserSkillsView({
                     className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-[#C63031] dark:text-[#E04B4C] hover:opacity-80 transition-opacity cursor-pointer select-none"
                   >
                     <TrashXIcon className="h-4 w-4" />
-                    <span>Remove Skills</span>
+                    <span>{t("skills.removeSkills")}</span>
                   </button>
                 </>
               ) : (
@@ -542,7 +544,7 @@ export function UserSkillsView({
                     onClick={handleCancelDeleteMode}
                     className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer select-none"
                   >
-                    <span>Cancel</span>
+                    <span>{t("common.cancel")}</span>
                   </button>
 
                   <button
@@ -554,8 +556,8 @@ export function UserSkillsView({
                     <TrashXIcon className="h-4 w-4" />
                     <span>
                       {selectedSkills.size > 0
-                        ? `Delete (${selectedSkills.size})`
-                        : "Delete"}
+                        ? `${t("common.delete")} (${selectedSkills.size})`
+                        : t("common.delete")}
                     </span>
                   </button>
                 </>

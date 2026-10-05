@@ -27,31 +27,32 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { useTranslation, type TranslationKey } from "@/i18n";
 
 interface NavItem {
-  label: string;
+  key: TranslationKey;
   href: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
 const NAV_ITEMS: NavItem[] = [
   {
-    label: "Employees",
+    key: "nav.employees",
     href: "/users",
     icon: Users,
   },
   {
-    label: "Skills",
+    key: "nav.skills",
     href: "/skills",
     icon: TrendingUp,
   },
   {
-    label: "Languages",
+    key: "nav.languages",
     href: "/languages",
     icon: Languages,
   },
   {
-    label: "CVs",
+    key: "nav.cvs",
     href: "/cvs",
     icon: FileUser,
   },
@@ -93,6 +94,7 @@ export function Navbar({
   const client = useApolloClient();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const { t } = useTranslation();
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
@@ -123,8 +125,8 @@ export function Navbar({
             className={cn(
               "group flex h-14 w-full items-center gap-4 pl-4 rounded-r-full text-base leading-6 tracking-[0.15px] transition-colors",
               isActive
-                ? "bg-cv-surface dark:bg-zinc-800 text-cv-text dark:text-zinc-100 font-normal"
-                : "text-cv-muted dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-850 hover:text-cv-text dark:hover:text-zinc-200",
+                ? "bg-cv-surface dark:bg-[#383838] text-cv-text dark:text-[#F5F5F7] font-normal"
+                : "text-cv-muted dark:text-[#AEAEAE] hover:bg-zinc-100 dark:hover:bg-[#383838] hover:text-cv-text dark:hover:text-[#F5F5F7]",
             )}
             aria-current={isActive ? "page" : undefined}
           >
@@ -132,11 +134,11 @@ export function Navbar({
               className={cn(
                 "h-6 w-6 shrink-0 transition-colors",
                 isActive
-                  ? "text-cv-text dark:text-zinc-100"
-                  : "text-cv-muted dark:text-zinc-400 group-hover:text-cv-text dark:group-hover:text-zinc-200",
+                  ? "text-cv-text dark:text-[#F5F5F7]"
+                  : "text-cv-muted dark:text-[#AEAEAE] group-hover:text-cv-text dark:group-hover:text-[#F5F5F7]",
               )}
             />
-            <span className="font-roboto">{item.label}</span>
+            <span className="font-roboto">{t(item.key)}</span>
           </Link>
         );
       })}
@@ -149,7 +151,7 @@ export function Navbar({
         render={
           <button
             type="button"
-            className="group flex h-14 w-full items-center gap-2 pl-2 pr-3 rounded-r-full text-left transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+            className="group flex h-14 w-full items-center gap-2 pl-2 pr-3 rounded-r-full text-left transition-colors hover:bg-zinc-100 dark:hover:bg-[#383838] focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
             aria-label={`User profile for ${resolvedName}`}
           >
             <div
@@ -172,7 +174,7 @@ export function Navbar({
             </div>
             <div className="min-w-0 flex-1">
               <span
-                className="block truncate font-roboto text-base leading-6 tracking-cv text-cv-text dark:text-zinc-100"
+                className="block truncate font-roboto text-base leading-6 tracking-cv text-cv-text dark:text-[#F5F5F7]"
                 title={resolvedName}
               >
                 {resolvedName}
@@ -185,41 +187,52 @@ export function Navbar({
         side="top"
         align="start"
         sideOffset={8}
-        className="w-50  shadow-lg border border-zinc-200 dark:border-zinc-800 bg-[#E2E2E4] dark:bg-zinc-900"
+        alignOffset={0}
+        collisionPadding={0}
+        className="w-50 h-[121px] rounded-lg border border-cv-border dark:border-[#AEAEAE] bg-[#E2E2E4] dark:bg-[#2E2E2E] p-0 shadow-lg font-roboto overflow-hidden"
       >
-        <DropdownMenuGroup className="pt-1">
+        <DropdownMenuGroup className="flex flex-col h-full justify-between">
           <DropdownMenuItem
+            className="group/dropdown-menu-item flex h-10 w-full items-center gap-4 pl-4  text-base leading-6 tracking-cv text-cv-text dark:text-[#F5F5F7] hover:bg-zinc-100 dark:hover:bg-[#383838] focus:bg-zinc-100 dark:focus:bg-[#383838] cursor-pointer outline-hidden transition-colors"
             render={
-              <Link
-                href={profileHref}
-                onClick={() => setMobileOpen(false)}
-                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
-              />
+              <Link href={profileHref} onClick={() => setMobileOpen(false)} />
             }
           >
-            <UserIcon className="h-4 w-4" />
-            <span>Profile</span>
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center">
+              <UserIcon className="h-4 w-4 text-cv-text dark:text-[#F5F5F7]" />
+            </div>
+            <span className="font-roboto font-normal text-base leading-6 tracking-cv">
+              {t("nav.profile")}
+            </span>
           </DropdownMenuItem>
+
           <DropdownMenuItem
+            className="group/dropdown-menu-item flex h-10 w-full items-center gap-4 pl-4  text-base leading-6 tracking-cv text-cv-text dark:text-[#F5F5F7] hover:bg-zinc-100 dark:hover:bg-[#383838] focus:bg-zinc-100 dark:focus:bg-[#383838] cursor-pointer outline-hidden transition-colors"
             render={
-              <Link
-                href={profileHref}
-                onClick={() => setMobileOpen(false)}
-                className="flex w-full border-b border-[#AEAEAE] items-center gap-2 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
-              />
+              <Link href="/settings" onClick={() => setMobileOpen(false)} />
             }
           >
-            <Settings className="h-4 w-4" />
-            <span>Settings</span>
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center">
+              <Settings className="h-4 w-4 text-cv-text dark:text-[#F5F5F7]" />
+            </div>
+            <span className="font-roboto font-normal text-base leading-6 tracking-cv">
+              {t("nav.settings")}
+            </span>
           </DropdownMenuItem>
+
+          <div className="h-px w-full bg-cv-border dark:bg-[#AEAEAE]/30 shrink-0" />
+
           <DropdownMenuItem
-            variant="destructive"
             onClick={handleLogout}
             disabled={isLoggingOut}
-            className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
+            className="group/dropdown-menu-item flex h-10 w-full items-center gap-4 pl-4  text-base leading-6 tracking-cv text-cv-text dark:text-[#F5F5F7] hover:bg-zinc-100 dark:hover:bg-[#383838] focus:bg-zinc-100 dark:focus:bg-[#383838] cursor-pointer outline-hidden transition-colors"
           >
-            <LogOut className="h-4 w-4" />
-            <span>{isLoggingOut ? "Logging out..." : "Log out"}</span>
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center">
+              <LogOut className="h-4 w-4 text-cv-text dark:text-[#F5F5F7]" />
+            </div>
+            <span className="font-roboto font-normal text-base leading-6 tracking-cv">
+              {isLoggingOut ? t("nav.loggingOut") : t("nav.logout")}
+            </span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
@@ -232,7 +245,7 @@ export function Navbar({
         <Link
           href="/users"
           onClick={() => setMobileOpen(false)}
-          className="flex h-14 w-full items-center gap-4 pl-4 rounded-r-full hover:bg-zinc-100 dark:hover:bg-zinc-850 transition-colors group"
+          className="flex h-14 w-full items-center gap-4 pl-4 rounded-r-full hover:bg-zinc-100 dark:hover:bg-[#383838] transition-colors group"
         >
           <Image
             src={logo}
@@ -242,8 +255,8 @@ export function Navbar({
             priority
             className="h-6 w-6 shrink-0"
           />
-          <span className="font-roboto text-base font-medium leading-6 tracking-cv text-cv-text dark:text-zinc-100">
-            CV Builder
+          <span className="font-roboto text-base font-medium leading-6 tracking-cv text-cv-text dark:text-[#F5F5F7]">
+            {t("nav.brand")}
           </span>
         </Link>
 
@@ -256,7 +269,7 @@ export function Navbar({
 
   return (
     <>
-      <header className="flex h-14 w-full items-center justify-between border-b border-zinc-200 bg-white px-4 dark:border-zinc-800 dark:bg-zinc-950 md:hidden">
+      <header className="flex h-14 w-full items-center justify-between border-b border-zinc-200 bg-white px-4 dark:border-zinc-800 dark:bg-[#2E2E2E] md:hidden">
         <Link href="/users" className="flex items-center gap-3">
           <Image
             src={logo}
@@ -266,14 +279,14 @@ export function Navbar({
             priority
             className="h-6 w-6 shrink-0"
           />
-          <span className="font-roboto text-base font-medium text-cv-text dark:text-zinc-100">
-            CV Builder
+          <span className="font-roboto text-base font-medium text-cv-text dark:text-[#F5F5F7]">
+            {t("nav.brand")}
           </span>
         </Link>
         <button
           type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="rounded p-2 text-cv-text hover:bg-zinc-100 dark:text-zinc-100 dark:hover:bg-zinc-800"
+          className="rounded p-2 text-cv-text hover:bg-zinc-100 dark:text-[#F5F5F7] dark:hover:bg-[#383838]"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
         >
           {mobileOpen ? (
@@ -290,7 +303,7 @@ export function Navbar({
           onClick={() => setMobileOpen(false)}
         >
           <aside
-            className="relative h-full w-50 border-r border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-950"
+            className="relative h-full w-50 border-r border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-[#2E2E2E]"
             onClick={(e) => e.stopPropagation()}
           >
             {renderAsideContent()}
@@ -299,7 +312,7 @@ export function Navbar({
       )}
 
       <aside
-        className="fixed top-0 bottom-0 left-0 z-40 hidden w-50 border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 md:flex md:flex-col"
+        className="fixed top-0 bottom-0 left-0 z-40 hidden w-50 border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-[#2E2E2E] md:flex md:flex-col"
         aria-label="Sidebar Navigation"
       >
         {renderAsideContent()}

@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/i18n";
 
 export function AuthTabs() {
   const pathname = usePathname();
   const isSignIn = pathname === "/signin";
   const isSignUp = pathname === "/signup";
+  const { t } = useTranslation();
 
   return (
     <header className="flex h-14 w-full justify-center">
@@ -19,11 +21,11 @@ export function AuthTabs() {
               "flex h-auth-link w-full items-center justify-center text-center font-roboto text-sm leading-cv-label uppercase tracking-cv-wide transition-colors",
               isSignIn
                 ? "font-semibold text-cv-accent"
-                : "font-medium text-cv-text hover:text-black dark:text-zinc-400 dark:hover:text-zinc-200",
+                : "font-medium text-cv-text hover:text-black dark:text-[#F5F5F7] dark:hover:text-white",
             )}
             aria-current={isSignIn ? "page" : undefined}
           >
-            SIGN IN
+            {t("auth.signIn")}
           </Link>
           <div
             className={cn(
@@ -40,11 +42,11 @@ export function AuthTabs() {
               "flex h-auth-link w-full items-center justify-center text-center font-roboto text-sm leading-cv-label uppercase tracking-cv-wide transition-colors",
               isSignUp
                 ? "font-semibold text-cv-accent"
-                : "font-medium text-cv-text hover:text-black dark:text-zinc-400 dark:hover:text-zinc-200",
+                : "font-medium text-cv-text hover:text-black dark:text-[#F5F5F7] dark:hover:text-white",
             )}
             aria-current={isSignUp ? "page" : undefined}
           >
-            SIGN UP
+            {t("auth.signUp")}
           </Link>
           <div
             className={cn(
