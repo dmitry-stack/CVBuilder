@@ -30,6 +30,7 @@ export const dictionaries: Record<Language, Dictionary> = {
     "settings.newPassword": "New Password",
     "settings.confirmPassword": "Confirm Password",
     "settings.changePasswordBtn": "CHANGE PASSWORD",
+    "settings.changePasswordSuccess": "Password successfully changed",
     "settings.cancel": "CANCEL",
     "auth.signIn": "SIGN IN",
     "auth.signUp": "SIGN UP",
@@ -43,6 +44,27 @@ export const dictionaries: Record<Language, Dictionary> = {
     "auth.forgotPassword": "FORGOT PASSWORD",
     "auth.createAccount": "CREATE ACCOUNT",
     "auth.haveAccount": "I HAVE AN ACCOUNT",
+    "auth.resetPassword": "RESET PASSWORD",
+    "auth.newPassword": "New password",
+    "auth.submit": "SUBMIT",
+    "auth.goToSignIn": "GO TO SIGN IN",
+    "auth.confirm": "CONFIRM",
+    "auth.later": "LATER",
+    "auth.cancel": "CANCEL",
+    "auth.verifyEmail": "Verify Email",
+    "auth.resetLinkSent":
+      "If an account exists for this email, you will receive a password reset link.",
+    "auth.resetSuccess":
+      "Your password has been successfully reset. Please sign in with your new password.",
+    "auth.forgotPasswordTitle": "Forgot password",
+    "auth.forgotPasswordSub":
+      "We will send you an email with further instructions",
+    "auth.resetPasswordTitle": "Reset password",
+    "auth.resetPasswordSub":
+      "Here you should write a new password and confirm it",
+    "auth.verifyEmailTitle": "Email verification",
+    "auth.verifyEmailSub": "Enter the verification code we sent to your email.",
+
     "common.save": "Save",
     "common.saving": "Saving...",
     "common.cancel": "Cancel",
@@ -183,10 +205,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.noSkillsAdded": "No skills added yet",
     "cvSkills.skill": "Skill",
     "system.noInternetTitle": "No Internet Connection",
-    "system.noInternetDesc": "Please check your network settings. Once you are back online, click retry to continue.",
+    "system.noInternetDesc":
+      "Please check your network settings. Once you are back online, click retry to continue.",
     "system.retry": "Try Again",
     "system.unsupportedDeviceTitle": "Device Not Supported",
-    "system.unsupportedDeviceDesc": "CV Builder is optimized for tablet and desktop screens. Please open the app on a larger device or expand your browser window.",
+    "system.unsupportedDeviceDesc":
+      "CV Builder is optimized for tablet and desktop screens. Please open the app on a larger device or expand your browser window.",
     "system.minRequiredWidth": "Minimum required screen width: 768px",
   },
 
@@ -219,6 +243,7 @@ export const dictionaries: Record<Language, Dictionary> = {
     "settings.newPassword": "Новый пароль",
     "settings.confirmPassword": "Подтвердите пароль",
     "settings.changePasswordBtn": "СМЕНИТЬ ПАРОЛЬ",
+    "settings.changePasswordSuccess": "Пароль успешно изменен",
     "settings.cancel": "ОТМЕНА",
     "auth.signIn": "ВОЙТИ",
     "auth.signUp": "РЕГИСТРАЦИЯ",
@@ -232,6 +257,27 @@ export const dictionaries: Record<Language, Dictionary> = {
     "auth.forgotPassword": "ЗАБЫЛИ ПАРОЛЬ",
     "auth.createAccount": "СОЗДАТЬ АККАУНТ",
     "auth.haveAccount": "У МЕНЯ ЕСТЬ АККАУНТ",
+    "auth.resetPassword": "СБРОСИТЬ ПАРОЛЬ",
+    "auth.newPassword": "Новый пароль",
+    "auth.submit": "ОТПРАВИТЬ",
+    "auth.goToSignIn": "ПЕРЕЙТИ КО ВХОДУ",
+    "auth.confirm": "ПОДТВЕРДИТЬ",
+    "auth.later": "ПОЗЖЕ",
+    "auth.cancel": "ОТМЕНА",
+    "auth.verifyEmail": "Подтверждение почты",
+    "auth.resetLinkSent":
+      "Если аккаунт существует, вы получите ссылку для сброса пароля.",
+    "auth.resetSuccess":
+      "Пароль успешно сброшен. Пожалуйста, войдите с новым паролем.",
+    "auth.forgotPasswordTitle": "Забыли пароль",
+    "auth.forgotPasswordSub":
+      "Мы отправим вам электронное письмо с дальнейшими инструкциями",
+    "auth.resetPasswordTitle": "Сброс пароля",
+    "auth.resetPasswordSub":
+      "Здесь вы должны ввести новый пароль и подтвердить его",
+    "auth.verifyEmailTitle": "Подтверждение почты",
+    "auth.verifyEmailSub":
+      "Введите код подтверждения, который мы отправили на вашу почту.",
     "common.save": "Сохранить",
     "common.saving": "Сохранение...",
     "common.cancel": "Отмена",
@@ -374,10 +420,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.noSkillsAdded": "Навыки пока не добавлены",
     "cvSkills.skill": "Навык",
     "system.noInternetTitle": "Нет подключения к интернету",
-    "system.noInternetDesc": "Пожалуйста, проверьте настройки сети. Как только связь восстановится, нажмите повторить.",
+    "system.noInternetDesc":
+      "Пожалуйста, проверьте настройки сети. Как только связь восстановится, нажмите повторить.",
     "system.retry": "Повторить попытку",
     "system.unsupportedDeviceTitle": "Устройство не поддерживается",
-    "system.unsupportedDeviceDesc": "CV Builder оптимизирован для планшетов и настольных компьютеров. Пожалуйста, откройте приложение на поддерживаемом устройстве.",
+    "system.unsupportedDeviceDesc":
+      "CV Builder оптимизирован для планшетов и настольных компьютеров. Пожалуйста, откройте приложение на поддерживаемом устройстве.",
     "system.minRequiredWidth": "Минимальная ширина экрана: 768px",
   },
 
@@ -410,6 +458,7 @@ export const dictionaries: Record<Language, Dictionary> = {
     "settings.newPassword": "Nueva contraseña",
     "settings.confirmPassword": "Confirmar contraseña",
     "settings.changePasswordBtn": "CAMBIAR CONTRASEÑA",
+    "settings.changePasswordSuccess": "Contraseña cambiada con éxito",
     "settings.cancel": "CANCELAR",
     "auth.signIn": "INICIAR SESIÓN",
     "auth.signUp": "REGISTRARSE",
@@ -423,6 +472,27 @@ export const dictionaries: Record<Language, Dictionary> = {
     "auth.forgotPassword": "OLVIDÉ MI CONTRASEÑA",
     "auth.createAccount": "CREAR CUENTA",
     "auth.haveAccount": "YA TENGO UNA CUENTA",
+    "auth.resetPassword": "RESTABLECER CONTRASEÑA",
+    "auth.newPassword": "Nueva contraseña",
+    "auth.submit": "ENVIAR",
+    "auth.goToSignIn": "IR A INICIAR SESIÓN",
+    "auth.confirm": "CONFIRMAR",
+    "auth.later": "MÁS TARDE",
+    "auth.cancel": "CANCELAR",
+    "auth.verifyEmail": "Verificar correo",
+    "auth.resetLinkSent":
+      "Si existe una cuenta para este correo, recibirás un enlace para restablecer tu contraseña.",
+    "auth.resetSuccess":
+      "Tu contraseña se ha restablecido correctamente. Inicia sesión con tu nueva contraseña.",
+    "auth.forgotPasswordTitle": "Olvidé mi contraseña",
+    "auth.forgotPasswordSub":
+      "Le enviaremos un correo electrónico con instrucciones adicionales",
+    "auth.resetPasswordTitle": "Restablecer contraseña",
+    "auth.resetPasswordSub":
+      "Aquí debe escribir una nueva contraseña y confirmarla",
+    "auth.verifyEmailTitle": "Verificación de correo",
+    "auth.verifyEmailSub":
+      "Introduce el código de verificación que enviamos a tu correo.",
     "common.save": "Guardar",
     "common.saving": "Guardando...",
     "common.cancel": "Cancelar",
@@ -564,10 +634,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.noSkillsAdded": "Aún no se han añadido habilidades",
     "cvSkills.skill": "Habilidad",
     "system.noInternetTitle": "Sin conexión a internet",
-    "system.noInternetDesc": "Por favor, comprueba tu conexión de red. Una vez conectado, haz clic en reintentar.",
+    "system.noInternetDesc":
+      "Por favor, comprueba tu conexión de red. Una vez conectado, haz clic en reintentar.",
     "system.retry": "Reintentar",
     "system.unsupportedDeviceTitle": "Dispositivo no compatible",
-    "system.unsupportedDeviceDesc": "CV Builder está optimizado para tabletas y computadoras de escritorio. Abre la aplicación en una pantalla más grande.",
+    "system.unsupportedDeviceDesc":
+      "CV Builder está optimizado para tabletas y computadoras de escritorio. Abre la aplicación en una pantalla más grande.",
     "system.minRequiredWidth": "Ancho mínimo de pantalla: 768px",
   },
 
@@ -600,6 +672,7 @@ export const dictionaries: Record<Language, Dictionary> = {
     "settings.newPassword": "Neues Passwort",
     "settings.confirmPassword": "Passwort bestätigen",
     "settings.changePasswordBtn": "PASSWORT ÄNDERN",
+    "settings.changePasswordSuccess": "Passwort erfolgreich geändert",
     "settings.cancel": "ABBRECHEN",
     "auth.signIn": "ANMELDEN",
     "auth.signUp": "REGISTRIEREN",
@@ -613,6 +686,27 @@ export const dictionaries: Record<Language, Dictionary> = {
     "auth.forgotPassword": "PASSWORT VERGESSEN",
     "auth.createAccount": "KONTO ERSTELLEN",
     "auth.haveAccount": "ICH HABE EIN KONTO",
+    "auth.resetPassword": "PASSWORT ZURÜCKSETZEN",
+    "auth.newPassword": "Neues Passwort",
+    "auth.submit": "ABSENDEN",
+    "auth.goToSignIn": "ZUR ANMELDUNG",
+    "auth.confirm": "BESTÄTIGEN",
+    "auth.later": "SPÄTER",
+    "auth.cancel": "ABBRECHEN",
+    "auth.verifyEmail": "E-Mail bestätigen",
+    "auth.resetLinkSent":
+      "Wenn ein Konto für diese E-Mail existiert, erhalten Sie einen Link zum Zurücksetzen.",
+    "auth.resetSuccess":
+      "Ihr Passwort wurde erfolgreich zurückgesetzt. Bitte melden Sie sich mit Ihrem neuen Passwort an.",
+    "auth.forgotPasswordTitle": "Passwort vergessen",
+    "auth.forgotPasswordSub":
+      "Wir senden Ihnen eine E-Mail mit weiteren Anweisungen",
+    "auth.resetPasswordTitle": "Passwort zurücksetzen",
+    "auth.resetPasswordSub":
+      "Hier sollten Sie ein neues Passwort eingeben und bestätigen",
+    "auth.verifyEmailTitle": "E-Mail-Bestätigung",
+    "auth.verifyEmailSub":
+      "Geben Sie den Bestätigungscode ein, den wir an Ihre E-Mail gesendet haben.",
     "common.save": "Speichern",
     "common.saving": "Speichern...",
     "common.cancel": "Abbrechen",
@@ -754,10 +848,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.noSkillsAdded": "Noch keine Fähigkeiten hinzugefügt",
     "cvSkills.skill": "Fähigkeit",
     "system.noInternetTitle": "Keine Internetverbindung",
-    "system.noInternetDesc": "Bitte überprüfen Sie Ihre Netzwerkeinstellungen. Sobald Sie wieder online sind, klicken Sie auf Wiederholen.",
+    "system.noInternetDesc":
+      "Bitte überprüfen Sie Ihre Netzwerkeinstellungen. Sobald Sie wieder online sind, klicken Sie auf Wiederholen.",
     "system.retry": "Wiederholen",
     "system.unsupportedDeviceTitle": "Gerät nicht unterstützt",
-    "system.unsupportedDeviceDesc": "CV Builder ist für Tablets und Desktops optimiert. Bitte öffnen Sie die Anwendung auf einem größeren Bildschirm.",
+    "system.unsupportedDeviceDesc":
+      "CV Builder ist für Tablets und Desktops optimiert. Bitte öffnen Sie die Anwendung auf einem größeren Bildschirm.",
     "system.minRequiredWidth": "Erforderliche Mindestbreite: 768px",
   },
 
@@ -790,6 +886,7 @@ export const dictionaries: Record<Language, Dictionary> = {
     "settings.newPassword": "Nouveau mot de passe",
     "settings.confirmPassword": "Confirmer le mot de passe",
     "settings.changePasswordBtn": "CHANGER LE MOT DE PASSE",
+    "settings.changePasswordSuccess": "Mot de passe modifié avec succès",
     "settings.cancel": "ANNULER",
     "auth.signIn": "SE CONNECTER",
     "auth.signUp": "S'INSCRIRE",
@@ -803,6 +900,27 @@ export const dictionaries: Record<Language, Dictionary> = {
     "auth.forgotPassword": "MOT DE PASSE OUBLIÉ",
     "auth.createAccount": "CRÉER UN COMPTE",
     "auth.haveAccount": "J'AI DÉJÀ UN COMPTE",
+    "auth.resetPassword": "RÉINITIALISER LE MOT DE PASSE",
+    "auth.newPassword": "Nouveau mot de passe",
+    "auth.submit": "SOUMETTRE",
+    "auth.goToSignIn": "ALLER À LA CONNEXION",
+    "auth.confirm": "CONFIRMER",
+    "auth.later": "PLUS TARD",
+    "auth.cancel": "ANNULER",
+    "auth.verifyEmail": "Vérifier l'adresse e-mail",
+    "auth.resetLinkSent":
+      "Si un compte existe pour cet e-mail, vous recevrez un lien de réinitialisation.",
+    "auth.resetSuccess":
+      "Votre mot de passe a été réinitialisé avec succès. Veuillez vous connecter avec votre nouveau mot de passe.",
+    "auth.forgotPasswordTitle": "Mot de passe oublié",
+    "auth.forgotPasswordSub":
+      "Nous vous enverrons un e-mail avec des instructions supplémentaires",
+    "auth.resetPasswordTitle": "Réinitialiser le mot de passe",
+    "auth.resetPasswordSub":
+      "Ici, vous devez écrire un nouveau mot de passe et le confirmer",
+    "auth.verifyEmailTitle": "Vérification de l'e-mail",
+    "auth.verifyEmailSub":
+      "Entrez le code de vérification envoyé à votre adresse e-mail.",
     "common.save": "Enregistrer",
     "common.saving": "Enregistrement...",
     "common.cancel": "Annuler",
@@ -946,10 +1064,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.noSkillsAdded": "Aucune compétence ajoutée pour le moment",
     "cvSkills.skill": "Compétence",
     "system.noInternetTitle": "Pas de connexion Internet",
-    "system.noInternetDesc": "Veuillez vérifier vos paramètres réseau. Une fois reconnecté, cliquez sur réessayer.",
+    "system.noInternetDesc":
+      "Veuillez vérifier vos paramètres réseau. Une fois reconnecté, cliquez sur réessayer.",
     "system.retry": "Réessayer",
     "system.unsupportedDeviceTitle": "Appareil non pris en charge",
-    "system.unsupportedDeviceDesc": "CV Builder est optimisé pour les tablettes et ordinateurs de bureau. Veuillez utiliser un écran plus grand.",
+    "system.unsupportedDeviceDesc":
+      "CV Builder est optimisé pour les tablettes et ordinateurs de bureau. Veuillez utiliser un écran plus grand.",
     "system.minRequiredWidth": "Largeur d'écran minimale requise : 768px",
   },
 
@@ -982,6 +1102,7 @@ export const dictionaries: Record<Language, Dictionary> = {
     "settings.newPassword": "Nuova password",
     "settings.confirmPassword": "Conferma password",
     "settings.changePasswordBtn": "CAMBIA PASSWORD",
+    "settings.changePasswordSuccess": "Password modificata con successo",
     "settings.cancel": "ANNULLA",
     "auth.signIn": "ACCEDI",
     "auth.signUp": "REGISTRATI",
@@ -995,6 +1116,26 @@ export const dictionaries: Record<Language, Dictionary> = {
     "auth.forgotPassword": "PASSWORD DIMENTICATA",
     "auth.createAccount": "CREA ACCOUNT",
     "auth.haveAccount": "HO GIÀ UN ACCOUNT",
+    "auth.resetPassword": "REIMPOSTA PASSWORD",
+    "auth.newPassword": "Nuova password",
+    "auth.submit": "INVIA",
+    "auth.goToSignIn": "VAI AL LOGIN",
+    "auth.confirm": "CONFERMA",
+    "auth.later": "DOPO",
+    "auth.cancel": "ANNULLA",
+    "auth.verifyEmail": "Verifica email",
+    "auth.resetLinkSent":
+      "Se esiste un account per questa email, riceverai un link per reimpostare la password.",
+    "auth.resetSuccess":
+      "La tua password è stata reimpostata con successo. Effettua il login con la nuova password.",
+    "auth.forgotPasswordTitle": "Password dimenticata",
+    "auth.forgotPasswordSub": "Ti invieremo un'email con ulteriori istruzioni",
+    "auth.resetPasswordTitle": "Reimposta password",
+    "auth.resetPasswordSub":
+      "Qui devi inserire una nuova password e confermarla",
+    "auth.verifyEmailTitle": "Verifica email",
+    "auth.verifyEmailSub":
+      "Inserisci il codice di verifica che abbiamo inviato alla tua email.",
     "common.save": "Salva",
     "common.saving": "Salvataggio...",
     "common.cancel": "Annulla",
@@ -1133,10 +1274,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.noSkillsAdded": "Nessuna competenza ancora aggiunta",
     "cvSkills.skill": "Competenza",
     "system.noInternetTitle": "Nessuna connessione Internet",
-    "system.noInternetDesc": "Verifica le impostazioni di rete. Una volta online, fai clic su riprova per continuare.",
+    "system.noInternetDesc":
+      "Verifica le impostazioni di rete. Una volta online, fai clic su riprova per continuare.",
     "system.retry": "Riprova",
     "system.unsupportedDeviceTitle": "Dispositivo non supportato",
-    "system.unsupportedDeviceDesc": "CV Builder è ottimizzato per tablet e computer desktop. Apri l'app su uno schermo più grande.",
+    "system.unsupportedDeviceDesc":
+      "CV Builder è ottimizzato per tablet e computer desktop. Apri l'app su uno schermo più grande.",
     "system.minRequiredWidth": "Larghezza minima richiesta: 768px",
   },
 
@@ -1169,6 +1312,7 @@ export const dictionaries: Record<Language, Dictionary> = {
     "settings.newPassword": "Nowe hasło",
     "settings.confirmPassword": "Potwierdź hasło",
     "settings.changePasswordBtn": "ZMIEŃ HASŁO",
+    "settings.changePasswordSuccess": "Hasło zostało pomyślnie zmienione",
     "settings.cancel": "ANULUJ",
     "auth.signIn": "ZALOGUJ SIĘ",
     "auth.signUp": "ZAREJESTRUJ SIĘ",
@@ -1182,6 +1326,26 @@ export const dictionaries: Record<Language, Dictionary> = {
     "auth.forgotPassword": "NIE PAMIĘTAM HASŁA",
     "auth.createAccount": "UTWÓRZ KONTO",
     "auth.haveAccount": "MAM JUŻ KONTO",
+    "auth.resetPassword": "ZRESETUJ HASŁO",
+    "auth.newPassword": "Nowe hasło",
+    "auth.submit": "WYŚLIJ",
+    "auth.goToSignIn": "PRZEJDŹ DO LOGOWANIA",
+    "auth.confirm": "POTWIERDŹ",
+    "auth.later": "PÓŹNIEJ",
+    "auth.cancel": "ANULUJ",
+    "auth.verifyEmail": "Zweryfikuj e-mail",
+    "auth.resetLinkSent":
+      "Jeśli konto powiązane z tym adresem istnieje, otrzymasz link do zresetowania hasła.",
+    "auth.resetSuccess":
+      "Twoje hasło zostało pomyślnie zresetowane. Zaloguj się nowym hasłem.",
+    "auth.forgotPasswordTitle": "Nie pamiętasz hasła",
+    "auth.forgotPasswordSub":
+      "Wyślemy Ci wiadomość e-mail z dalszymi instrukcjami",
+    "auth.resetPasswordTitle": "Zresetuj hasło",
+    "auth.resetPasswordSub": "Tutaj wpisz nowe hasło i potwierdź je",
+    "auth.verifyEmailTitle": "Weryfikacja e-mail",
+    "auth.verifyEmailSub":
+      "Wprowadź kod weryfikacyjny, który wysłaliśmy na Twój e-mail.",
     "common.save": "Zapisz",
     "common.saving": "Zapisywanie...",
     "common.cancel": "Anuluj",
@@ -1319,10 +1483,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.noSkillsAdded": "Nie dodano jeszcze żadnych umiejętności",
     "cvSkills.skill": "Umiejętność",
     "system.noInternetTitle": "Brak połączenia z Internetem",
-    "system.noInternetDesc": "Sprawdź ustawienia sieci. Gdy połączenie zostanie przywrócone, kliknij ponów próbę.",
+    "system.noInternetDesc":
+      "Sprawdź ustawienia sieci. Gdy połączenie zostanie przywrócone, kliknij ponów próbę.",
     "system.retry": "Ponów próbę",
     "system.unsupportedDeviceTitle": "Nieobsługiwane urządzenie",
-    "system.unsupportedDeviceDesc": "CV Builder jest zoptymalizowany dla tabletów i komputerów stacjonarnych. Otwórz aplikację na większym ekranie.",
+    "system.unsupportedDeviceDesc":
+      "CV Builder jest zoptymalizowany dla tabletów i komputerów stacjonarnych. Otwórz aplikację na większym ekranie.",
     "system.minRequiredWidth": "Minimalna wymagana szerokość: 768px",
   },
 
@@ -1355,6 +1521,7 @@ export const dictionaries: Record<Language, Dictionary> = {
     "settings.newPassword": "Nova palavra-passe",
     "settings.confirmPassword": "Confirmar palavra-passe",
     "settings.changePasswordBtn": "ALTERAR PALAVRA-PASSE",
+    "settings.changePasswordSuccess": "Senha alterada com sucesso",
     "settings.cancel": "CANCELAR",
     "auth.signIn": "ENTRAR",
     "auth.signUp": "REGISTAR",
@@ -1368,6 +1535,26 @@ export const dictionaries: Record<Language, Dictionary> = {
     "auth.forgotPassword": "ESQUECEU-SE DA PALAVRA-PASSE",
     "auth.createAccount": "CRIAR CONTA",
     "auth.haveAccount": "JÁ TENHO CONTA",
+    "auth.resetPassword": "REDEFINIR SENHA",
+    "auth.newPassword": "Nova senha",
+    "auth.submit": "ENVIAR",
+    "auth.goToSignIn": "IR PARA LOGIN",
+    "auth.confirm": "CONFIRMAR",
+    "auth.later": "MAIS TARDE",
+    "auth.cancel": "CANCELAR",
+    "auth.verifyEmail": "Verificar e-mail",
+    "auth.resetLinkSent":
+      "Se existir uma conta para este e-mail, você receberá um link de redefinição.",
+    "auth.resetSuccess":
+      "Sua senha foi redefinida com sucesso. Faça login com sua nova senha.",
+    "auth.forgotPasswordTitle": "Esqueci minha senha",
+    "auth.forgotPasswordSub": "Enviaremos um e-mail com instruções adicionais",
+    "auth.resetPasswordTitle": "Redefinir senha",
+    "auth.resetPasswordSub":
+      "Aqui você deve digitar uma nova senha e confirmá-la",
+    "auth.verifyEmailTitle": "Verificação de e-mail",
+    "auth.verifyEmailSub":
+      "Digite o código de verificação enviado para o seu e-mail.",
     "common.save": "Guardar",
     "common.saving": "A guardar...",
     "common.cancel": "Cancelar",
@@ -1507,10 +1694,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.noSkillsAdded": "Nenhuma habilidade adicionada ainda",
     "cvSkills.skill": "Habilidade",
     "system.noInternetTitle": "Sem conexão com a Internet",
-    "system.noInternetDesc": "Verifique suas configurações de rede. Quando estiver conectado, clique em tentar novamente.",
+    "system.noInternetDesc":
+      "Verifique suas configurações de rede. Quando estiver conectado, clique em tentar novamente.",
     "system.retry": "Tentar novamente",
     "system.unsupportedDeviceTitle": "Dispositivo não suportado",
-    "system.unsupportedDeviceDesc": "O CV Builder é otimizado para tablets e computadores. Abra o aplicativo em uma tela maior.",
+    "system.unsupportedDeviceDesc":
+      "O CV Builder é otimizado para tablets e computadores. Abra o aplicativo em uma tela maior.",
     "system.minRequiredWidth": "Largura mínima de tela: 768px",
   },
 
@@ -1543,6 +1732,7 @@ export const dictionaries: Record<Language, Dictionary> = {
     "settings.newPassword": "Новий пароль",
     "settings.confirmPassword": "Підтвердіть пароль",
     "settings.changePasswordBtn": "ЗМІНИТИ ПАРОЛЬ",
+    "settings.changePasswordSuccess": "Пароль успішно змінено",
     "settings.cancel": "СКАСУВАТИ",
     "auth.signIn": "УВІЙТИ",
     "auth.signUp": "РЕЄСТРАЦІЯ",
@@ -1556,6 +1746,27 @@ export const dictionaries: Record<Language, Dictionary> = {
     "auth.forgotPassword": "ЗАБУЛИ ПАРОЛЬ",
     "auth.createAccount": "СТВОРИТИ АКАУНТ",
     "auth.haveAccount": "У МЕНЕ Є АКАУНТ",
+    "auth.resetPassword": "СКИНУТИ ПАРОЛЬ",
+    "auth.newPassword": "Новий пароль",
+    "auth.submit": "НАДІСЛАТИ",
+    "auth.goToSignIn": "ПЕРЕЙТИ ДО ВХОДУ",
+    "auth.confirm": "ПІДТВЕРДИТИ",
+    "auth.later": "ПІЗНІШЕ",
+    "auth.cancel": "СКАСУВАТИ",
+    "auth.verifyEmail": "Підтвердити пошту",
+    "auth.resetLinkSent":
+      "Якщо обліковий запис для цієї пошти існує, ви отримаєте посилання для скидання пароля.",
+    "auth.resetSuccess":
+      "Ваш пароль успішно скинуто. Будь ласка, увійдіть з новим паролем.",
+    "auth.forgotPasswordTitle": "Забули пароль",
+    "auth.forgotPasswordSub":
+      "Ми надішлемо вам електронного листа з подальшими інструкціями",
+    "auth.resetPasswordTitle": "Скидання пароля",
+    "auth.resetPasswordSub":
+      "Тут ви повинні ввести новий пароль та підтвердити його",
+    "auth.verifyEmailTitle": "Підтвердження пошти",
+    "auth.verifyEmailSub":
+      "Введіть код підтвердження, який ми надіслали на вашу пошту.",
     "common.save": "Зберегти",
     "common.saving": "Збереження...",
     "common.cancel": "Скасувати",
@@ -1696,10 +1907,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.noSkillsAdded": "Навички ще не додано",
     "cvSkills.skill": "Навичка",
     "system.noInternetTitle": "Немає підключення до інтернету",
-    "system.noInternetDesc": "Будь ласка, перевірте налаштування мережі. Щойно зв'язок відновиться, натисніть повторити.",
+    "system.noInternetDesc":
+      "Будь ласка, перевірте налаштування мережі. Щойно зв'язок відновиться, натисніть повторити.",
     "system.retry": "Спробувати знову",
     "system.unsupportedDeviceTitle": "Пристрій не підтримується",
-    "system.unsupportedDeviceDesc": "CV Builder оптимізовано для планшетів і комп'ютерів. Будь ласка, відкрийте застосунок на більшому екрані.",
+    "system.unsupportedDeviceDesc":
+      "CV Builder оптимізовано для планшетів і комп'ютерів. Будь ласка, відкрийте застосунок на більшому екрані.",
     "system.minRequiredWidth": "Мінімальна ширина екрана: 768px",
   },
 };

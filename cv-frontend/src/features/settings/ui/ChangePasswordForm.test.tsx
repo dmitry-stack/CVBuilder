@@ -1,8 +1,18 @@
-import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ChangePasswordForm } from "./ChangePasswordForm";
+import { changePasswordAction } from "@/features/auth/actions/change-password.action";
+
+vi.mock("@/features/auth/actions/change-password.action", () => ({
+  changePasswordAction: vi.fn(),
+}));
 
 describe("ChangePasswordForm Component", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("renders all three password input fields with placeholders", () => {
     render(<ChangePasswordForm />);
 
@@ -61,5 +71,115 @@ describe("ChangePasswordForm Component", () => {
     expect(currentInput).toHaveValue("");
     expect(newInput).toHaveValue("");
     expect(confirmInput).toHaveValue("");
+  });
+
+  it("shows validation error when submitting empty fields", async () => {
+    const user = userEvent.setup();
+    render(<ChangePasswordForm />);
+
+    const submitBtn = screen.getByRole("button", { name: /change password/i });
+    await user.click(submitBtn);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/current password is required/i),
+      ).toBeInTheDocument();
+    });
+    expect(changePasswordAction).not.toHaveBeenCalled();
+  });
+
+  it("shows validation error when new password is same as current password", async () => {
+    const user = userEvent.setup();
+    render(<ChangePasswordForm />);
+
+    await user.type(
+      screen.getByPlaceholderText("Current Password"),
+      "samepassword123",
+    );
+    await user.type(
+      screen.getByPlaceholderText("New Password"),
+      "samepassword123",
+    );
+    await user.type(
+      screen.getByPlaceholderText("Confirm Password"),
+      "samepassword123",
+    );
+
+    const submitBtn = screen.getByRole("button", { name: /change password/i });
+    await user.click(submitBtn);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          /new password cannot be the same as the current password/i,
+        ),
+      ).toBeInTheDocument();
+    });
+    expect(changePasswordAction).not.toHaveBeenCalled();
+  });
+
+  it("successfully calls changePasswordAction and shows success message", async () => {
+    const user = userEvent.setup();
+    vi.mocked(changePasswordAction).mockResolvedValueOnce({ success: true });
+
+    render(<ChangePasswordForm />);
+
+    await user.type(
+      screen.getByPlaceholderText("Current Password"),
+      "oldpassword123",
+    );
+    await user.type(
+      screen.getByPlaceholderText("New Password"),
+      "newpassword123",
+    );
+    await user.type(
+      screen.getByPlaceholderText("Confirm Password"),
+      "newpassword123",
+    );
+
+    const submitBtn = screen.getByRole("button", { name: /change password/i });
+    await user.click(submitBtn);
+
+    await waitFor(() => {
+      expect(changePasswordAction).toHaveBeenCalledWith({
+        currentPassword: "oldpassword123",
+        newPassword: "newpassword123",
+        confirmPassword: "newpassword123",
+      });
+      expect(
+        screen.getByText(/password successfully changed/i),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("displays server error message when changePasswordAction fails", async () => {
+    const user = userEvent.setup();
+    vi.mocked(changePasswordAction).mockResolvedValueOnce({
+      serverError: "Current password is incorrect.",
+    });
+
+    render(<ChangePasswordForm />);
+
+    await user.type(
+      screen.getByPlaceholderText("Current Password"),
+      "wrongpassword",
+    );
+    await user.type(
+      screen.getByPlaceholderText("New Password"),
+      "newpassword123",
+    );
+    await user.type(
+      screen.getByPlaceholderText("Confirm Password"),
+      "newpassword123",
+    );
+
+    const submitBtn = screen.getByRole("button", { name: /change password/i });
+    await user.click(submitBtn);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/current password is incorrect/i),
+      ).toBeInTheDocument();
+    });
   });
 });

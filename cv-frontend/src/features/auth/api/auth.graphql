@@ -26,6 +26,7 @@ mutation UpdateToken {
     refresh_token
   }
 }
+
 query Me {
   me {
     id
@@ -35,4 +36,20 @@ query Me {
     last_name
     avatar
   }
+}
+
+mutation ForgotPassword($auth: ForgotPasswordInput!) {
+  forgotPassword(auth: $auth)
+}
+
+mutation ResetPassword($auth: ResetPasswordInput!) {
+  resetPassword(auth: $auth)
+}
+
+mutation VerifyMail($mail: VerifyMailInput!) {
+  verifyMail(mail: $mail)
+}
+
+mutation SendVerification($email: String!) {
+  sendVerification(email: $email)
 }

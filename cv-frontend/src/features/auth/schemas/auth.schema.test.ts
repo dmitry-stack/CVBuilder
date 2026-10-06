@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { loginSchema, signupSchema } from "./auth.schema";
+import {
+  loginSchema,
+  signupSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+  verifyEmailSchema,
+  changePasswordSchema,
+} from "./auth.schema";
 
 describe("auth.schema", () => {
   describe("loginSchema", () => {
@@ -99,10 +106,111 @@ describe("auth.schema", () => {
         const confirmError = result.error.issues.find((issue) =>
           issue.path.includes("confirmPassword"),
         );
-        expect(confirmError?.message).toBe(
-          "Password confirmation is required",
-        );
+        expect(confirmError?.message).toBe("Password confirmation is required");
       }
+    });
+  });
+
+  describe("forgotPasswordSchema", () => {
+    it("should succeed with valid email", () => {
+      const result = forgotPasswordSchema.safeParse({
+        email: "user@example.com",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should fail with invalid email", () => {
+      const result = forgotPasswordSchema.safeParse({
+        email: "invalid-email",
+      });
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe("resetPasswordSchema", () => {
+    it("should succeed when newPassword and confirmPassword match", () => {
+      const result = resetPasswordSchema.safeParse({
+        newPassword: "newpassword123",
+        confirmPassword: "newpassword123",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should fail when passwords do not match", () => {
+      const result = resetPasswordSchema.safeParse({
+        newPassword: "newpassword123",
+        confirmPassword: "differentpassword",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should fail when password is too short", () => {
+      const result = resetPasswordSchema.safeParse({
+        newPassword: "123",
+        confirmPassword: "123",
+      });
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe("verifyEmailSchema", () => {
+    it("should succeed with 6 digit string", () => {
+      const result = verifyEmailSchema.safeParse({
+        otp: "123456",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should fail when code is less than 6 digits", () => {
+      const result = verifyEmailSchema.safeParse({
+        otp: "12345",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should fail when code contains non-digits", () => {
+      const result = verifyEmailSchema.safeParse({
+        otp: "12345a",
+      });
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe("changePasswordSchema", () => {
+    it("should succeed with valid current, new, and matching confirm passwords", () => {
+      const result = changePasswordSchema.safeParse({
+        currentPassword: "oldpassword123",
+        newPassword: "newpassword123",
+        confirmPassword: "newpassword123",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should fail when new password is less than 6 characters", () => {
+      const result = changePasswordSchema.safeParse({
+        currentPassword: "oldpassword123",
+        newPassword: "123",
+        confirmPassword: "123",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should fail when passwords do not match", () => {
+      const result = changePasswordSchema.safeParse({
+        currentPassword: "oldpassword123",
+        newPassword: "newpassword123",
+        confirmPassword: "mismatchpassword",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should fail when new password is the same as current password", () => {
+      const result = changePasswordSchema.safeParse({
+        currentPassword: "samepassword123",
+        newPassword: "samepassword123",
+        confirmPassword: "samepassword123",
+      });
+      expect(result.success).toBe(false);
     });
   });
 });

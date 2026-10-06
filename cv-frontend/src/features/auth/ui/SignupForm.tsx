@@ -45,8 +45,12 @@ export default function SignupForm() {
       if (result.serverError) {
         setServerError(result.serverError);
       } else if (result.success) {
-        router.push(callbackUrl || "/users");
-        router.refresh();
+        const verifyParams = new URLSearchParams();
+        verifyParams.set("email", data.email);
+        if (callbackUrl) {
+          verifyParams.set("callbackUrl", callbackUrl);
+        }
+        router.push(`/verify-email?${verifyParams.toString()}`);
       }
     });
   };
