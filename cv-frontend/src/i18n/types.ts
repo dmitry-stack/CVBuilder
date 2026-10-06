@@ -194,6 +194,12 @@ export type TranslationKey =
   | "cvSkills.updateSkill"
   | "cvSkills.addSkill"
   | "cvSkills.noSkillsAdded"
-  | "cvSkills.skill";
+  | "cvSkills.skill"
+  | "system.noInternetTitle"
+  | "system.noInternetDesc"
+  | "system.retry"
+  | "system.unsupportedDeviceTitle"
+  | "system.unsupportedDeviceDesc"
+  | "system.minRequiredWidth";
 
 export type Dictionary = Record<TranslationKey, string>;
