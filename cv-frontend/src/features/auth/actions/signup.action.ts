@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { signupSchema, type SignupFormData } from "../schemas/auth.schema";
 import {
   executeAuthMutation,
@@ -30,9 +31,18 @@ export async function signupAction(
   const { email, password, confirmPassword } = validation.data;
 
   try {
-    const result = await executeAuthMutation<SignupMutation>(SignupDocument, {
-      auth: { email, password, confirmPassword },
-    });
+    const headerList = await headers();
+    const origin =
+      headerList.get("origin") ||
+      (headerList.get("host")
+        ? `${headerList.get("x-forwarded-proto") || "http"}://${headerList.get("host")}`
+        : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000");
+
+    const result = await executeAuthMutation<SignupMutation>(
+      SignupDocument,
+      { auth: { email, password, confirmPassword } },
+      { origin },
+    );
 
     if (result.errors?.length || !result.data?.signup) {
       const message =

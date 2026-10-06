@@ -101,7 +101,9 @@ describe("SignupForm Component", () => {
         password: "password123",
         confirmPassword: "password123",
       });
-      expect(mockPush).toHaveBeenCalledWith("/users");
+      expect(mockPush).toHaveBeenCalledWith(
+        "/verify-email?email=test%40example.com",
+      );
     });
   });
 

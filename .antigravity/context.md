@@ -288,6 +288,20 @@ cv-frontend/
       - `CVProjectDialog.test.tsx` (5 tests)
       - `CVProjectsView.test.tsx` (8 tests)
   - Full suite passes 100% (215/215 tests passing across 38 test suites); 0 TypeScript errors; 0 ESLint errors; production build succeeded.
+- [x] **Password Reset & Email Verification Flows (`/forgot-password`, `/reset-password`, `/verify-email`):**
+  - Built full password reset and email OTP verification user journeys matching Figma designs (`forgotPassword.png`, `reset.png`, `emailVerification.png`):
+    - `ForgotPasswordForm.tsx` & `/forgot-password`: single email input, `RESET PASSWORD` red pill button, and `CANCEL` link back to `/signin`.
+    - `ResetPasswordForm.tsx` & `/reset-password`: extracts `token` from URL query parameter, `New password` and `Confirm password` fields with visibility toggles, `SUBMIT` red pill button, and `GO TO SIGN IN` link.
+    - `EmailVerificationForm.tsx` & `/verify-email`: 6-digit OTP code inputs with automatic focus advancement, paste handler, `CONFIRM` red pill button, `LATER` link, and resend verification code action.
+    - Integrated sign-up verification flow: `signupAction` forwards `origin` to trigger backend verification email generation, logs in user, and `SignupForm.tsx` smoothly navigates to `/verify-email?email=...`.
+    - Dedicated Server Actions with BFF error translation: `forgotPasswordAction`, `resetPasswordAction`, `verifyEmailAction`, and `sendVerificationAction`.
+    - Colocated unit and component tests:
+      - `auth.actions.test.ts` (23 tests)
+      - `ForgotPasswordForm.test.tsx` (4 tests)
+      - `ResetPasswordForm.test.tsx` (6 tests)
+      - `EmailVerificationForm.test.tsx` (5 tests)
+      - `SignupForm.test.tsx` (5 tests)
+    - Full test suite passing 100% (303/303 tests across 53 test suites); TypeScript typecheck passing (0 errors); ESLint passing (0 errors); Next.js production build passing.
 - [x] **Route Grouping & Navigation Shell:**
   - Standardized Next.js route groups: `(auth)` for public authentication and `(app)` for authenticated application modules.
   - Resolved nested HTML bug by establishing clean `AppLayout` in `src/app/(app)/layout.tsx` with sidebar padding (`md:pl-[200px]`).
@@ -361,9 +375,9 @@ cv-frontend/
 | :--- | :--- | :--- | :--- | :--- |
 | **Authentication** | Sign In (`/signin`) | ✅ Implemented | Public | Done |
 | **Authentication** | Sign Up (`/signup`) | ✅ Implemented | Public | Done |
-| **Authentication** | Forgot Password (`/forgot-password`) | ⏳ Not Started | Public | High |
-| **Authentication** | Reset Password (`/reset-password`) | ⏳ Not Started | Public | High |
-| **Authentication** | Email Verification (`/verify-email`) | ⏳ Not Started | Public | High |
+| **Authentication** | Forgot Password (`/forgot-password`) | ✅ Implemented | Public | Done |
+| **Authentication** | Reset Password (`/reset-password`, `/forgot-password`) | ✅ Implemented | Public | Done |
+| **Authentication** | Email Verification (`/verify-email`) | ✅ Implemented | User / Public | Done |
 | **System** | Root Page (`/`) / Landing | ✅ Implemented | Public | Done |
 | **System** | Not Found (404) (`not-found.tsx`) | ✅ Implemented | Public | Done |
 | **System** | No Internet Error | ✅ Implemented | Public | Done |
@@ -381,7 +395,7 @@ cv-frontend/
 | **CVs** | CV Projects (`/cvs/[id]/projects`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
 | **CVs** | CV Preview (`/cvs/[id]/preview`) | ✅ Implemented | User | Done |
 | **CVs** | PDF Export (`exportPdf`) | ✅ Implemented | User | Done |
-| **Settings** | User & App Settings (`/settings`) | ⏳ Not Started | User | Low |
+| **Settings** | User & App Settings (`/settings`) | ✅ Implemented | User | Done |
 
 ---
 

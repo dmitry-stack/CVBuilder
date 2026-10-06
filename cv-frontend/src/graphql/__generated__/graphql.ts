@@ -42,6 +42,12 @@ export type AuthInput = {
   password: string;
 };
 
+export type ChangePasswordInput = {
+  confirmPassword: string;
+  newPassword: string;
+  oldPassword: string;
+};
+
 export type CreateCvInput = {
   description: string;
   education?: string | null | undefined;
@@ -73,6 +79,10 @@ export type ExportPdfInput = {
   margin?: MarginInput | null | undefined;
 };
 
+export type ForgotPasswordInput = {
+  email: string;
+};
+
 export type MarginInput = {
   bottom: string;
   left: string;
@@ -88,6 +98,11 @@ export type Proficiency = "A1" | "A2" | "B1" | "B2" | "C1" | "C2" | "Native";
 export type RemoveCvProjectInput = {
   cvId: string | number;
   projectId: string | number;
+};
+
+export type ResetPasswordInput = {
+  confirmPassword: string;
+  newPassword: string;
 };
 
 export type SearchPaginationInput = {
@@ -155,6 +170,10 @@ export type UpdateUserInput = {
 
 export type UserRole = "Admin" | "Employee";
 
+export type VerifyMailInput = {
+  otp: string;
+};
+
 export type LoginMutationVariables = Exact<{
   auth: AuthInput;
 }>;
@@ -197,6 +216,30 @@ export type MeQuery = {
     avatar: string | null;
   };
 };
+
+export type ForgotPasswordMutationVariables = Exact<{
+  auth: ForgotPasswordInput;
+}>;
+
+export type ForgotPasswordMutation = { forgotPassword: unknown };
+
+export type ResetPasswordMutationVariables = Exact<{
+  auth: ResetPasswordInput;
+}>;
+
+export type ResetPasswordMutation = { resetPassword: unknown };
+
+export type VerifyMailMutationVariables = Exact<{
+  mail: VerifyMailInput;
+}>;
+
+export type VerifyMailMutation = { verifyMail: unknown };
+
+export type SendVerificationMutationVariables = Exact<{
+  email: string;
+}>;
+
+export type SendVerificationMutation = { sendVerification: unknown };
 
 export type CvPreviewQueryVariables = Exact<{
   cvId: string | number;
@@ -760,6 +803,12 @@ export type UpdateUserMutation = {
   };
 };
 
+export type ChangePasswordMutationVariables = Exact<{
+  args: ChangePasswordInput;
+}>;
+
+export type ChangePasswordMutation = { changePassword: { id: string } };
+
 export const LoginDocument = {
   kind: "Document",
   definitions: [
@@ -954,6 +1003,186 @@ export const MeDocument = {
     },
   ],
 } as unknown as DocumentNode<MeQuery, MeQueryVariables>;
+export const ForgotPasswordDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ForgotPassword" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "auth" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "ForgotPasswordInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "forgotPassword" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "auth" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "auth" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ForgotPasswordMutation,
+  ForgotPasswordMutationVariables
+>;
+export const ResetPasswordDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ResetPassword" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "auth" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "ResetPasswordInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "resetPassword" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "auth" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "auth" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ResetPasswordMutation,
+  ResetPasswordMutationVariables
+>;
+export const VerifyMailDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "VerifyMail" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "mail" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "VerifyMailInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "verifyMail" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "mail" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "mail" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<VerifyMailMutation, VerifyMailMutationVariables>;
+export const SendVerificationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "SendVerification" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "email" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "sendVerification" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "email" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "email" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SendVerificationMutation,
+  SendVerificationMutationVariables
+>;
 export const CvPreviewDocument = {
   kind: "Document",
   definitions: [
@@ -3604,3 +3833,54 @@ export const UpdateUserDocument = {
     },
   ],
 } as unknown as DocumentNode<UpdateUserMutation, UpdateUserMutationVariables>;
+export const ChangePasswordDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ChangePassword" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "args" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "ChangePasswordInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "changePassword" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "args" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "args" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ChangePasswordMutation,
+  ChangePasswordMutationVariables
+>;

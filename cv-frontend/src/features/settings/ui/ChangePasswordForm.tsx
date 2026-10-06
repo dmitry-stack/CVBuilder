@@ -1,44 +1,94 @@
 "use client";
 
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "@/i18n";
+import {
+  changePasswordSchema,
+  type ChangePasswordFormData,
+} from "@/features/auth/schemas/auth.schema";
+import { changePasswordAction } from "@/features/auth/actions/change-password.action";
 
 export function ChangePasswordForm() {
   const { t } = useTranslation();
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleReset = () => {
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-  };
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Design only, no functionality yet
+  const [isPending, startTransition] = useTransition();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ChangePasswordFormData>({
+    resolver: zodResolver(changePasswordSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
+
+  const onSubmit = (data: ChangePasswordFormData) => {
+    setServerError(null);
+    setSuccessMessage(null);
+
+    startTransition(async () => {
+      const result = await changePasswordAction(data);
+
+      if (result.serverError) {
+        setServerError(result.serverError);
+      } else if (result.success) {
+        setSuccessMessage(t("settings.changePasswordSuccess"));
+        reset();
+      }
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full space-y-9">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6">
+      {serverError && (
+        <div
+          role="alert"
+          className="flex items-center gap-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive"
+        >
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span>{serverError}</span>
+        </div>
+      )}
+
+      {successMessage && (
+        <div
+          role="status"
+          className="flex items-center gap-2 rounded-md bg-emerald-500/15 p-3 text-sm text-emerald-600 dark:text-emerald-400"
+        >
+          <CheckCircle2 className="h-4 w-4 shrink-0" />
+          <span>{successMessage}</span>
+        </div>
+      )}
+
       <div>
         <div className="relative">
           <Input
+            {...register("currentPassword")}
             id="currentPassword"
             type={showCurrentPassword ? "text" : "password"}
             autoComplete="current-password"
             placeholder={t("settings.currentPassword")}
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors rounded-none"
+            disabled={isPending}
+            aria-invalid={errors.currentPassword ? "true" : undefined}
+            className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
           />
           <button
             type="button"
@@ -58,18 +108,24 @@ export function ChangePasswordForm() {
             )}
           </button>
         </div>
+        {errors.currentPassword && (
+          <p className="mt-1 text-xs text-destructive">
+            {errors.currentPassword.message}
+          </p>
+        )}
       </div>
 
       <div>
         <div className="relative">
           <Input
+            {...register("newPassword")}
             id="newPassword"
             type={showNewPassword ? "text" : "password"}
             autoComplete="new-password"
             placeholder={t("settings.newPassword")}
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors rounded-none"
+            disabled={isPending}
+            aria-invalid={errors.newPassword ? "true" : undefined}
+            className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
           />
           <button
             type="button"
@@ -87,18 +143,24 @@ export function ChangePasswordForm() {
             )}
           </button>
         </div>
+        {errors.newPassword && (
+          <p className="mt-1 text-xs text-destructive">
+            {errors.newPassword.message}
+          </p>
+        )}
       </div>
 
       <div>
         <div className="relative">
           <Input
+            {...register("confirmPassword")}
             id="confirmPassword"
             type={showConfirmPassword ? "text" : "password"}
             autoComplete="new-password"
             placeholder={t("settings.confirmPassword")}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors rounded-none"
+            disabled={isPending}
+            aria-invalid={errors.confirmPassword ? "true" : undefined}
+            className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
           />
           <button
             type="button"
@@ -107,8 +169,8 @@ export function ChangePasswordForm() {
             tabIndex={-1}
             aria-label={
               showConfirmPassword
-                ? "Hide confirm password"
-                : "Show confirm password"
+                ? "Hide confirmation password"
+                : "Show confirmation password"
             }
           >
             {showConfirmPassword ? (
@@ -118,19 +180,37 @@ export function ChangePasswordForm() {
             )}
           </button>
         </div>
+        {errors.confirmPassword && (
+          <p className="mt-1 text-xs text-destructive">
+            {errors.confirmPassword.message}
+          </p>
+        )}
       </div>
 
       <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center gap-4">
         <Button
           type="submit"
+          disabled={isPending}
           className="h-12 w-55 rounded-full bg-cv-accent font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-on-accent shadow-cv-button hover:bg-cv-accent-hover transition-all cursor-pointer"
         >
-          {t("settings.changePasswordBtn")}
+          {isPending ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {t("common.saving")}
+            </>
+          ) : (
+            t("settings.changePasswordBtn")
+          )}
         </Button>
 
         <button
           type="button"
-          onClick={handleReset}
+          disabled={isPending}
+          onClick={() => {
+            reset();
+            setServerError(null);
+            setSuccessMessage(null);
+          }}
           className="flex h-12 w-55 items-center justify-center rounded-full font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-muted hover:text-cv-text dark:text-[#C4C4C6] dark:hover:text-[#F5F5F7] transition-colors cursor-pointer"
         >
           {t("settings.cancel")}
