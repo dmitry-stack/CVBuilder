@@ -3,15 +3,15 @@
 import { useState, useMemo } from "react";
 import Image from "next/image";
 
-import { Search, ChevronDown, User as UserIcon } from "lucide-react";
+import { Search, ChevronDown, User as UserIcon, ChevronRight } from "lucide-react";
 import { useQuery } from "@apollo/client/react";
 import {
   UsersDocument,
   type UsersQuery,
 } from "@/graphql/__generated__/graphql";
 import { UsersTableRowSkeleton } from "./UsersTableRowSkeleton";
-import { DropdownMenuButton } from "../../../components/ui/DropDownButton";
 import { useTranslation } from "@/i18n";
+import { useRouter } from "next/navigation";
 
 export interface UserItem {
   id: string;
@@ -32,6 +32,8 @@ export function UsersTable() {
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState<SortField>("first_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+
+  const router = useRouter();
 
   const { data, loading } = useQuery(UsersDocument, {
     variables: {
@@ -213,6 +215,7 @@ export function UsersTable() {
               filteredUsers.map((user) => (
                 <tr
                   key={user.id}
+                  onClick={() => router.push(`/users/${user.id}`)}
                   className="h-table-row hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
                 >
                   <td className="px-4">
@@ -260,7 +263,7 @@ export function UsersTable() {
                   </td>
 
                   <td className="px-4 text-right">
-                    <DropdownMenuButton id={user.id} />
+                    <ChevronRight className="h-4 w-4 text-cv-muted dark:text-zinc-400 inline-block" />
                   </td>
                 </tr>
               ))

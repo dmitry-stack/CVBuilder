@@ -232,21 +232,20 @@ export function LanguageDialog({
                 variant="outline"
                 onClick={onClose}
                 disabled={isSubmitting}
-                className="rounded-full px-4 h-9 text-xs font-medium cursor-pointer"
               >
                 {t("common.cancel")}
               </Button>
-              <button
+              <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white px-6 h-9 text-xs font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 cursor-pointer"
+                className="shadow-cv-button"
               >
                 {isSubmitting
                   ? t("common.saving")
                   : isEdit
                     ? t("common.saveChanges")
                     : t("languages.addLanguage")}
-              </button>
+              </Button>
             </div>
           </div>
         </form>

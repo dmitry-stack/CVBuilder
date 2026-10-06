@@ -87,7 +87,7 @@ export function Navbar({
 
       <aside
         className={cn(
-          "fixed top-0 bottom-0 left-0 z-40 hidden  bg-white dark:border-zinc-800 dark:bg-[#2E2E2E] md:flex md:flex-col transition-[width] duration-300 ease-in-out",
+          "fixed top-0 bottom-0 left-0 z-40 hidden  bg-white dark:border-zinc-800 dark:bg-[#2E2E2E] md:flex md:flex-col ",
           isCollapsed ? "w-16" : "w-50",
         )}
         aria-label="Sidebar Navigation"

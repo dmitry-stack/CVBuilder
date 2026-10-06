@@ -4,6 +4,7 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { notify } from "@/components/ui/toast";
 import { HeaderSync } from "@/components/layout/HeaderContext";
@@ -184,13 +185,14 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
 
         {isOwner && (
           <div className="flex justify-end pt-4">
-            <button
+            <Button
               type="submit"
+              size="lg"
               disabled={!isDirty || isSubmitting}
-              className="rounded-full min-w-[140px] px-8 h-10 font-roboto text-sm font-medium uppercase tracking-wider text-white transition-colors disabled:bg-[#AEAEAE] disabled:cursor-not-allowed bg-cv-accent hover:bg-cv-accent-hover shadow-cv-button cursor-pointer focus:outline-hidden"
+              className="min-w-35 shadow-cv-button"
             >
               {isSubmitting ? t("common.updating") : t("common.update")}
-            </button>
+            </Button>
           </div>
         )}
       </form>

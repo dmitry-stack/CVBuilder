@@ -36,7 +36,7 @@ export function DropdownMenuButton({
         render={
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-cv-muted hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-hidden cursor-pointer"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-transparent bg-transparent text-[#2E2E2E] dark:text-[#F5F5F7] hover:border-[#2E2E2E] dark:hover:border-[#8E8E93] active:bg-[#9E9E9E] active:border-[#9E9E9E] active:text-white dark:active:bg-[#F5F5F7] dark:active:border-[#F5F5F7] dark:active:text-[#1E1E1E] aria-expanded:bg-[#9E9E9E] aria-expanded:border-[#9E9E9E] aria-expanded:text-white dark:aria-expanded:bg-[#F5F5F7] dark:aria-expanded:border-[#F5F5F7] dark:aria-expanded:text-[#1E1E1E] transition-all focus:outline-hidden cursor-pointer"
             title="User actions"
             aria-label={`Actions for user ${targetId}`}
           >

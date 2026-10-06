@@ -275,8 +275,10 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
         <div className="flex items-center justify-end">
           <Button
             type="button"
+            variant="primary-v2"
+            size="sm"
             onClick={handleOpenCreate}
-            className=" text-cv-accent bg-transparent  hover:bg-transparent text-xs px-4 h-8 uppercase font-medium tracking-wider cursor-pointer inline-flex items-center gap-1.5"
+            className="inline-flex items-center gap-1.5"
           >
             <Plus className="h-3.5 w-3.5" />
             <span>{t("cvs.createCv")}</span>
