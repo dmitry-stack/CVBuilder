@@ -27,15 +27,19 @@ function getServerSnapshot(): boolean {
 }
 
 export function OfflineGuard({ children }: { children: ReactNode }) {
-  const isOnline = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const isOnline = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
   if (!isOnline) {
     return (
       <div
         data-slot="offline-guard-overlay"
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white dark:bg-zinc-900"
       >
-        <NoInternetView isOverlay onRetry={() => window.location.reload()} />
+        <NoInternetView onRetry={() => window.location.reload()} />
       </div>
     );
   }
