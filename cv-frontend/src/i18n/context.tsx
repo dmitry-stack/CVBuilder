@@ -35,23 +35,23 @@ function subscribeLanguage(callback: () => void) {
 }
 
 function getLanguageSnapshot(): Language {
-  if (typeof window === "undefined") return "English";
+  if (typeof window === "undefined") return "english";
   const stored = localStorage.getItem(STORAGE_KEY) as Language | null;
   if (stored && (LANGUAGES as readonly string[]).includes(stored)) {
     return stored;
   }
-  return "English";
+  return "english";
 }
 
 function getServerSnapshot(): Language {
-  return "English";
+  return "english";
 }
 
 const defaultContext: LanguageContextType = {
-  language: "English",
+  language: "english",
   setLanguage: () => {},
   t: (key: TranslationKey, params?: Record<string, string | number>) => {
-    let text = dictionaries.English[key] || key;
+    let text = dictionaries.english[key] || key;
     if (params) {
       Object.entries(params).forEach(([k, v]) => {
         text = text.replace(new RegExp(`\\{${k}\\}`, "g"), String(v));
@@ -82,8 +82,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const t = useCallback(
     (key: TranslationKey, params?: Record<string, string | number>): string => {
-      const dict = dictionaries[language] || dictionaries.English;
-      let text = dict[key] || dictionaries.English[key] || key;
+      const dict = dictionaries[language] || dictionaries.english;
+      let text = dict[key] || dictionaries.english[key] || key;
       if (params) {
         Object.entries(params).forEach(([k, v]) => {
           text = text.replace(new RegExp(`\\{${k}\\}`, "g"), String(v));

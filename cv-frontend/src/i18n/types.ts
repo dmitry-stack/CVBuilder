@@ -1,27 +1,27 @@
 export const LANGUAGES = [
-  "English",
-  "French",
-  "German",
-  "Italian",
-  "Polish",
-  "Portuguese",
-  "Russian",
-  "Spanish",
-  "Ukrainian",
+  "english",
+  "french",
+  "german",
+  "italian",
+  "polish",
+  "portuguese",
+  "russian",
+  "spanish",
+  "ukrainian",
 ] as const;
 
 export type Language = (typeof LANGUAGES)[number];
 
 export const LANGUAGE_CODES: Record<Language, string> = {
-  English: "en",
-  French: "fr",
-  German: "de",
-  Italian: "it",
-  Polish: "pl",
-  Portuguese: "pt",
-  Russian: "ru",
-  Spanish: "es",
-  Ukrainian: "uk",
+  english: "en",
+  french: "fr",
+  german: "de",
+  italian: "it",
+  polish: "pl",
+  portuguese: "pt",
+  russian: "ru",
+  spanish: "es",
+  ukrainian: "uk",
 };
 
 export type TranslationKey =
@@ -217,6 +217,15 @@ export type TranslationKey =
   | "system.retry"
   | "system.unsupportedDeviceTitle"
   | "system.unsupportedDeviceDesc"
-  | "system.minRequiredWidth";
+  | "system.minRequiredWidth"
+  | "languages.english"
+  | "languages.russian"
+  | "languages.spanish"
+  | "languages.french"
+  | "languages.german"
+  | "languages.polish"
+  | "languages.ukrainian"
+  | "languages.portuguese"
+  | "languages.italian";
 
 export type Dictionary = Record<TranslationKey, string>;

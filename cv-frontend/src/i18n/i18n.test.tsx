@@ -21,7 +21,7 @@ describe("i18n translation system", () => {
   it("provides English translations by default", () => {
     const { result } = renderHook(() => useTranslation(), { wrapper });
 
-    expect(result.current.language).toBe("English");
+    expect(result.current.language).toBe("english");
     expect(result.current.languageCode).toBe("en");
     expect(result.current.t("nav.employees")).toBe("Employees");
     expect(result.current.t("settings.changePassword")).toBe("Change Password");
@@ -31,15 +31,15 @@ describe("i18n translation system", () => {
     const { result } = renderHook(() => useTranslation(), { wrapper });
 
     act(() => {
-      result.current.setLanguage("Russian");
+      result.current.setLanguage("russian");
     });
 
-    expect(result.current.language).toBe("Russian");
+    expect(result.current.language).toBe("russian");
     expect(result.current.languageCode).toBe("ru");
     expect(result.current.t("nav.employees")).toBe("Сотрудники");
     expect(result.current.t("settings.changePassword")).toBe("Сменить пароль");
     expect(result.current.t("auth.signIn")).toBe("ВОЙТИ");
-    expect(localStorage.getItem("app_language")).toBe("Russian");
+    expect(localStorage.getItem("app_language")).toBe("russian");
     expect(document.documentElement.lang).toBe("ru");
   });
 
@@ -47,19 +47,19 @@ describe("i18n translation system", () => {
     const { result } = renderHook(() => useTranslation(), { wrapper });
 
     act(() => {
-      result.current.setLanguage("Spanish");
+      result.current.setLanguage("spanish");
     });
     expect(result.current.t("nav.employees")).toBe("Empleados");
     expect(result.current.t("auth.signIn")).toBe("INICIAR SESIÓN");
 
     act(() => {
-      result.current.setLanguage("German");
+      result.current.setLanguage("german");
     });
     expect(result.current.t("nav.employees")).toBe("Mitarbeiter");
     expect(result.current.t("auth.signIn")).toBe("ANMELDEN");
 
     act(() => {
-      result.current.setLanguage("French");
+      result.current.setLanguage("french");
     });
     expect(result.current.t("nav.employees")).toBe("Employés");
     expect(result.current.t("auth.signIn")).toBe("SE CONNECTER");

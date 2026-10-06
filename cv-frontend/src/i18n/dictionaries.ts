@@ -1,7 +1,7 @@
 import type { Dictionary, Language } from "./types";
 
 export const dictionaries: Record<Language, Dictionary> = {
-  English: {
+  english: {
     "nav.employees": "Employees",
     "nav.skills": "Skills",
     "nav.languages": "Languages",
@@ -212,9 +212,18 @@ export const dictionaries: Record<Language, Dictionary> = {
     "system.unsupportedDeviceDesc":
       "CV Builder is optimized for tablet and desktop screens. Please open the app on a larger device or expand your browser window.",
     "system.minRequiredWidth": "Minimum required screen width: 768px",
+    "languages.english": "English",
+    "languages.russian": "Russian",
+    "languages.spanish": "Spanish",
+    "languages.french": "French",
+    "languages.german": "German",
+    "languages.polish": "Polish",
+    "languages.ukrainian": "Ukrainian",
+    "languages.portuguese": "Portuguese",
+    "languages.italian": "Italian",
   },
 
-  Russian: {
+  russian: {
     "nav.employees": "Сотрудники",
     "nav.skills": "Навыки",
     "nav.languages": "Языки",
@@ -427,9 +436,18 @@ export const dictionaries: Record<Language, Dictionary> = {
     "system.unsupportedDeviceDesc":
       "CV Builder оптимизирован для планшетов и настольных компьютеров. Пожалуйста, откройте приложение на поддерживаемом устройстве.",
     "system.minRequiredWidth": "Минимальная ширина экрана: 768px",
+    "languages.english": "Английский",
+    "languages.russian": "Русский",
+    "languages.spanish": "Испанский",
+    "languages.french": "Французский",
+    "languages.german": "Немецкий",
+    "languages.polish": "Польский",
+    "languages.ukrainian": "Украинский",
+    "languages.portuguese": "Португальский",
+    "languages.italian": "Итальянский",
   },
 
-  Spanish: {
+  spanish: {
     "nav.employees": "Empleados",
     "nav.skills": "Habilidades",
     "nav.languages": "Idiomas",
@@ -641,9 +659,18 @@ export const dictionaries: Record<Language, Dictionary> = {
     "system.unsupportedDeviceDesc":
       "CV Builder está optimizado para tabletas y computadoras de escritorio. Abre la aplicación en una pantalla más grande.",
     "system.minRequiredWidth": "Ancho mínimo de pantalla: 768px",
+    "languages.english": "Inglés",
+    "languages.russian": "Ruso",
+    "languages.spanish": "Español",
+    "languages.french": "Francés",
+    "languages.german": "Alemán",
+    "languages.polish": "Polaco",
+    "languages.ukrainian": "Ucraniano",
+    "languages.portuguese": "Portugués",
+    "languages.italian": "Italiano",
   },
 
-  German: {
+  german: {
     "nav.employees": "Mitarbeiter",
     "nav.skills": "Fähigkeiten",
     "nav.languages": "Sprachen",
@@ -855,9 +882,18 @@ export const dictionaries: Record<Language, Dictionary> = {
     "system.unsupportedDeviceDesc":
       "CV Builder ist für Tablets und Desktops optimiert. Bitte öffnen Sie die Anwendung auf einem größeren Bildschirm.",
     "system.minRequiredWidth": "Erforderliche Mindestbreite: 768px",
+    "languages.english": "Englisch",
+    "languages.russian": "Russisch",
+    "languages.spanish": "Spanisch",
+    "languages.french": "Französisch",
+    "languages.german": "Deutsch",
+    "languages.polish": "Polnisch",
+    "languages.ukrainian": "Ukrainisch",
+    "languages.portuguese": "Portugiesisch",
+    "languages.italian": "Italienisch",
   },
 
-  French: {
+  french: {
     "nav.employees": "Employés",
     "nav.skills": "Compétences",
     "nav.languages": "Langues",
@@ -1071,9 +1107,18 @@ export const dictionaries: Record<Language, Dictionary> = {
     "system.unsupportedDeviceDesc":
       "CV Builder est optimisé pour les tablettes et ordinateurs de bureau. Veuillez utiliser un écran plus grand.",
     "system.minRequiredWidth": "Largeur d'écran minimale requise : 768px",
+    "languages.english": "Anglais",
+    "languages.russian": "Russe",
+    "languages.spanish": "Espagnol",
+    "languages.french": "Français",
+    "languages.german": "Allemand",
+    "languages.polish": "Polonais",
+    "languages.ukrainian": "Ukrainien",
+    "languages.portuguese": "Portugais",
+    "languages.italian": "Italien",
   },
 
-  Italian: {
+  italian: {
     "nav.employees": "Dipendenti",
     "nav.skills": "Competenze",
     "nav.languages": "Lingue",
@@ -1281,9 +1326,18 @@ export const dictionaries: Record<Language, Dictionary> = {
     "system.unsupportedDeviceDesc":
       "CV Builder è ottimizzato per tablet e computer desktop. Apri l'app su uno schermo più grande.",
     "system.minRequiredWidth": "Larghezza minima richiesta: 768px",
+    "languages.english": "Inglese",
+    "languages.russian": "Russo",
+    "languages.spanish": "Spagnolo",
+    "languages.french": "Francese",
+    "languages.german": "Tedesco",
+    "languages.polish": "Polacco",
+    "languages.ukrainian": "Ucraino",
+    "languages.portuguese": "Portoghese",
+    "languages.italian": "Italiano",
   },
 
-  Polish: {
+  polish: {
     "nav.employees": "Pracownicy",
     "nav.skills": "Umiejętności",
     "nav.languages": "Języki",
@@ -1490,9 +1544,18 @@ export const dictionaries: Record<Language, Dictionary> = {
     "system.unsupportedDeviceDesc":
       "CV Builder jest zoptymalizowany dla tabletów i komputerów stacjonarnych. Otwórz aplikację na większym ekranie.",
     "system.minRequiredWidth": "Minimalna wymagana szerokość: 768px",
+    "languages.english": "Angielski",
+    "languages.russian": "Rosyjski",
+    "languages.spanish": "Hiszpański",
+    "languages.french": "Francuski",
+    "languages.german": "Niemiecki",
+    "languages.polish": "Polski",
+    "languages.ukrainian": "Ukraiński",
+    "languages.portuguese": "Portugalski",
+    "languages.italian": "Włoski",
   },
 
-  Portuguese: {
+  portuguese: {
     "nav.employees": "Funcionários",
     "nav.skills": "Habilidades",
     "nav.languages": "Idiomas",
@@ -1701,9 +1764,18 @@ export const dictionaries: Record<Language, Dictionary> = {
     "system.unsupportedDeviceDesc":
       "O CV Builder é otimizado para tablets e computadores. Abra o aplicativo em uma tela maior.",
     "system.minRequiredWidth": "Largura mínima de tela: 768px",
+    "languages.english": "Anglês",
+    "languages.russian": "Russo",
+    "languages.spanish": "Espanhol",
+    "languages.french": "Francês",
+    "languages.german": "Alemão",
+    "languages.polish": "Polonês",
+    "languages.ukrainian": "Ucraniano",
+    "languages.portuguese": "Português",
+    "languages.italian": "Italiano",
   },
 
-  Ukrainian: {
+  ukrainian: {
     "nav.employees": "Співробітники",
     "nav.skills": "Навички",
     "nav.languages": "Мови",
@@ -1914,5 +1986,14 @@ export const dictionaries: Record<Language, Dictionary> = {
     "system.unsupportedDeviceDesc":
       "CV Builder оптимізовано для планшетів і комп'ютерів. Будь ласка, відкрийте застосунок на більшому екрані.",
     "system.minRequiredWidth": "Мінімальна ширина екрана: 768px",
+    "languages.english": "Aнглійська",
+    "languages.russian": "Російська",
+    "languages.spanish": "Іспанська",
+    "languages.french": "Французька",
+    "languages.german": "Німецька",
+    "languages.polish": "Польська",
+    "languages.ukrainian": "Українська",
+    "languages.portuguese": "Португальська",
+    "languages.italian": "Італійська",
   },
 };

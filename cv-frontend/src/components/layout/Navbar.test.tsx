@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Navbar } from "./Navbar";
+import { SidebarProvider } from "./SidebarContext";
 import { logoutAction } from "@/features/auth/actions/logout.action";
 
 const mockPush = vi.fn();
@@ -115,5 +116,65 @@ describe("Navbar / Aside Sidebar", () => {
     expect(
       screen.getByRole("button", { name: /close menu/i }),
     ).toBeInTheDocument();
+  });
+
+  it("renders collapse chevron buttons in expanded state and triggers callback on click", () => {
+    const onToggle = vi.fn();
+    render(<Navbar onToggleCollapse={onToggle} />);
+
+    const collapseButtons = screen.getAllByRole("button", {
+      name: /collapse sidebar/i,
+    });
+    expect(collapseButtons.length).toBeGreaterThanOrEqual(1);
+
+    fireEvent.click(collapseButtons[0]);
+    expect(onToggle).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders collapsed stripe state with expand chevron and icon-only links", () => {
+    const onToggle = vi.fn();
+    render(<Navbar isCollapsed onToggleCollapse={onToggle} />);
+
+    const sidebar = screen.getByLabelText("Sidebar Navigation");
+    expect(sidebar).toHaveAttribute("data-collapsed", "true");
+    expect(sidebar.className).toContain("w-16");
+
+    const expandButtons = screen.getAllByRole("button", {
+      name: /expand sidebar/i,
+    });
+    expect(expandButtons.length).toBeGreaterThanOrEqual(1);
+
+    fireEvent.click(expandButtons[0]);
+    expect(onToggle).toHaveBeenCalledTimes(1);
+
+    // In collapsed stripe mode, the desktop nav text is omitted, but aria-label is present
+    const employeesLink = screen.getByRole("link", { name: /employees/i });
+    expect(employeesLink).toBeInTheDocument();
+    expect(employeesLink.className).toContain("h-12 w-12");
+  });
+
+  it("integrates with SidebarProvider to toggle collapsed state", () => {
+    render(
+      <SidebarProvider>
+        <Navbar />
+      </SidebarProvider>,
+    );
+
+    const sidebar = screen.getByLabelText("Sidebar Navigation");
+    expect(sidebar).toHaveAttribute("data-collapsed", "false");
+
+    const collapseButton = screen.getAllByRole("button", {
+      name: /collapse sidebar/i,
+    })[0];
+    fireEvent.click(collapseButton);
+
+    expect(sidebar).toHaveAttribute("data-collapsed", "true");
+
+    const expandButton = screen.getAllByRole("button", {
+      name: /expand sidebar/i,
+    })[0];
+    fireEvent.click(expandButton);
+
+    expect(sidebar).toHaveAttribute("data-collapsed", "false");
   });
 });
