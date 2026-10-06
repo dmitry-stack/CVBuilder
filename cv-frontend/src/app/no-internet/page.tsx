@@ -1,0 +1,15 @@
+import type { Metadata } from "next";
+import { NoInternetView } from "@/features/system/ui/NoInternetView";
+
+export const metadata: Metadata = {
+  title: "No Internet Connection | CV Builder",
+  description: "Network connectivity is currently unavailable.",
+};
+
+export default function NoInternetPage() {
+  return (
+    <main className="flex-1 flex items-center justify-center p-6">
+      <NoInternetView />
+    </main>
+  );
+}

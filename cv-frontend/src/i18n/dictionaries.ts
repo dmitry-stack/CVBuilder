@@ -182,6 +182,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.addSkill": "Add skill",
     "cvSkills.noSkillsAdded": "No skills added yet",
     "cvSkills.skill": "Skill",
+    "system.noInternetTitle": "No Internet Connection",
+    "system.noInternetDesc": "Please check your network settings. Once you are back online, click retry to continue.",
+    "system.retry": "Try Again",
+    "system.unsupportedDeviceTitle": "Device Not Supported",
+    "system.unsupportedDeviceDesc": "CV Builder is optimized for tablet and desktop screens. Please open the app on a larger device or expand your browser window.",
+    "system.minRequiredWidth": "Minimum required screen width: 768px",
   },
 
   Russian: {
@@ -367,6 +373,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.addSkill": "Добавить навык",
     "cvSkills.noSkillsAdded": "Навыки пока не добавлены",
     "cvSkills.skill": "Навык",
+    "system.noInternetTitle": "Нет подключения к интернету",
+    "system.noInternetDesc": "Пожалуйста, проверьте настройки сети. Как только связь восстановится, нажмите повторить.",
+    "system.retry": "Повторить попытку",
+    "system.unsupportedDeviceTitle": "Устройство не поддерживается",
+    "system.unsupportedDeviceDesc": "CV Builder оптимизирован для планшетов и настольных компьютеров. Пожалуйста, откройте приложение на поддерживаемом устройстве.",
+    "system.minRequiredWidth": "Минимальная ширина экрана: 768px",
   },
 
   Spanish: {
@@ -551,6 +563,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.addSkill": "Añadir habilidad",
     "cvSkills.noSkillsAdded": "Aún no se han añadido habilidades",
     "cvSkills.skill": "Habilidad",
+    "system.noInternetTitle": "Sin conexión a internet",
+    "system.noInternetDesc": "Por favor, comprueba tu conexión de red. Una vez conectado, haz clic en reintentar.",
+    "system.retry": "Reintentar",
+    "system.unsupportedDeviceTitle": "Dispositivo no compatible",
+    "system.unsupportedDeviceDesc": "CV Builder está optimizado para tabletas y computadoras de escritorio. Abre la aplicación en una pantalla más grande.",
+    "system.minRequiredWidth": "Ancho mínimo de pantalla: 768px",
   },
 
   German: {
@@ -735,6 +753,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.addSkill": "Fähigkeit hinzufügen",
     "cvSkills.noSkillsAdded": "Noch keine Fähigkeiten hinzugefügt",
     "cvSkills.skill": "Fähigkeit",
+    "system.noInternetTitle": "Keine Internetverbindung",
+    "system.noInternetDesc": "Bitte überprüfen Sie Ihre Netzwerkeinstellungen. Sobald Sie wieder online sind, klicken Sie auf Wiederholen.",
+    "system.retry": "Wiederholen",
+    "system.unsupportedDeviceTitle": "Gerät nicht unterstützt",
+    "system.unsupportedDeviceDesc": "CV Builder ist für Tablets und Desktops optimiert. Bitte öffnen Sie die Anwendung auf einem größeren Bildschirm.",
+    "system.minRequiredWidth": "Erforderliche Mindestbreite: 768px",
   },
 
   French: {
@@ -921,6 +945,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.addSkill": "Ajouter une compétence",
     "cvSkills.noSkillsAdded": "Aucune compétence ajoutée pour le moment",
     "cvSkills.skill": "Compétence",
+    "system.noInternetTitle": "Pas de connexion Internet",
+    "system.noInternetDesc": "Veuillez vérifier vos paramètres réseau. Une fois reconnecté, cliquez sur réessayer.",
+    "system.retry": "Réessayer",
+    "system.unsupportedDeviceTitle": "Appareil non pris en charge",
+    "system.unsupportedDeviceDesc": "CV Builder est optimisé pour les tablettes et ordinateurs de bureau. Veuillez utiliser un écran plus grand.",
+    "system.minRequiredWidth": "Largeur d'écran minimale requise : 768px",
   },
 
   Italian: {
@@ -1102,6 +1132,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.addSkill": "Aggiungi competenza",
     "cvSkills.noSkillsAdded": "Nessuna competenza ancora aggiunta",
     "cvSkills.skill": "Competenza",
+    "system.noInternetTitle": "Nessuna connessione Internet",
+    "system.noInternetDesc": "Verifica le impostazioni di rete. Una volta online, fai clic su riprova per continuare.",
+    "system.retry": "Riprova",
+    "system.unsupportedDeviceTitle": "Dispositivo non supportato",
+    "system.unsupportedDeviceDesc": "CV Builder è ottimizzato per tablet e computer desktop. Apri l'app su uno schermo più grande.",
+    "system.minRequiredWidth": "Larghezza minima richiesta: 768px",
   },
 
   Polish: {
@@ -1282,6 +1318,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.addSkill": "Dodaj umiejętność",
     "cvSkills.noSkillsAdded": "Nie dodano jeszcze żadnych umiejętności",
     "cvSkills.skill": "Umiejętność",
+    "system.noInternetTitle": "Brak połączenia z Internetem",
+    "system.noInternetDesc": "Sprawdź ustawienia sieci. Gdy połączenie zostanie przywrócone, kliknij ponów próbę.",
+    "system.retry": "Ponów próbę",
+    "system.unsupportedDeviceTitle": "Nieobsługiwane urządzenie",
+    "system.unsupportedDeviceDesc": "CV Builder jest zoptymalizowany dla tabletów i komputerów stacjonarnych. Otwórz aplikację na większym ekranie.",
+    "system.minRequiredWidth": "Minimalna wymagana szerokość: 768px",
   },
 
   Portuguese: {
@@ -1464,6 +1506,12 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.addSkill": "Adicionar habilidade",
     "cvSkills.noSkillsAdded": "Nenhuma habilidade adicionada ainda",
     "cvSkills.skill": "Habilidade",
+    "system.noInternetTitle": "Sem conexão com a Internet",
+    "system.noInternetDesc": "Verifique suas configurações de rede. Quando estiver conectado, clique em tentar novamente.",
+    "system.retry": "Tentar novamente",
+    "system.unsupportedDeviceTitle": "Dispositivo não suportado",
+    "system.unsupportedDeviceDesc": "O CV Builder é otimizado para tablets e computadores. Abra o aplicativo em uma tela maior.",
+    "system.minRequiredWidth": "Largura mínima de tela: 768px",
   },
 
   Ukrainian: {
@@ -1647,5 +1695,11 @@ export const dictionaries: Record<Language, Dictionary> = {
     "cvSkills.addSkill": "Додати навичку",
     "cvSkills.noSkillsAdded": "Навички ще не додано",
     "cvSkills.skill": "Навичка",
+    "system.noInternetTitle": "Немає підключення до інтернету",
+    "system.noInternetDesc": "Будь ласка, перевірте налаштування мережі. Щойно зв'язок відновиться, натисніть повторити.",
+    "system.retry": "Спробувати знову",
+    "system.unsupportedDeviceTitle": "Пристрій не підтримується",
+    "system.unsupportedDeviceDesc": "CV Builder оптимізовано для планшетів і комп'ютерів. Будь ласка, відкрийте застосунок на більшому екрані.",
+    "system.minRequiredWidth": "Мінімальна ширина екрана: 768px",
   },
 };

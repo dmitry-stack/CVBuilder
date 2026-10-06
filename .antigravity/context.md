@@ -365,9 +365,9 @@ cv-frontend/
 | **Authentication** | Reset Password (`/reset-password`) | ⏳ Not Started | Public | High |
 | **Authentication** | Email Verification (`/verify-email`) | ⏳ Not Started | Public | High |
 | **System** | Root Page (`/`) / Landing | ✅ Implemented | Public | Done |
-| **System** | Not Found (404) (`not-found.tsx`) | ⏳ Not Started | Public | Medium |
-| **System** | No Internet Error | ⏳ Not Started | Public | Low |
-| **System** | Unsupported Device | ⏳ Not Started | Public | Low |
+| **System** | Not Found (404) (`not-found.tsx`) | ✅ Implemented | Public | Done |
+| **System** | No Internet Error | ✅ Implemented | Public | Done |
+| **System** | Unsupported Device | ✅ Implemented | Public | Done |
 | **Users** | Employees Directory (`/users`) | ✅ Implemented | User | Done |
 | **Users** | User Profile (`/users/[id]`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
 | **Users** | User Skills (`/users/[id]/skills`) | ✅ Implemented | User (Owner editable, peer read-only) | Done |
