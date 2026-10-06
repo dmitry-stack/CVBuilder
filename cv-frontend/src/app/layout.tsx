@@ -8,6 +8,7 @@ import { AppToastContainer } from "@/components/ui/toast";
 import { ThemeProvider } from "next-themes";
 import { LanguageProvider } from "@/i18n";
 import { OfflineGuard } from "@/features/system/ui/OfflineGuard";
+import { DeviceGuard } from "@/features/system/ui/DeviceGuard";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,9 +23,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <LanguageProvider>
-            <OfflineGuard>
-              <ApolloProviderWrapper>{children}</ApolloProviderWrapper>
-            </OfflineGuard>
+            <DeviceGuard>
+              <OfflineGuard>
+                <ApolloProviderWrapper>{children}</ApolloProviderWrapper>
+              </OfflineGuard>
+            </DeviceGuard>
             <AppToastContainer />
           </LanguageProvider>
         </ThemeProvider>

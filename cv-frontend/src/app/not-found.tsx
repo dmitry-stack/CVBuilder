@@ -23,17 +23,18 @@ export default function NotFound() {
         width={162}
         height={122}
         priority
+        unoptimized
         className="mb-6 max-w-full h-auto dark:invert dark:brightness-200"
       />
 
       <h1 className="text-3xl font-medium text-[#2E2E2E] dark:text-zinc-100 mb-3">
-        Oops
+        Hmm...
       </h1>
 
       <p className="max-w-md text-sm text-[#2E2E2E] dark:text-zinc-300 leading-relaxed mb-6">
-        Something went wrong. We&apos;re already working on fixing it.
+        This doesn&apos;t seem to be the page you were looking for.
         <br />
-        Please try again or go back.
+        Let&apos;s get you back on track.
       </p>
 
       <button

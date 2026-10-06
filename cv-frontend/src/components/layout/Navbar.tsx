@@ -253,6 +253,7 @@ export function Navbar({
             width={24}
             height={24}
             priority
+            unoptimized
             className="h-6 w-6 shrink-0"
           />
           <span className="font-roboto text-base font-medium leading-6 tracking-cv text-cv-text dark:text-[#F5F5F7]">
@@ -277,6 +278,7 @@ export function Navbar({
             width={24}
             height={24}
             priority
+            unoptimized
             className="h-6 w-6 shrink-0"
           />
           <span className="font-roboto text-base font-medium text-cv-text dark:text-[#F5F5F7]">

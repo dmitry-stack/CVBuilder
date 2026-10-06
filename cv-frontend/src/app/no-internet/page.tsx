@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function NoInternetPage() {
   return (
-    <main className="flex-1 flex items-center justify-center p-6">
+    <main className="flex-1 flex items-center justify-center p-6 bg-white dark:bg-[#2E2E2E]">
       <NoInternetView />
     </main>
   );
