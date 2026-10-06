@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+
 interface NoInternetViewProps {
   onRetry?: () => void;
   isOverlay?: boolean;
@@ -100,13 +102,14 @@ export function NoInternetView({
         Please try again.
       </p>
 
-      <button
+      <Button
         type="button"
+        size="lg"
         onClick={handleRetry}
-        className="h-10 min-w-40 px-8 rounded-[40px] bg-cv-accent hover:bg-cv-accent-hover text-white text-sm font-medium tracking-wide uppercase transition-colors cursor-pointer shadow-md"
+        className="min-w-40 shadow-md"
       >
         RETRY
-      </button>
+      </Button>
     </div>
   );
 }

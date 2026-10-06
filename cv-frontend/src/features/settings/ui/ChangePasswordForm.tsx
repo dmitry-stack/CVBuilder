@@ -190,8 +190,9 @@ export function ChangePasswordForm() {
       <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center gap-4">
         <Button
           type="submit"
+          size="xl"
+          className="w-55 shadow-cv-button"
           disabled={isPending}
-          className="h-12 w-55 rounded-full bg-cv-accent font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-on-accent shadow-cv-button hover:bg-cv-accent-hover transition-all cursor-pointer"
         >
           {isPending ? (
             <>
@@ -203,18 +204,20 @@ export function ChangePasswordForm() {
           )}
         </Button>
 
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="xl"
+          className="w-55"
           disabled={isPending}
           onClick={() => {
             reset();
             setServerError(null);
             setSuccessMessage(null);
           }}
-          className="flex h-12 w-55 items-center justify-center rounded-full font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-muted hover:text-cv-text dark:text-[#C4C4C6] dark:hover:text-[#F5F5F7] transition-colors cursor-pointer"
         >
           {t("settings.cancel")}
-        </button>
+        </Button>
       </div>
     </form>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import type { CvProjectFormData } from "../../schemas/cv-project.schema";
 import type { CvProjectItem } from "../../lib/cv-projects.utils";
 import { CVProjectEnvironmentInput } from "./CVProjectEnvironmentInput";
@@ -149,25 +150,28 @@ function CVProjectDialogContent({
         </div>
 
         <div className="flex justify-end items-center gap-6 px-6 py-4 shrink-0 bg-[#F5F5F7] dark:bg-zinc-900 border-t border-zinc-200/50 dark:border-zinc-800">
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="xl"
             onClick={onClose}
             disabled={isSubmitting}
-            className="w-40 h-12 rounded-[40px] text-sm font-medium tracking-[0.4px] uppercase border border-[#2E2E2E] dark:border-zinc-300 text-[#2E2E2E] dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors cursor-pointer disabled:opacity-50"
+            className="w-40"
           >
             {t("common.cancel")}
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
+            size="xl"
             disabled={isSubmitting}
-            className="w-40 h-12 rounded-[40px] text-sm font-medium tracking-[0.4px] uppercase text-[#F5F5F7] bg-cv-accent hover:bg-cv-accent-hover shadow-cv-button transition-colors cursor-pointer disabled:opacity-50"
+            className="w-40 shadow-cv-button"
           >
             {isSubmitting
               ? t("common.saving")
               : initialData
                 ? t("common.update")
                 : t("common.add")}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

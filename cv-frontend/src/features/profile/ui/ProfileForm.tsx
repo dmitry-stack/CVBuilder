@@ -433,19 +433,20 @@ export function ProfileForm({
             <Button
               type="button"
               variant="outline"
+              size="lg"
               onClick={handleCancel}
               disabled={!isDirty || isSubmitting}
-              className="rounded-full px-6 h-10 text-sm font-medium cursor-pointer"
             >
               {t("common.cancel")}
             </Button>
-            <button
+            <Button
               type="submit"
+              size="lg"
               disabled={!isDirty || isSubmitting}
-              className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white px-8 h-10 text-sm font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus:outline-hidden"
+              className="shadow-cv-button"
             >
               {isSubmitting ? t("common.saving") : t("common.save")}
-            </button>
+            </Button>
           </div>
         )}
       </form>

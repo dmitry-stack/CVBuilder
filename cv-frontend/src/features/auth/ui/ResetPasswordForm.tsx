@@ -180,7 +180,8 @@ export default function ResetPasswordForm() {
       <div className="mx-auto mt-10 sm:mt-12 flex w-55 flex-col items-center gap-2">
         <Button
           type="submit"
-          className="h-12 w-55 rounded-full bg-cv-accent font-roboto text-sm font-medium leading-6 tracking-cv-wide uppercase text-cv-on-accent shadow-cv-button hover:bg-cv-accent-hover transition-all cursor-pointer"
+          size="xl"
+          className="w-55 shadow-cv-button"
           disabled={isPending || !token}
         >
           {isPending ? (

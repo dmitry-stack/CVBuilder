@@ -71,6 +71,12 @@ const { MOCK_GRAPHQL_USERS } = vi.hoisted(() => ({
   },
 }));
 
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
+
 vi.mock("@apollo/client/react", () => ({
   useQuery: vi.fn().mockReturnValue({
     data: MOCK_GRAPHQL_USERS,

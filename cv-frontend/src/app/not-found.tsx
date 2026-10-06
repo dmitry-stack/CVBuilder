@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import errorSvg from "@/assets/error.svg";
 
 export default function NotFound() {
@@ -37,13 +38,14 @@ export default function NotFound() {
         Let&apos;s get you back on track.
       </p>
 
-      <button
+      <Button
         type="button"
+        size="lg"
         onClick={handleGoBack}
-        className="h-10 min-w-[160px] px-8 rounded-[40px] bg-cv-accent hover:bg-cv-accent-hover text-white text-sm font-medium tracking-wide uppercase transition-colors cursor-pointer shadow-md"
+        className="min-w-40 shadow-md"
       >
         GO BACK
-      </button>
+      </Button>
     </div>
   );
 }

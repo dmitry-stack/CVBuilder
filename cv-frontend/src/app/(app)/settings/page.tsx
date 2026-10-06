@@ -60,7 +60,7 @@ export default function SettingsPage() {
           >
             {LANGUAGES.map((lang) => (
               <option key={lang} value={lang}>
-                {lang}
+                {t(`languages.${lang}`)}
               </option>
             ))}
           </select>

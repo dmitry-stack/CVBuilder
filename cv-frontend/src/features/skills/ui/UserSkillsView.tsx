@@ -400,11 +400,7 @@ export function UserSkillsView({
             {t("skills.noSkills")}
           </p>
           {isOwner && (
-            <Button
-              type="button"
-              onClick={handleOpenAdd}
-              className="rounded-full bg-cv-accent hover:bg-cv-accent-hover text-white text-xs px-5 h-9 uppercase font-medium tracking-wider cursor-pointer"
-            >
+            <Button type="button" onClick={handleOpenAdd}>
               {t("skills.addFirstSkill")}
             </Button>
           )}
