@@ -20,8 +20,6 @@ import {
   UpdateProfileDocument,
   UpdateUserDocument,
   type UserQuery,
-  type DepartmentsQuery,
-  type PositionsQuery,
 } from "@/graphql/__generated__/graphql";
 
 export interface UserProfileData {
@@ -109,10 +107,10 @@ export function ProfileForm({
     },
   );
 
-  const { data: deptsData } = useQuery<DepartmentsQuery>(DepartmentsDocument, {
+  const { data: deptsData } = useQuery(DepartmentsDocument, {
     errorPolicy: "ignore",
   });
-  const { data: posData } = useQuery<PositionsQuery>(PositionsDocument, {
+  const { data: posData } = useQuery(PositionsDocument, {
     errorPolicy: "ignore",
   });
 
@@ -277,6 +275,7 @@ export function ProfileForm({
 
       <div className="flex flex-col items-center text-center">
         <ProfileAvatar
+          userId={effectiveUserId}
           initialAvatar={activeUser.avatar}
           userName={fullName}
           editable={isOwner}
