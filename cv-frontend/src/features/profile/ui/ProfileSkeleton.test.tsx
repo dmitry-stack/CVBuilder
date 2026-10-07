@@ -14,7 +14,7 @@ describe("ProfileSkeleton component", () => {
   it("renders 4 field skeletons with labels and input boxes", () => {
     const { container } = render(<ProfileSkeleton />);
 
-    const inputs = container.querySelectorAll(".h-11");
+    const inputs = container.querySelectorAll(".h-12");
     expect(inputs.length).toBe(4);
 
     const labels = container.querySelectorAll(".h-3");

@@ -1,7 +1,10 @@
 "use client";
 
-import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { ChevronDown, Calendar, AlertCircle } from "lucide-react";
+import { useMemo } from "react";
+import { FieldErrors } from "react-hook-form";
+import { ChevronDown } from "lucide-react";
+import { Select, type SelectOption } from "@/components/ui/select";
+import { DatePicker } from "@/components/ui/date-picker";
 import { useTranslation } from "@/i18n";
 import type { CvProjectFormData } from "../../schemas/cv-project.schema";
 import type { CvProjectItem } from "../../lib/cv-projects.utils";
@@ -14,7 +17,10 @@ interface CVProjectMetaFieldsProps {
   onProjectSelect: (projId: string) => void;
   currentDomain: string;
   isOngoing: boolean;
-  register: UseFormRegister<CvProjectFormData>;
+  startDate: string;
+  endDate: string;
+  onStartDateChange: (val: string) => void;
+  onEndDateChange: (val: string) => void;
   errors: FieldErrors<CvProjectFormData>;
 }
 
@@ -25,52 +31,54 @@ export function CVProjectMetaFields({
   onProjectSelect,
   currentDomain,
   isOngoing,
-  register,
+  startDate,
+  endDate,
+  onStartDateChange,
+  onEndDateChange,
   errors,
 }: CVProjectMetaFieldsProps) {
   const { t } = useTranslation();
+
+  const projectOptions: SelectOption[] = useMemo(
+    () =>
+      availableProjects.map((p) => ({
+        value: String(p.id),
+        label: p.name,
+      })),
+    [availableProjects],
+  );
 
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label
-            htmlFor="proj_name_select"
-            className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
-          >
-            {t("common.name")}
-          </label>
           {initialData ? (
-            <div className="h-12 px-3.5 border border-[#AEAEAE] dark:border-zinc-700 bg-white dark:bg-zinc-900 flex items-center justify-between text-sm text-[#2E2E2E] dark:text-zinc-100">
-              <span className="truncate">{initialData.name}</span>
-              <ChevronDown className="h-5 w-5 text-[#626262] shrink-0 ml-2" />
+            <div>
+              <label
+                htmlFor="proj_name_static"
+                className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
+              >
+                {t("common.name")}
+              </label>
+              <div
+                id="proj_name_static"
+                className="h-12 px-3.5 border border-[#AEAEAE] dark:border-zinc-700 bg-white dark:bg-zinc-900 flex items-center justify-between text-sm text-[#2E2E2E] dark:text-zinc-100"
+              >
+                <span className="truncate">{initialData.name}</span>
+                <ChevronDown className="h-5 w-5 text-[#626262] shrink-0 ml-2" />
+              </div>
             </div>
           ) : (
-            <div className="relative">
-              <select
-                id="proj_name_select"
-                value={selectedProjectId}
-                onChange={(e) => onProjectSelect(e.target.value)}
-                className="w-full h-12 px-3.5 pr-9 border border-[#AEAEAE] dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-[#2E2E2E] dark:text-zinc-100 focus:outline-hidden focus:border-cv-accent appearance-none cursor-pointer"
-              >
-                {availableProjects.map((p) => (
-                  <option
-                    key={p.id}
-                    value={p.id}
-                    className="bg-white dark:bg-zinc-900 text-[#2E2E2E] dark:text-zinc-100"
-                  >
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#626262] pointer-events-none" />
-            </div>
-          )}
-          {errors.projectId && (
-            <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
-              <AlertCircle className="h-3 w-3" />
-              <span>{errors.projectId.message}</span>
-            </p>
+            <Select
+              id="proj_name_select"
+              label={t("common.name")}
+              alwaysShowLabel
+              placeholder={t("projects.selectProject")}
+              options={projectOptions}
+              value={selectedProjectId}
+              onChange={onProjectSelect}
+              error={errors.projectId?.message}
+            />
           )}
         </div>
 
@@ -92,50 +100,26 @@ export function CVProjectMetaFields({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label
-            htmlFor="p_start"
-            className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
-          >
-            {t("projects.startDate")}
-          </label>
-          <div className="relative">
-            <input
-              id="p_start"
-              type="date"
-              {...register("start_date")}
-              className="w-full h-12 px-3.5 pr-9 border border-[#AEAEAE] dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-[#2E2E2E] dark:text-zinc-100 focus:outline-hidden focus:border-cv-accent"
-            />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#626262] pointer-events-none" />
-          </div>
-          {errors.start_date && (
-            <p className="mt-1 text-xs text-destructive">
-              {errors.start_date.message}
-            </p>
-          )}
+          <DatePicker
+            id="p_start"
+            label={t("projects.startDate")}
+            alwaysShowLabel
+            value={startDate}
+            onChange={onStartDateChange}
+            error={errors.start_date?.message}
+          />
         </div>
 
         <div>
-          <label
-            htmlFor="p_end"
-            className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
-          >
-            {t("projects.endDate")}
-          </label>
-          <div className="relative">
-            <input
-              id="p_end"
-              type="date"
-              disabled={isOngoing}
-              {...register("end_date")}
-              className="w-full h-12 px-3.5 pr-9 border border-[#AEAEAE] dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-[#2E2E2E] dark:text-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-hidden focus:border-cv-accent"
-            />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#626262] pointer-events-none" />
-          </div>
-          {errors.end_date && (
-            <p className="mt-1 text-xs text-destructive">
-              {errors.end_date.message}
-            </p>
-          )}
+          <DatePicker
+            id="p_end"
+            label={t("projects.endDate")}
+            alwaysShowLabel
+            disabled={isOngoing}
+            value={endDate}
+            onChange={onEndDateChange}
+            error={errors.end_date?.message}
+          />
         </div>
       </div>
     </>

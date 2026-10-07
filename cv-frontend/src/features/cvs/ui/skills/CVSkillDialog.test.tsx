@@ -62,8 +62,8 @@ describe("CVSkillDialog Component", () => {
       />,
     );
 
-    const select = screen.getByLabelText("Skill");
-    fireEvent.change(select, { target: { value: "Python" } });
+    fireEvent.click(screen.getByRole("combobox", { name: "Skill" }));
+    fireEvent.click(await screen.findByRole("option", { name: "Python" }));
 
     const addBtn = screen.getByRole("button", { name: "Add" });
     expect(addBtn).not.toBeDisabled();

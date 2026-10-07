@@ -183,6 +183,7 @@ export type TranslationKey =
   | "projects.addProject"
   | "projects.addProjectTitle"
   | "projects.updateProject"
+  | "projects.selectProject"
   | "projects.roles"
   | "projects.searchPlaceholder"
   | "projects.searchAria"

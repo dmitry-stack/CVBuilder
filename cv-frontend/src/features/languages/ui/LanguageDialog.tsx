@@ -3,22 +3,21 @@
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { X, AlertCircle, Trash2 } from "lucide-react";
+import { X, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { LanguageProficiencyBar } from "./LanguageProficiencyBar";
 import {
   languageFormSchema,
-  proficiencyLevels,
   type LanguageFormData,
   type ProficiencyType,
 } from "../schemas/language.schema";
 import { DeleteLanguageDialog } from "./DeleteLanguageDialog";
+import {
+  LanguageDialogFormFields,
+  type CatalogLanguageOption,
+} from "./LanguageDialogFormFields";
 import { useTranslation } from "@/i18n";
 
-interface CatalogLanguageOption {
-  name: string;
-  native_name?: string | null;
-}
+export type { CatalogLanguageOption };
 
 interface LanguageDialogProps {
   isOpen: boolean;
@@ -28,16 +27,6 @@ interface LanguageDialogProps {
   initialData?: LanguageFormData | null;
   catalogLanguages?: CatalogLanguageOption[];
 }
-
-const PROFICIENCY_LABELS: Record<ProficiencyType, string> = {
-  A1: "A1 - Beginner",
-  A2: "A2 - Elementary",
-  B1: "B1 - Intermediate",
-  B2: "B2 - Upper Intermediate",
-  C1: "C1 - Advanced",
-  C2: "C2 - Proficient / Mastery",
-  Native: "Native - Native / Bilingual",
-};
 
 export function LanguageDialog({
   isOpen,
@@ -49,11 +38,13 @@ export function LanguageDialog({
 }: LanguageDialogProps) {
   const { t } = useTranslation();
   const isEdit = Boolean(initialData);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<LanguageFormData>({
@@ -85,18 +76,11 @@ export function LanguageDialog({
     }
   }, [isOpen, initialData, reset]);
 
-  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
-
   if (!isOpen) return null;
 
   const onSubmit = async (data: LanguageFormData) => {
     await onSave(data);
     onClose();
-  };
-
-  const handleDelete = () => {
-    if (!initialData?.name || !onDelete) return;
-    setIsConfirmDeleteOpen(true);
   };
 
   const handleConfirmDelete = async () => {
@@ -111,9 +95,9 @@ export function LanguageDialog({
       role="dialog"
       aria-modal="true"
       aria-labelledby="language-dialog-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs overflow-y-auto"
     >
-      <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-visible animate-in fade-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
           <h2
             id="language-dialog-title"
@@ -132,89 +116,27 @@ export function LanguageDialog({
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-5">
-          <div>
-            <label
-              htmlFor="language_name"
-              className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
-            >
-              {t("languages.languageName")}
-            </label>
-            <input
-              id="language_name"
-              type="text"
-              placeholder={t("languages.languagePlaceholder")}
-              disabled={isEdit || isSubmitting}
-              list="catalog-languages-list"
-              {...register("name")}
-              aria-invalid={!!errors.name}
-              className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
-            />
-            <datalist id="catalog-languages-list">
-              {catalogLanguages.map((l) => (
-                <option
-                  key={l.name}
-                  value={l.name}
-                  label={
-                    l.native_name ? `${l.name} (${l.native_name})` : l.name
-                  }
-                />
-              ))}
-            </datalist>
-            {errors.name && (
-              <p className="mt-1 text-xs text-destructive flex items-center gap-1">
-                <AlertCircle className="h-3 w-3 shrink-0" />
-                <span>{errors.name.message}</span>
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="language_proficiency"
-              className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
-            >
-              {t("languages.proficiency")}
-            </label>
-            <div className="space-y-2">
-              <select
-                id="language_proficiency"
-                disabled={isSubmitting}
-                {...register("proficiency")}
-                className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto appearance-none focus:outline-hidden focus:ring-1 focus:ring-cv-accent cursor-pointer transition-colors"
-              >
-                {proficiencyLevels.map((lvl) => (
-                  <option key={lvl} value={lvl}>
-                    {PROFICIENCY_LABELS[lvl]}
-                  </option>
-                ))}
-              </select>
-
-              <div className="flex items-center gap-3 px-3 py-2 bg-zinc-100 dark:bg-zinc-800/50">
-                <span className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto">
-                  {t("common.preview")}
-                </span>
-                <LanguageProficiencyBar
-                  proficiency={selectedProficiency || "A1"}
-                  languageName={currentLanguageName || "Language"}
-                />
-                <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">
-                  {PROFICIENCY_LABELS[selectedProficiency] ||
-                    selectedProficiency}
-                </span>
-              </div>
-            </div>
-            {errors.proficiency && (
-              <p className="mt-1 text-xs text-destructive">
-                {errors.proficiency.message}
-              </p>
-            )}
-          </div>
+          <LanguageDialogFormFields
+            register={register}
+            errors={errors}
+            isSubmitting={isSubmitting}
+            isEdit={isEdit}
+            catalogLanguages={catalogLanguages}
+            selectedProficiency={selectedProficiency}
+            currentLanguageName={currentLanguageName}
+            onProficiencyChange={(val) =>
+              setValue("proficiency", val as ProficiencyType, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
+          />
 
           <div className="flex items-center justify-between pt-4 border-t border-zinc-200 dark:border-zinc-800">
             {isEdit && onDelete ? (
               <button
                 type="button"
-                onClick={handleDelete}
+                onClick={() => setIsConfirmDeleteOpen(true)}
                 disabled={isSubmitting}
                 aria-label="Delete language"
                 className="inline-flex items-center gap-1.5 text-xs text-destructive hover:text-red-700 dark:hover:text-red-400 font-medium transition-colors cursor-pointer"

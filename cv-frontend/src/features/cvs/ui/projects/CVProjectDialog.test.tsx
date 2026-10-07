@@ -179,7 +179,7 @@ describe("CVProjectDialog Component", () => {
     });
   });
 
-  it("switches project details when changing selected project in Add mode", () => {
+  it("switches project details when changing selected project in Add mode", async () => {
     render(
       <CVProjectDialog
         isOpen={true}
@@ -193,8 +193,14 @@ describe("CVProjectDialog Component", () => {
     expect(screen.getByText("Add project")).toBeInTheDocument();
 
     // Change project selection to SaaS Media Platform
-    const select = screen.getByRole("combobox") as HTMLSelectElement;
-    fireEvent.change(select, { target: { value: "5" } });
+    const selectTrigger = screen.getByRole("combobox", {
+      name: "Name",
+    });
+    fireEvent.click(selectTrigger);
+    const option = await screen.findByRole("option", {
+      name: /saas media platform/i,
+    });
+    fireEvent.click(option);
 
     // Domain and description should update
     expect(screen.getByText("IoT (Internet of Things)")).toBeInTheDocument();

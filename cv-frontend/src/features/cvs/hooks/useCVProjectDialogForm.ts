@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   cvProjectFormSchema,
@@ -59,6 +59,7 @@ export function useCVProjectDialogForm({
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<CvProjectFormData>({
     resolver: zodResolver(cvProjectFormSchema),
@@ -110,6 +111,23 @@ export function useCVProjectDialogForm({
     });
   };
 
+
+  const startDate =
+    useWatch({
+      control,
+      name: "start_date",
+      defaultValue:
+        initialData?.start_date || selectedAvailable?.start_date || "",
+    }) || "";
+
+  const endDate =
+    useWatch({
+      control,
+      name: "end_date",
+      defaultValue:
+        initialData?.end_date || selectedAvailable?.end_date || "",
+    }) || "";
+
   return {
     selectedProjectId,
     currentDomain,
@@ -128,5 +146,13 @@ export function useCVProjectDialogForm({
     isSubmitting,
     handleProjectSelect,
     onFormSubmit,
+    startDate,
+    endDate,
+    onStartDateChange: (val: string) => {
+      setValue("start_date", val, { shouldValidate: true, shouldDirty: true });
+    },
+    onEndDateChange: (val: string) => {
+      setValue("end_date", val, { shouldValidate: true, shouldDirty: true });
+    },
   };
 }

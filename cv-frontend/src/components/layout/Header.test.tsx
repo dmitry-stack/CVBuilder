@@ -141,4 +141,16 @@ describe("Header Component (Common Layout Header)", () => {
       container.querySelector('[data-slot="header-cv-skeleton"]'),
     ).toBeInTheDocument();
   });
+
+  it("renders fallback when user name is empty", () => {
+    mockPathname = "/users/2";
+    render(
+      <HeaderProvider>
+        <HeaderSync userName="" />
+        <Header />
+      </HeaderProvider>,
+    );
+
+    expect(screen.getByText("Unknown Employee")).toBeInTheDocument();
+  });
 });

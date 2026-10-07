@@ -14,38 +14,38 @@ const MASTERY_MAP: Record<MasteryLevel, MasteryVisualConfig> = {
   NoExpertise: {
     percentage: 0,
     barColor: "bg-[#626262]",
-    trackColor: "bg-[#E0E0E0] dark:bg-zinc-800",
+    trackColor: "bg-[#454545] dark:bg-zinc-800",
     label: "No Expertise",
   },
   Novice: {
     percentage: 20,
     barColor: "bg-[#626262]",
-    trackColor: "bg-[#E0E0E0] dark:bg-zinc-800",
+    trackColor: "bg-[#454545] dark:bg-zinc-800",
     label: "Novice",
   },
   Advanced: {
     percentage: 40,
     barColor: "bg-[#29B6F6]",
-    trackColor: "bg-[#B3E5FC] dark:bg-sky-950/60",
+    trackColor: "bg-[#145B7B] dark:bg-[#145B7B]/80",
     label: "Advanced",
   },
   Competent: {
     percentage: 60,
     barColor: "bg-[#66BB6A]",
-    trackColor: "bg-[#C8E6C9] dark:bg-emerald-950/60",
+    trackColor: "bg-[#335D35] dark:bg-[#335D35]/80",
     label: "Competent",
   },
 
   Proficient: {
     percentage: 80,
     barColor: "bg-[#FFB800]",
-    trackColor: "bg-[#FFE082] dark:bg-amber-950/60",
+    trackColor: "bg-[#7F5C00] dark:bg-[#7F5C00]/80",
     label: "Proficient",
   },
   Expert: {
     percentage: 100,
     barColor: "bg-cv-accent",
-    trackColor: "bg-[#FFCDD2] dark:bg-red-950/60",
+    trackColor: "bg-[#7F1D1D] dark:bg-[#7F1D1D]/80",
     label: "Expert",
   },
 };

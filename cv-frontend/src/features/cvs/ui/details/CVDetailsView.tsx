@@ -3,8 +3,9 @@
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { notify } from "@/components/ui/toast";
 import { HeaderSync } from "@/components/layout/HeaderContext";
@@ -107,81 +108,38 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
     >
       {cv?.name && <HeaderSync userName={cv.name} />}
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-4xl space-y-5"
-      >
-        <div>
-          <label
-            htmlFor="cv_name"
-            className="block text-xs font-normal text-[#757575] dark:text-zinc-400 mb-1.5 font-roboto"
-          >
-            {t("common.name")}
-          </label>
-          <input
-            id="cv_name"
-            type="text"
-            disabled={!isOwner}
-            aria-invalid={Boolean(errors.name)}
-            placeholder={t("cvDetails.namePlaceholder")}
-            {...register("name")}
-            className="w-full h-12 px-4 border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
-          />
-          {errors.name && (
-            <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
-              <AlertCircle className="h-3 w-3" />
-              <span>{errors.name.message}</span>
-            </p>
-          )}
-        </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-4xl space-y-5">
+        <Input
+          id="cv_name"
+          label={t("common.name")}
+          alwaysShowLabel
+          disabled={!isOwner}
+          placeholder={t("cvDetails.namePlaceholder")}
+          error={errors.name?.message}
+          {...register("name")}
+        />
 
-        <div>
-          <label
-            htmlFor="cv_education"
-            className="block text-xs font-normal text-[#757575] dark:text-zinc-400 mb-1.5 font-roboto"
-          >
-            {t("cvs.education")}
-          </label>
-          <input
-            id="cv_education"
-            type="text"
-            disabled={!isOwner}
-            aria-invalid={Boolean(errors.education)}
-            placeholder={t("cvDetails.educationPlaceholder")}
-            {...register("education")}
-            className="w-full h-12 px-4 border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed"
-          />
-          {errors.education && (
-            <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
-              <AlertCircle className="h-3 w-3" />
-              <span>{errors.education.message}</span>
-            </p>
-          )}
-        </div>
+        <Input
+          id="cv_education"
+          label={t("cvs.education")}
+          alwaysShowLabel
+          disabled={!isOwner}
+          placeholder={t("cvDetails.educationPlaceholder")}
+          error={errors.education?.message}
+          {...register("education")}
+        />
 
-        <div>
-          <label
-            htmlFor="cv_description"
-            className="block text-xs font-normal text-[#757575] dark:text-zinc-400 mb-1.5 font-roboto"
-          >
-            {t("common.description")}
-          </label>
-          <textarea
-            id="cv_description"
-            rows={6}
-            disabled={!isOwner}
-            aria-invalid={Boolean(errors.description)}
-            placeholder={t("cvDetails.descriptionPlaceholder")}
-            {...register("description")}
-            className="w-full min-h-[160px] p-4 border border-[#AEAEAE] dark:border-zinc-700 bg-transparent text-sm sm:text-base leading-relaxed text-[#2E2E2E] dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-75 disabled:cursor-not-allowed resize-y"
-          />
-          {errors.description && (
-            <p className="mt-1 flex items-center gap-1 text-xs text-destructive">
-              <AlertCircle className="h-3 w-3" />
-              <span>{errors.description.message}</span>
-            </p>
-          )}
-        </div>
+        <Textarea
+          id="cv_description"
+          label={t("common.description")}
+          alwaysShowLabel
+          rows={6}
+          disabled={!isOwner}
+          placeholder={t("cvDetails.descriptionPlaceholder")}
+          error={errors.description?.message}
+          className="min-h-[160px]"
+          {...register("description")}
+        />
 
         {isOwner && (
           <div className="flex justify-end pt-4">

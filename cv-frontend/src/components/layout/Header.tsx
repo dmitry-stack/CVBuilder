@@ -8,7 +8,7 @@ import { useTranslation } from "@/i18n";
 
 export function Header() {
   const pathname = usePathname() || "";
-  const { userName } = useHeaderContext();
+  const { userName, entityId } = useHeaderContext();
   const { t } = useTranslation();
 
   const userMatch = pathname.match(/^\/users\/([^/]+)(?:\/([^/]+))?$/);
@@ -20,6 +20,13 @@ export function Header() {
       if (subRoute === "skills") subPageTitle = t("header.skills");
       else if (subRoute === "languages") subPageTitle = t("header.languages");
       else if (subRoute === "cvs") subPageTitle = t("header.cvs");
+
+      const isCurrentEntity = !entityId || entityId === userId;
+      const currentUserName = isCurrentEntity ? userName : null;
+      let displayName: string | null = null;
+      if (currentUserName !== null) {
+        displayName = currentUserName.trim() || t("cvs.unknownEmployee");
+      }
 
       return (
         <header
@@ -45,8 +52,8 @@ export function Header() {
 
             <span className="inline-flex items-center gap-1.5 font-medium text-cv-accent">
               <User className="h-4 w-4 shrink-0" aria-hidden="true" />
-              {userName ? (
-                <span className="truncate">{userName}</span>
+              {displayName ? (
+                <span className="truncate">{displayName}</span>
               ) : (
                 <span
                   data-slot="header-user-skeleton"
@@ -80,6 +87,13 @@ export function Header() {
       else if (subRoute === "projects") subPageTitle = t("header.projects");
       else if (subRoute === "preview") subPageTitle = t("header.preview");
 
+      const isCurrentEntity = !entityId || entityId === cvId;
+      const currentCvName = isCurrentEntity ? userName : null;
+      let displayCvName: string | null = null;
+      if (currentCvName !== null) {
+        displayCvName = currentCvName.trim() || t("header.details");
+      }
+
       return (
         <header
           data-slot="app-header"
@@ -103,8 +117,8 @@ export function Header() {
             />
 
             <span className="font-medium text-cv-accent truncate max-w-xs sm:max-w-md">
-              {userName ? (
-                userName
+              {displayCvName ? (
+                displayCvName
               ) : (
                 <span
                   data-slot="header-cv-skeleton"

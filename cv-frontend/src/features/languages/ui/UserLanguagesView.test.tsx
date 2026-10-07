@@ -302,7 +302,10 @@ describe("UserLanguagesView Component", () => {
       screen.getByText("No languages have been added yet."),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /Add Your First Language/i }),
+      screen.queryByRole("button", { name: /Add Your First Language/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Add Language/i }),
     ).toBeInTheDocument();
   });
 });
