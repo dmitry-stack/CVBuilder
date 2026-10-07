@@ -12,6 +12,10 @@ vi.mock("@apollo/client/react", () => ({
   useMutation: vi
     .fn()
     .mockReturnValue([vi.fn().mockResolvedValue({}), { loading: false }]),
+  useApolloClient: vi.fn().mockReturnValue({
+    readQuery: vi.fn(),
+    writeQuery: vi.fn(),
+  }),
 }));
 
 vi.mock("@/components/layout/HeaderContext", () => ({

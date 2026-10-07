@@ -360,6 +360,15 @@ cv-frontend/
     - `CVPreview.test.tsx`: 6 component tests covering loading, error, not found, full preview rendering, and PDF export button interactions.
   - Verification: all 44 test suites (248 tests) pass, TypeScript passes 100%, ESLint passes with 0 warnings/errors, and Next.js Turbopack build succeeds with route `/cvs/[id]/preview` compiled.
 
+### Avatar Upload, Backend Persistence & Navbar Integration (Complete)
+- **Feature**:
+  - Bound the file picker to both the "Upload avatar image" button/text and circular avatar in `ProfileAvatar.tsx`.
+  - Added `uploadAvatar` and `deleteAvatar` operations in `src/features/profile/api/profile.graphql` and generated typed documents via `npm run codegen`.
+  - Created modular `src/features/profile/lib/avatar.utils.ts` for file validation (<= 0.5MB, allowed formats JPEG/PNG/GIF/SVG) and base64 conversion.
+  - Implemented `src/features/profile/hooks/useAvatarUpload.ts` managing GraphQL mutations, optimistic/direct Apollo cache updates (`MeDocument`, `UserDocument`, `UsersDocument`), and toast notifications.
+  - Connected `NavUserProfile.tsx`, `Navbar.tsx`, and `NavMobileHeader.tsx` to render the user's uploaded avatar image across desktop and mobile layouts.
+  - Verification: 58 test files (352 tests) passing, 0 TypeScript errors, 0 ESLint warnings, production build compiled cleanly.
+
 ### In Progress / Pending Architectural Refinements
 - [ ] **Theme Token Clean Up:**
   - Replace remaining hardcoded hex colors (`#C63031`) with Tailwind semantic theme variables (`--primary`).

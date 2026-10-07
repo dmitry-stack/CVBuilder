@@ -14,6 +14,7 @@ import { useSidebarContext } from "./SidebarContext";
 interface NavbarProps {
   userName?: string;
   userInitial?: string;
+  userAvatar?: string | null;
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
 }
@@ -21,6 +22,7 @@ interface NavbarProps {
 export function Navbar({
   userName,
   userInitial,
+  userAvatar,
   isCollapsed: propIsCollapsed,
   onToggleCollapse: propOnToggleCollapse,
 }: NavbarProps = {}) {
@@ -83,7 +85,11 @@ export function Navbar({
 
   return (
     <>
-      <NavMobileHeader userName={userName} userInitial={userInitial} />
+      <NavMobileHeader
+        userName={userName}
+        userInitial={userInitial}
+        userAvatar={userAvatar}
+      />
 
       <aside
         className={cn(
@@ -118,6 +124,7 @@ export function Navbar({
               isCollapsed={isCollapsed}
               userName={userName}
               userInitial={userInitial}
+              userAvatar={userAvatar}
             />
           </div>
         </div>

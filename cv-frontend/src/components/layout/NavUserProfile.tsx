@@ -21,6 +21,7 @@ interface NavUserProfileProps {
   isCollapsed?: boolean;
   userName?: string;
   userInitial?: string;
+  userAvatar?: string | null;
   onItemClick?: () => void;
 }
 
@@ -28,6 +29,7 @@ export function NavUserProfile({
   isCollapsed = false,
   userName: userNameProp,
   userInitial: userInitialProp,
+  userAvatar: userAvatarProp,
   onItemClick,
 }: NavUserProfileProps) {
   const { currentUser, currentUserId } = useCurrentUser();
@@ -52,6 +54,9 @@ export function NavUserProfile({
         ? currentUser.email.charAt(0).toUpperCase()
         : "U");
 
+  const effectiveAvatar =
+    userAvatarProp !== undefined ? userAvatarProp : currentUser?.avatar;
+
   const profileHref = currentUserId
     ? `/users/${currentUserId}/profile`
     : "/users";
@@ -74,9 +79,9 @@ export function NavUserProfile({
       className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-cv-accent text-cv-on-accent"
       aria-hidden="true"
     >
-      {currentUser?.avatar ? (
+      {effectiveAvatar ? (
         <Image
-          src={currentUser.avatar}
+          src={effectiveAvatar}
           alt={resolvedName}
           fill
           className="object-cover"
@@ -133,9 +138,7 @@ export function NavUserProfile({
         <DropdownMenuGroup className="flex flex-col h-full justify-between">
           <DropdownMenuItem
             className="group/dropdown-menu-item flex h-10 w-full items-center gap-4 pl-4 text-base leading-6 tracking-cv text-cv-text dark:text-[#F5F5F7] hover:bg-zinc-100 dark:hover:bg-[#383838] focus:bg-zinc-100 dark:focus:bg-[#383838] cursor-pointer outline-hidden transition-colors"
-            render={
-              <Link href={profileHref} onClick={onItemClick} />
-            }
+            render={<Link href={profileHref} onClick={onItemClick} />}
           >
             <div className="flex h-6 w-6 shrink-0 items-center justify-center">
               <UserIcon className="h-4 w-4 text-cv-text dark:text-[#F5F5F7]" />
@@ -147,9 +150,7 @@ export function NavUserProfile({
 
           <DropdownMenuItem
             className="group/dropdown-menu-item flex h-10 w-full items-center gap-4 pl-4 text-base leading-6 tracking-cv text-cv-text dark:text-[#F5F5F7] hover:bg-zinc-100 dark:hover:bg-[#383838] focus:bg-zinc-100 dark:focus:bg-[#383838] cursor-pointer outline-hidden transition-colors"
-            render={
-              <Link href="/settings" onClick={onItemClick} />
-            }
+            render={<Link href="/settings" onClick={onItemClick} />}
           >
             <div className="flex h-6 w-6 shrink-0 items-center justify-center">
               <Settings className="h-4 w-4 text-cv-text dark:text-[#F5F5F7]" />

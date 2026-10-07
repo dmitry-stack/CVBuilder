@@ -1,0 +1,7 @@
+mutation UploadAvatar($avatar: UploadAvatarInput!) {
+  uploadAvatar(avatar: $avatar)
+}
+
+mutation DeleteAvatar($avatar: DeleteAvatarInput!) {
+  deleteAvatar(avatar: $avatar)
+}

@@ -12,11 +12,13 @@ import { NavUserProfile } from "./NavUserProfile";
 interface NavMobileHeaderProps {
   userName?: string;
   userInitial?: string;
+  userAvatar?: string | null;
 }
 
 export function NavMobileHeader({
   userName,
   userInitial,
+  userAvatar,
 }: NavMobileHeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { t } = useTranslation();
@@ -91,6 +93,7 @@ export function NavMobileHeader({
                 <NavUserProfile
                   userName={userName}
                   userInitial={userInitial}
+                  userAvatar={userAvatar}
                   onItemClick={handleClose}
                 />
               </div>

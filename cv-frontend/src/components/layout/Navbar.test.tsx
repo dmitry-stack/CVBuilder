@@ -88,6 +88,25 @@ describe("Navbar / Aside Sidebar", () => {
     expect(screen.getByText("R")).toBeInTheDocument();
   });
 
+  it("renders user avatar image in navbar when avatar URL is provided", () => {
+    render(
+      <Navbar
+        userName="Rostislav Harlanov"
+        userAvatar="https://example.com/rostislav.png"
+      />,
+    );
+
+    const avatarImages = screen.getAllByRole("img", {
+      name: "Rostislav Harlanov",
+      hidden: true,
+    });
+    expect(avatarImages.length).toBeGreaterThan(0);
+    expect(avatarImages[0]).toHaveAttribute(
+      "src",
+      "https://example.com/rostislav.png",
+    );
+  });
+
   it("handles logout click by clearing tokens and routing to /signin", async () => {
     render(<Navbar />);
 

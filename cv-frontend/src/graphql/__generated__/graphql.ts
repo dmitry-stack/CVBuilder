@@ -55,6 +55,10 @@ export type CreateCvInput = {
   userId?: string | number | null | undefined;
 };
 
+export type DeleteAvatarInput = {
+  userId: string | number;
+};
+
 export type DeleteCvInput = {
   cvId: string | number;
 };
@@ -165,6 +169,13 @@ export type UpdateUserInput = {
   departmentId: string | number;
   positionId: string | number;
   role: UserRole;
+  userId: string | number;
+};
+
+export type UploadAvatarInput = {
+  base64: string;
+  size: number;
+  type: string;
   userId: string | number;
 };
 
@@ -630,6 +641,18 @@ export type DeleteProfileLanguageMutation = {
     languages: Array<{ name: string; proficiency: Proficiency }>;
   };
 };
+
+export type UploadAvatarMutationVariables = Exact<{
+  avatar: UploadAvatarInput;
+}>;
+
+export type UploadAvatarMutation = { uploadAvatar: string };
+
+export type DeleteAvatarMutationVariables = Exact<{
+  avatar: DeleteAvatarInput;
+}>;
+
+export type DeleteAvatarMutation = { deleteAvatar: unknown };
 
 export type ProfileSkillsQueryVariables = Exact<{
   userId: string | number;
@@ -3014,6 +3037,102 @@ export const DeleteProfileLanguageDocument = {
 } as unknown as DocumentNode<
   DeleteProfileLanguageMutation,
   DeleteProfileLanguageMutationVariables
+>;
+export const UploadAvatarDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UploadAvatar" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "avatar" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "UploadAvatarInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "uploadAvatar" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "avatar" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "avatar" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UploadAvatarMutation,
+  UploadAvatarMutationVariables
+>;
+export const DeleteAvatarDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteAvatar" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "avatar" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "DeleteAvatarInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteAvatar" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "avatar" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "avatar" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteAvatarMutation,
+  DeleteAvatarMutationVariables
 >;
 export const ProfileSkillsDocument = {
   kind: "Document",
