@@ -120,6 +120,7 @@ cv-frontend/
     - Table header: 58px height, 14px font-medium headers for First Name, Last Name, Email, Department (with chevron icon), Position.
     - Table body rows: 73px height each, 40px avatar (`#AEAEAE` with 20px uppercase initial or user photo), 14px regular font, 40px circle action button at right.
     - Interactive client-side & server-side search filtering and column sorting.
+    - Synchronized pagination (`Pagination.tsx`): resets page to 1 on search without polluting URL search parameters, safe fallback clamping for empty/filtered result sets.
     - Loading skeletons and clean empty state.
 - [x] **Unified Common Layout Header (`<Header />`):**
   - Integrated a single application shell `<Header />` in `src/app/(app)/layout.tsx` with `HeaderProvider` context.
