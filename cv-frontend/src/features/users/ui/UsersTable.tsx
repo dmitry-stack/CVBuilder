@@ -1,9 +1,14 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 
-import { Search, ChevronDown, User as UserIcon, ChevronRight } from "lucide-react";
+import {
+  Search,
+  ChevronDown,
+  User as UserIcon,
+  ChevronRight,
+} from "lucide-react";
 import { useQuery } from "@apollo/client/react";
 import {
   UsersDocument,
@@ -11,7 +16,9 @@ import {
 } from "@/graphql/__generated__/graphql";
 import { UsersTableRowSkeleton } from "./UsersTableRowSkeleton";
 import { useTranslation } from "@/i18n";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import Pagination from "@/components/ui/Pagination";
+import { usePathname } from "next/navigation";
 
 export interface UserItem {
   id: string;
@@ -29,24 +36,71 @@ type SortOrder = "asc" | "desc";
 
 export function UsersTable() {
   const { t } = useTranslation();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const urlPage = Math.max(1, Number(searchParams?.get("page")) || 1);
+  const currentLimit = Number(searchParams?.get("limit")) || 10;
+
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [sortField, setSortField] = useState<SortField>("first_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+  const [pageOverride, setPageOverride] = useState<number | null>(null);
 
-  const router = useRouter();
+  if (pageOverride !== null && urlPage === 1) {
+    setPageOverride(null);
+  }
+
+  const currentPage = pageOverride ?? urlPage;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const handleSetPageLimit = (limit: number) => {
+    const params = new URLSearchParams(
+      searchParams ? searchParams.toString() : "",
+    );
+    params.delete("search");
+    params.set("limit", limit.toString());
+    params.set("page", "1");
+    router.replace(`${pathname || ""}?${params.toString()}`, { scroll: false });
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    if (urlPage > 1) {
+      setPageOverride(1);
+      const params = new URLSearchParams(
+        searchParams ? searchParams.toString() : "",
+      );
+      params.delete("search");
+      params.set("page", "1");
+      router.replace(`${pathname || ""}?${params.toString()}`, {
+        scroll: false,
+      });
+    }
+  };
 
   const { data, loading } = useQuery(UsersDocument, {
     variables: {
       params: {
-        search: search || undefined,
+        search: debouncedSearch.trim() || undefined,
         sort_by: sortField,
         sort_order: sortOrder,
-        page: 1,
-        limit: 50,
+        page: currentPage,
+        limit: currentLimit,
       },
     },
     errorPolicy: "ignore",
   });
+
+  const isInitialLoading = loading && !data;
 
   const rawUsers: UserItem[] | undefined = useMemo(() => {
     if (data?.users?.items && data.users.items.length > 0) {
@@ -121,7 +175,7 @@ export function UsersTable() {
             type="text"
             placeholder={t("users.searchPlaceholder")}
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             className="w-full h-10 pl-10 pr-4 rounded-full border border-cv-border dark:border-zinc-700 bg-transparent text-base leading-cv-input text-cv-text dark:text-zinc-100 placeholder:text-cv-placeholder focus:outline-hidden focus:border-cv-text dark:focus:border-zinc-400 transition-colors"
             aria-label={t("users.searchAria")}
           />
@@ -193,7 +247,7 @@ export function UsersTable() {
           </thead>
 
           <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
-            {loading ? (
+            {isInitialLoading ? (
               Array.from({ length: 5 }).map((_, idx) => (
                 <UsersTableRowSkeleton key={`skeleton-${idx}`} />
               ))
@@ -271,6 +325,13 @@ export function UsersTable() {
           </tbody>
         </table>
       </div>
+
+      <Pagination
+        totalPages={Math.max(1, data?.users?.total_pages ?? 1)}
+        currentPage={currentPage}
+        currentLimit={currentLimit}
+        changePageLimit={handleSetPageLimit}
+      />
     </div>
   );
 }

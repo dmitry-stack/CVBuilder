@@ -67,6 +67,10 @@ const { MOCK_GRAPHQL_USERS } = vi.hoisted(() => ({
           position: { name: "Project Manager" },
         },
       ],
+      total: 6,
+      page: 1,
+      limit: 10,
+      total_pages: 1,
     },
   },
 }));
@@ -74,7 +78,10 @@ const { MOCK_GRAPHQL_USERS } = vi.hoisted(() => ({
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
     push: vi.fn(),
+    replace: vi.fn(),
   }),
+  usePathname: () => "/users",
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 vi.mock("@apollo/client/react", () => ({
@@ -195,5 +202,23 @@ describe("UsersTable component", () => {
       '[data-slot="users-table-row-skeleton"]',
     );
     expect(skeletonRows.length).toBe(5);
+  });
+
+  it("renders pagination controls and updates pagination on search", () => {
+    render(<UsersTable />);
+
+    expect(
+      screen.getByRole("button", { name: /rows per page: 10/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "1" })).toBeInTheDocument();
+
+    const searchInput = screen.getByRole("textbox", {
+      name: /search employees/i,
+    });
+    fireEvent.change(searchInput, { target: { value: "Nolan" } });
+
+    // Page 1 remains active and accessible
+    const pageOne = screen.getByRole("link", { name: "1" });
+    expect(pageOne).toHaveAttribute("aria-current", "page");
   });
 });
