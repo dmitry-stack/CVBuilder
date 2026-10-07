@@ -2,15 +2,29 @@
 
 import { usePathname } from "next/navigation";
 import { ActionTabs } from "@/components/ui/ActionTabs";
+import { HeaderSync } from "@/components/layout/HeaderContext";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useTranslation } from "@/i18n";
 
 interface ProfileTabsProps {
   userId: string;
+  isOwner?: boolean;
 }
 
-export function ProfileTabs({ userId }: ProfileTabsProps) {
+export function ProfileTabs({ userId, isOwner: propIsOwner }: ProfileTabsProps) {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const { currentUser, isOwnProfile } = useCurrentUser();
+
+  const isOwner =
+    typeof propIsOwner === "boolean" ? propIsOwner : isOwnProfile(userId);
+
+  const ownerName =
+    currentUser
+      ? `${currentUser.first_name || ""} ${currentUser.last_name || ""}`.trim() ||
+        currentUser.email ||
+        ""
+      : "";
 
   const tabs = [
     {
@@ -30,7 +44,23 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
       href: `/users/${userId}/languages`,
       isActive: pathname === `/users/${userId}/languages`,
     },
+    ...(isOwner
+      ? [
+          {
+            label: t("nav.cvs"),
+            href: `/users/${userId}/cvs`,
+            isActive: pathname === `/users/${userId}/cvs`,
+          },
+        ]
+      : []),
   ];
 
-  return <ActionTabs tabs={tabs} />;
+  return (
+    <>
+      {isOwner && currentUser && (
+        <HeaderSync userName={ownerName} entityId={userId} />
+      )}
+      <ActionTabs tabs={tabs} />
+    </>
+  );
 }

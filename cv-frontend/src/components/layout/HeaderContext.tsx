@@ -10,19 +10,29 @@ import {
 
 interface HeaderContextType {
   userName: string | null;
-  setUserName: (name: string | null) => void;
+  entityId: string | null;
+  setUserName: (name: string | null, entityId?: string | null) => void;
 }
 
 const HeaderContext = createContext<HeaderContextType>({
   userName: null,
+  entityId: null,
   setUserName: () => {},
 });
 
 export function HeaderProvider({ children }: { children: ReactNode }) {
-  const [userName, setUserName] = useState<string | null>(null);
+  const [userName, setUserNameState] = useState<string | null>(null);
+  const [entityId, setEntityIdState] = useState<string | null>(null);
+
+  const setUserName = (name: string | null, newEntityId?: string | null) => {
+    setUserNameState(name);
+    if (newEntityId !== undefined) {
+      setEntityIdState(newEntityId);
+    }
+  };
 
   return (
-    <HeaderContext.Provider value={{ userName, setUserName }}>
+    <HeaderContext.Provider value={{ userName, entityId, setUserName }}>
       {children}
     </HeaderContext.Provider>
   );
@@ -32,13 +42,18 @@ export function useHeaderContext() {
   return useContext(HeaderContext);
 }
 
-export function HeaderSync({ userName }: { userName: string }) {
+export function HeaderSync({
+  userName,
+  entityId,
+}: {
+  userName: string;
+  entityId?: string;
+}) {
   const { setUserName } = useHeaderContext();
 
   useEffect(() => {
-    setUserName(userName);
-    return () => setUserName(null);
-  }, [userName, setUserName]);
+    setUserName(userName, entityId);
+  }, [userName, entityId, setUserName]);
 
   return null;
 }

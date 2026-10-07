@@ -313,10 +313,11 @@ describe("CVSkillsView Component", () => {
 
     // Check that available owner profile skill "Node.js" is in the select options
     // and skills already in CV (TypeScript, React, Docker) are NOT in the add options
-    const select = screen.getByLabelText("Skill");
+    const select = screen.getByRole("combobox", { name: "Skill" });
     expect(select).toBeInTheDocument();
 
-    fireEvent.change(select, { target: { value: "Node.js" } });
+    fireEvent.click(select);
+    fireEvent.click(await screen.findByRole("option", { name: "Node.js" }));
     const dialog = screen.getByRole("dialog");
     const addBtn = within(dialog).getByRole("button", { name: /^Add$/i });
     expect(addBtn).not.toBeDisabled();
@@ -351,11 +352,12 @@ describe("CVSkillsView Component", () => {
       screen.getByRole("heading", { name: "Update skill" }),
     ).toBeInTheDocument();
 
-    const select = screen.getByLabelText("Skill");
+    const select = screen.getByRole("combobox", { name: "Skill" });
     expect(select).toHaveValue("TypeScript");
 
     // Change to Node.js
-    fireEvent.change(select, { target: { value: "Node.js" } });
+    fireEvent.click(select);
+    fireEvent.click(await screen.findByRole("option", { name: "Node.js" }));
     fireEvent.click(screen.getByRole("button", { name: /Save/i }));
 
     await waitFor(() => {

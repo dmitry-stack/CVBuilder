@@ -252,3 +252,38 @@
   pointer-events: none !important;
   height: 0 !important;
 }
+
+.select-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #8e8e93 transparent;
+}
+
+.select-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.select-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.select-scrollbar::-webkit-scrollbar-thumb {
+  background: #c4c4c6;
+  border-radius: 9999px;
+}
+
+.select-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #8e8e93;
+}
+
+.dark .select-scrollbar {
+  scrollbar-color: #626262 transparent;
+}
+
+.dark .select-scrollbar::-webkit-scrollbar-thumb {
+  background: #555555;
+}
+
+.dark .select-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #8e8e93;
+}
+

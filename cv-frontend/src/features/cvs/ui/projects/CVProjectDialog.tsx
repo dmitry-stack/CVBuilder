@@ -2,6 +2,8 @@
 
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import type { CvProjectFormData } from "../../schemas/cv-project.schema";
 import type { CvProjectItem } from "../../lib/cv-projects.utils";
 import { CVProjectEnvironmentInput } from "./CVProjectEnvironmentInput";
@@ -47,12 +49,15 @@ function CVProjectDialogContent({
     respText,
     setRespText,
     isOngoing,
-    register,
     handleSubmit,
     errors,
     isSubmitting,
     handleProjectSelect,
     onFormSubmit,
+    startDate,
+    endDate,
+    onStartDateChange,
+    onEndDateChange,
   } = useCVProjectDialogForm({
     initialData,
     availableProjects,
@@ -62,10 +67,7 @@ function CVProjectDialogContent({
   return (
     <div className="w-full animate-in fade-in zoom-in-95 duration-150 max-w-[860px] max-h-[min(680px,calc(100dvh-2rem))] flex flex-col bg-[#F5F5F7] dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-zinc-800 font-roboto overflow-hidden">
       <div className="flex items-center justify-between px-6 pt-4 pb-2 shrink-0">
-        <h2
-          id="dialog-title"
-          className="text-xl font-medium leading-6 tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100"
-        >
+        <h2 id="dialog-title" className="text-xl font-medium leading-6 tracking-[0.15px] text-[#2E2E2E] dark:text-zinc-100">
           {initialData ? t("projects.updateProject") : t("projects.addProjectTitle")}
         </h2>
         <button
@@ -78,11 +80,8 @@ function CVProjectDialogContent({
         </button>
       </div>
 
-      <form
-        onSubmit={handleSubmit(onFormSubmit)}
-        className="flex flex-col flex-1 overflow-hidden"
-      >
-        <div className="px-6 py-2 space-y-4 overflow-y-auto flex-1">
+      <form onSubmit={handleSubmit(onFormSubmit)} className="flex flex-col flex-1 overflow-hidden">
+        <div className="px-6 py-2 space-y-4 overflow-y-auto select-scrollbar flex-1">
           <CVProjectMetaFields
             initialData={initialData}
             availableProjects={availableProjects}
@@ -90,87 +89,55 @@ function CVProjectDialogContent({
             onProjectSelect={handleProjectSelect}
             currentDomain={currentDomain}
             isOngoing={isOngoing}
-            register={register}
+            startDate={startDate}
+            endDate={endDate}
+            onStartDateChange={onStartDateChange}
+            onEndDateChange={onEndDateChange}
             errors={errors}
           />
 
-          <div>
-            <label
-              htmlFor="p_desc"
-              className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
-            >
-              {t("common.description")}
-            </label>
-            <textarea
-              id="p_desc"
-              rows={3}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Project description"
-              className="w-full min-h-[108px] p-3 bg-[#C4C4C6] dark:bg-zinc-800 text-sm text-[#2E2E2E] dark:text-zinc-200 border border-[#AEAEAE] dark:border-zinc-700 leading-relaxed focus:outline-hidden focus:border-cv-accent resize-y placeholder:text-[#AEAEAE]"
-            />
-          </div>
+          <Textarea
+            id="p_desc"
+            label={t("common.description")}
+            alwaysShowLabel
+            rows={3}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Project description"
+            className="w-full min-h-[108px]"
+          />
 
           <div>
             <label className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]">
               {t("preview.environment")}
             </label>
-            <CVProjectEnvironmentInput
-              tags={environmentTags}
-              onChange={setEnvironmentTags}
-            />
+            <CVProjectEnvironmentInput tags={environmentTags} onChange={setEnvironmentTags} />
           </div>
 
           <div>
-            <label
-              htmlFor="p_roles"
-              className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
-            >
+            <label htmlFor="p_roles" className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]">
               {t("projects.roles")}
             </label>
             <CVProjectRoleInput value={rolesText} onChange={setRolesText} />
           </div>
 
-          <div>
-            <label
-              htmlFor="p_resp"
-              className="block text-xs font-normal text-[#626262] dark:text-zinc-400 mb-1 tracking-[0.15px]"
-            >
-              {t("preview.responsibilities")}
-            </label>
-            <input
-              id="p_resp"
-              type="text"
-              value={respText}
-              onChange={(e) => setRespText(e.target.value)}
-              placeholder="Did something great, Did not break production"
-              className="w-full h-12 px-3.5 border border-[#AEAEAE] dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-[#2E2E2E] dark:text-zinc-100 placeholder:text-[#C4C4C6] focus:outline-hidden focus:border-cv-accent"
-            />
-          </div>
+          <Input
+            id="p_resp"
+            label={t("preview.responsibilities")}
+            alwaysShowLabel
+            type="text"
+            value={respText}
+            onChange={(e) => setRespText(e.target.value)}
+            placeholder="Did something great, Did not break production"
+          />
         </div>
 
         <div className="flex justify-end items-center gap-6 px-6 py-4 shrink-0 bg-[#F5F5F7] dark:bg-zinc-900 border-t border-zinc-200/50 dark:border-zinc-800">
-          <Button
-            type="button"
-            variant="outline"
-            size="xl"
-            onClick={onClose}
-            disabled={isSubmitting}
-            className="w-40"
-          >
+          <Button type="button" variant="outline" size="xl" onClick={onClose} disabled={isSubmitting} className="w-40">
             {t("common.cancel")}
           </Button>
-          <Button
-            type="submit"
-            size="xl"
-            disabled={isSubmitting}
-            className="w-40 shadow-cv-button"
-          >
-            {isSubmitting
-              ? t("common.saving")
-              : initialData
-                ? t("common.update")
-                : t("common.add")}
+          <Button type="submit" size="xl" disabled={isSubmitting} className="w-40 shadow-cv-button">
+            {isSubmitting ? t("common.saving") : initialData ? t("common.update") : t("common.add")}
           </Button>
         </div>
       </form>

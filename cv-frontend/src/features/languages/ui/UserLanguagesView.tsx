@@ -3,7 +3,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { Plus, Pencil, Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { notify } from "@/components/ui/toast";
 import { HeaderSync } from "@/components/layout/HeaderContext";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
@@ -103,7 +102,6 @@ export function UserLanguagesView({
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
-  // Allow canceling selection mode with Escape key
   useEffect(() => {
     if (!isDeleteMode) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -275,21 +273,18 @@ export function UserLanguagesView({
       data-slot="user-languages-view"
       className="w-full pt-4 sm:pt-6 pb-16 font-roboto"
     >
-      {fullName && <HeaderSync userName={fullName} />}
+      {(!profileLoading || initialProfile) && (
+        <HeaderSync userName={fullName} entityId={userId} />
+      )}
 
       {languages.length === 0 ? (
         <div
           data-slot="languages-empty-state"
           className="w-full py-16 flex flex-col items-center justify-center text-center rounded-lg border border-dashed border-zinc-200 dark:border-zinc-800"
         >
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
+          <span className="text-sm text-zinc-500 dark:text-zinc-400">
             {t("languages.noLanguages")}
-          </p>
-          {isOwner && (
-            <Button type="button" onClick={handleOpenAdd}>
-              {t("languages.addFirstLanguage")}
-            </Button>
-          )}
+          </span>
         </div>
       ) : (
         <section data-slot="languages-section" className="space-y-4">
@@ -381,60 +376,62 @@ export function UserLanguagesView({
               );
             })}
           </div>
-
-          {isOwner && languages.length > 0 && (
-            <div
-              data-slot="languages-actions"
-              className="flex items-center justify-end gap-10 mt-12 pt-4"
-            >
-              {!isDeleteMode ? (
-                <>
-                  <button
-                    type="button"
-                    onClick={handleOpenAdd}
-                    className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer select-none"
-                  >
-                    <Plus className="h-4 w-4 stroke-[2.5]" />
-                    <span>{t("languages.addLanguage")}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleEnterDeleteMode}
-                    className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-[#C63031] dark:text-[#E04B4C] hover:opacity-80 transition-opacity cursor-pointer select-none"
-                  >
-                    <TrashXIcon className="h-4 w-4" />
-                    <span>{t("languages.removeLanguages")}</span>
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    onClick={handleCancelDeleteMode}
-                    className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer select-none"
-                  >
-                    <span>{t("common.cancel")}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setIsDeleteConfirmOpen(true)}
-                    disabled={selectedLanguages.size === 0 || isDeleting}
-                    className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-[#C63031] dark:text-[#E04B4C] hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer select-none"
-                  >
-                    <TrashXIcon className="h-4 w-4" />
-                    <span>
-                      {selectedLanguages.size > 0
-                        ? `${t("common.delete")} (${selectedLanguages.size})`
-                        : t("common.delete")}
-                    </span>
-                  </button>
-                </>
-              )}
-            </div>
-          )}
         </section>
+      )}
+
+      {isOwner && (
+        <div
+          data-slot="languages-actions"
+          className="flex items-center justify-end gap-10 mt-12 pt-4"
+        >
+          {!isDeleteMode ? (
+            <>
+              <button
+                type="button"
+                onClick={handleOpenAdd}
+                className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer select-none"
+              >
+                <Plus className="h-4 w-4 stroke-[2.5]" />
+                <span>{t("languages.addLanguage")}</span>
+              </button>
+
+              {languages.length > 0 && (
+                <button
+                  type="button"
+                  onClick={handleEnterDeleteMode}
+                  className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-[#C63031] dark:text-[#E04B4C] hover:opacity-80 transition-opacity cursor-pointer select-none"
+                >
+                  <TrashXIcon className="h-4 w-4" />
+                  <span>{t("languages.removeLanguages")}</span>
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={handleCancelDeleteMode}
+                className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer select-none"
+              >
+                <span>{t("common.cancel")}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsDeleteConfirmOpen(true)}
+                disabled={selectedLanguages.size === 0 || isDeleting}
+                className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-[#C63031] dark:text-[#E04B4C] hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer select-none"
+              >
+                <TrashXIcon className="h-4 w-4" />
+                <span>
+                  {selectedLanguages.size > 0
+                    ? `${t("common.delete")} (${selectedLanguages.size})`
+                    : t("common.delete")}
+                </span>
+              </button>
+            </>
+          )}
+        </div>
       )}
 
       <LanguageDialog

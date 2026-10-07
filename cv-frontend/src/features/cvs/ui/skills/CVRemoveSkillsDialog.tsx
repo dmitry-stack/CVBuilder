@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, AlertTriangle } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/i18n";
 
@@ -65,30 +65,25 @@ export function CVRemoveSkillsDialog({
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs"
     >
       <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 dark:bg-red-950/50 text-destructive">
-              <AlertTriangle className="h-4 w-4" />
-            </div>
-            <h2
-              id="remove-skills-dialog-title"
-              className="text-base font-medium text-zinc-900 dark:text-zinc-100 font-roboto"
-            >
-              {t("cvSkills.removeSkillsTitle")}
-            </h2>
-          </div>
+        <div className="flex items-center justify-between px-6 pt-6 pb-2">
+          <h2
+            id="remove-skills-dialog-title"
+            className="text-lg font-medium text-zinc-900 dark:text-zinc-100 font-roboto"
+          >
+            {t("cvSkills.removeSkillsTitle")}
+          </h2>
           <button
             type="button"
             onClick={onClose}
             disabled={isDeleting}
             aria-label="Close dialog"
-            className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors p-1 focus:outline-hidden cursor-pointer"
+            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors p-1 focus:outline-hidden cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="p-6 space-y-3">
+        <div className="px-6 py-4 space-y-1">
           <p
             id="remove-skills-dialog-description"
             className="text-sm text-zinc-600 dark:text-zinc-300 font-roboto leading-relaxed"
@@ -102,24 +97,25 @@ export function CVRemoveSkillsDialog({
           )}
         </div>
 
-        <div className="flex items-center justify-end gap-2 px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="flex items-center justify-end gap-3 px-6 pb-6 pt-2">
           <Button
             type="button"
-            variant="outline"
+            variant="secondary"
+            size="lg"
             onClick={onClose}
             disabled={isDeleting}
-            className="rounded-full px-4 h-9 text-xs font-medium uppercase tracking-wider cursor-pointer"
           >
             {t("common.cancel")}
           </Button>
-          <button
+          <Button
             type="button"
+            variant="default"
+            size="lg"
             onClick={handleConfirm}
             disabled={isDeleting}
-            className="rounded-full bg-destructive hover:bg-destructive/90 text-white px-5 h-9 text-xs font-medium uppercase tracking-wider shadow-cv-button transition-colors disabled:opacity-50 cursor-pointer inline-flex items-center gap-1.5"
           >
             {isDeleting ? t("common.removing") : t("common.confirm")}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

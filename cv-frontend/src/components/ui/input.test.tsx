@@ -47,4 +47,53 @@ describe("Input component", () => {
     const input = screen.getByPlaceholderText("Invalid field");
     expect(input).toHaveAttribute("aria-invalid", "true");
   });
+
+  it("renders floating label and error message in invalid state", () => {
+    render(
+      <Input
+        label="Full Name"
+        placeholder="Enter name"
+        error="Name is required"
+      />,
+    );
+    expect(screen.getByText("Full Name")).toBeInTheDocument();
+    expect(screen.getByText("Name is required")).toBeInTheDocument();
+    expect(screen.getByRole("textbox")).toHaveAttribute("aria-invalid", "true");
+  });
+
+  it("toggles password visibility when password button is clicked", async () => {
+    const user = userEvent.setup();
+    render(<Input type="password" placeholder="Password" label="Password" />);
+
+    const toggleButton = screen.getByRole("button", {
+      name: /show password/i,
+    });
+    expect(toggleButton).toBeInTheDocument();
+
+    const input = screen.getByPlaceholderText("Password");
+    expect(input).toHaveAttribute("type", "password");
+
+    await user.click(toggleButton);
+    expect(input).toHaveAttribute("type", "text");
+    expect(
+      screen.getByRole("button", { name: /hide password/i }),
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /hide password/i }));
+    expect(input).toHaveAttribute("type", "password");
+  });
+
+  it("shows label when input has value or is focused", async () => {
+    const user = userEvent.setup();
+    render(<Input label="Username" placeholder="Enter username" />);
+
+    // Initially when empty & unfocused, label is hidden above
+    expect(screen.queryByText("Username")).not.toBeInTheDocument();
+
+    const input = screen.getByPlaceholderText("Enter username");
+    await user.click(input);
+
+    // Now focused, label appears
+    expect(screen.getByText("Username")).toBeInTheDocument();
+  });
 });

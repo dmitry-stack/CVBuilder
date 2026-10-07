@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { AlertTriangle } from "lucide-react";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/i18n";
 
 interface DeleteCVProjectDialogProps {
@@ -45,45 +46,53 @@ export function DeleteCVProjectDialog({
     >
       <div
         ref={dialogRef}
-        className="w-full max-w-md bg-white dark:bg-zinc-900 p-6 shadow-xl border border-zinc-200 dark:border-zinc-800 animate-in fade-in zoom-in-95 duration-150"
+        className="w-full max-w-md bg-white dark:bg-zinc-900 shadow-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
       >
-        <div className="flex items-start gap-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-950/50 text-[#C63031]">
-            <AlertTriangle className="h-5 w-5" />
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <h3
-              id="delete-project-title"
-              className="text-base font-medium text-zinc-900 dark:text-zinc-100"
-            >
-              {t("projects.removeTitle")}
-            </h3>
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              {t("projects.removeConfirm", {
-                name: projectName || t("projects.thisProject"),
-              })}
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-6 flex items-center justify-end gap-3">
+        <div className="flex items-center justify-between px-6 pt-6 pb-2">
+          <h2
+            id="delete-project-title"
+            className="text-lg font-medium text-zinc-900 dark:text-zinc-100 font-roboto"
+          >
+            {t("projects.removeTitle")}
+          </h2>
           <button
             type="button"
             onClick={onClose}
             disabled={isDeleting}
-            className="rounded-full px-5 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer disabled:opacity-50"
+            aria-label="Close dialog"
+            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors p-1 focus:outline-hidden cursor-pointer"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="px-6 py-4 space-y-3">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300 font-roboto leading-relaxed">
+            {t("projects.removeConfirm", {
+              name: projectName || t("projects.thisProject"),
+            })}
+          </p>
+        </div>
+
+        <div className="flex items-center justify-end gap-3 px-6 pb-6 pt-2">
+          <Button
+            type="button"
+            variant="secondary"
+            size="lg"
+            onClick={onClose}
+            disabled={isDeleting}
           >
             {t("common.cancel")}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="default"
+            size="lg"
             onClick={onConfirm}
             disabled={isDeleting}
-            className="rounded-full px-6 py-2 text-sm font-medium uppercase tracking-wider text-white bg-destructive hover:bg-destructive/90 transition-colors cursor-pointer disabled:opacity-50"
           >
             {isDeleting ? t("common.removing") : t("common.remove")}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

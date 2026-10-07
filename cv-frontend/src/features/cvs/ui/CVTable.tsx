@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, Fragment } from "react";
+import { useRouter } from "next/navigation";
 import { Search, ChevronDown, ChevronUp, Plus } from "lucide-react";
 import { useQuery, useMutation } from "@apollo/client/react";
 import {
@@ -40,15 +41,21 @@ type SortOrder = "asc" | "desc";
 export interface CVTableProps {
   initialCvs?: CVItem[];
   isOwner?: boolean;
+  userId?: string;
 }
 
-export function CVTable({ initialCvs }: CVTableProps = {}) {
+export function CVTable({ initialCvs, isOwner: propIsOwner, userId }: CVTableProps = {}) {
+  const router = useRouter();
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState<SortField>("name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
   const { currentUserId } = useCurrentUser();
+  const isOwner =
+    typeof propIsOwner === "boolean"
+      ? propIsOwner
+      : (userId ? currentUserId === userId : true);
 
   const { data, refetch } = useQuery(CvsDocument, {
     variables: {
@@ -92,8 +99,9 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
   });
 
   const rawCvs: CVItem[] = useMemo(() => {
+    let items: CVItem[] = [];
     if (data?.cvs?.items && data.cvs.items.length > 0) {
-      return data.cvs.items.map((c) => ({
+      items = data.cvs.items.map((c) => ({
         id: c.id,
         name: c.name,
         education: c.education || null,
@@ -105,9 +113,15 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
             }
           : null,
       }));
+    } else if (initialCvs) {
+      items = initialCvs;
     }
-    return initialCvs || [];
-  }, [data, initialCvs]);
+
+    if (userId) {
+      items = items.filter((c) => c.user?.id === userId);
+    }
+    return items;
+  }, [data, initialCvs, userId]);
 
   const filteredCvs = useMemo(() => {
     let result = [...rawCvs];
@@ -211,7 +225,7 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
               name: formData.name,
               education: formData.education || undefined,
               description: formData.description,
-              userId: currentUserId,
+              userId: userId || currentUserId,
             },
           },
         });
@@ -272,18 +286,20 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
           />
         </div>
 
-        <div className="flex items-center justify-end">
-          <Button
-            type="button"
-            variant="primary-v2"
-            size="sm"
-            onClick={handleOpenCreate}
-            className="inline-flex items-center gap-1.5"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            <span>{t("cvs.createCv")}</span>
-          </Button>
-        </div>
+        {isOwner && (
+          <div className="flex items-center justify-end">
+            <Button
+              type="button"
+              variant="primary-v2"
+              size="sm"
+              onClick={handleOpenCreate}
+              className="inline-flex items-center gap-1.5"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>{t("cvs.createCv")}</span>
+            </Button>
+          </div>
+        )}
       </div>
 
       <div className=" overflow-x-auto">
@@ -356,7 +372,8 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
               filteredCvs.map((cv, index) => (
                 <Fragment key={cv.id}>
                   <tr
-                    className={`h-table-row hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors ${
+                    onClick={() => router.push(`/cvs/${cv.id}/details`)}
+                    className={`h-table-row hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors cursor-pointer ${
                       index > 0
                         ? "border-t border-zinc-200 dark:border-zinc-800"
                         : ""
@@ -374,16 +391,22 @@ export function CVTable({ initialCvs }: CVTableProps = {}) {
                       {getEmployeeDisplay(cv)}
                     </td>
 
-                    <td className="px-4 text-right">
+                    <td
+                      className="px-4 text-right"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <DropdownMenuButton
                         id={cv.id}
                         viewHref={`/cvs/${cv.id}/details`}
-                        onUpdate={() => handleOpenEdit(cv)}
-                        onDelete={() => handleOpenDelete(cv)}
+                        onUpdate={isOwner ? () => handleOpenEdit(cv) : undefined}
+                        onDelete={isOwner ? () => handleOpenDelete(cv) : undefined}
                       />
                     </td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors border-t-0">
+                  <tr
+                    onClick={() => router.push(`/cvs/${cv.id}/details`)}
+                    className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors border-t-0 cursor-pointer"
+                  >
                     <td colSpan={4} className="px-4 py-2 border-t-0">
                       <div className="font-roboto text-sm leading-5 tracking-cv text-cv-text/50 dark:text-zinc-100">
                         {cv.description}

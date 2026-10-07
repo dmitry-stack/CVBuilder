@@ -319,7 +319,10 @@ describe("UserSkillsView Component", () => {
       screen.getByText("No skills have been added yet."),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /Add Your First Skill/i }),
+      screen.queryByRole("button", { name: /Add Your First Skill/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Add Skill/i }),
     ).toBeInTheDocument();
   });
 });

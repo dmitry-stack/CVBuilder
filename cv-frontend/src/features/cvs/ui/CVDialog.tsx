@@ -3,8 +3,10 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { X, AlertCircle, Trash2 } from "lucide-react";
+import { X, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { cvFormSchema, type CvFormData } from "../schemas/cv.schema";
 import { useTranslation } from "@/i18n";
 
@@ -91,10 +93,7 @@ export function CVDialog({
       <div className="w-full max-w-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
           <div>
-            <h2
-              id="cv-dialog-title"
-              className="text-base font-medium text-zinc-900 dark:text-zinc-100 font-roboto"
-            >
+            <h2 id="cv-dialog-title" className="text-base font-medium text-zinc-900 dark:text-zinc-100 font-roboto">
               {dialogTitle}
             </h2>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 font-roboto mt-0.5">
@@ -112,86 +111,37 @@ export function CVDialog({
           </button>
         </div>
 
-        <form
-          key={initialData?.id || "form-create"}
-          onSubmit={handleSubmit(onSubmit)}
-          className="p-6 space-y-5"
-        >
-          <div>
-            <label
-              htmlFor="cv_name"
-              className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
-            >
-              {t("cvs.cvName")} <span className="text-destructive">*</span>
-            </label>
-            <input
-              id="cv_name"
-              type="text"
-              placeholder={t("cvs.namePlaceholder")}
-              disabled={isSubmitting}
-              defaultValue={initialData?.name || ""}
-              {...register("name")}
-              aria-invalid={!!errors.name}
-              className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-70 disabled:cursor-not-allowed placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
-            />
-            {errors.name && (
-              <p className="mt-1 text-xs text-destructive flex items-center gap-1 font-roboto">
-                <AlertCircle className="h-3 w-3 shrink-0" />
-                <span>{errors.name.message}</span>
-              </p>
-            )}
-          </div>
+        <form key={initialData?.id || "form-create"} onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-5">
+          <Input
+            id="cv_name"
+            label={`${t("cvs.cvName")} *`}
+            alwaysShowLabel
+            placeholder={t("cvs.namePlaceholder")}
+            disabled={isSubmitting}
+            error={errors.name?.message}
+            {...register("name")}
+          />
 
-          <div>
-            <label
-              htmlFor="cv_education"
-              className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
-            >
-              {t("cvs.education")}
-            </label>
-            <input
-              id="cv_education"
-              type="text"
-              placeholder={t("cvs.educationPlaceholder")}
-              disabled={isSubmitting}
-              defaultValue={initialData?.education || ""}
-              {...register("education")}
-              aria-invalid={!!errors.education}
-              className="w-full h-11 px-3.5 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors disabled:opacity-70 disabled:cursor-not-allowed placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
-            />
-            {errors.education && (
-              <p className="mt-1 text-xs text-destructive flex items-center gap-1 font-roboto">
-                <AlertCircle className="h-3 w-3 shrink-0" />
-                <span>{errors.education.message}</span>
-              </p>
-            )}
-          </div>
+          <Input
+            id="cv_education"
+            label={t("cvs.education")}
+            alwaysShowLabel
+            placeholder={t("cvs.educationPlaceholder")}
+            disabled={isSubmitting}
+            error={errors.education?.message}
+            {...register("education")}
+          />
 
-          <div>
-            <label
-              htmlFor="cv_description"
-              className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1.5 font-roboto"
-            >
-              {t("common.description")}{" "}
-              <span className="text-destructive">*</span>
-            </label>
-            <textarea
-              id="cv_description"
-              rows={4}
-              placeholder={t("cvs.descriptionPlaceholder")}
-              disabled={isSubmitting}
-              defaultValue={initialData?.description || ""}
-              {...register("description")}
-              aria-invalid={!!errors.description}
-              className="w-full p-3 bg-[#D1D5DB]/70 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-zinc-100 font-roboto focus:outline-hidden focus:ring-1 focus:ring-cv-accent transition-colors resize-y disabled:opacity-70 disabled:cursor-not-allowed placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
-            />
-            {errors.description && (
-              <p className="mt-1 text-xs text-destructive flex items-center gap-1 font-roboto">
-                <AlertCircle className="h-3 w-3 shrink-0" />
-                <span>{errors.description.message}</span>
-              </p>
-            )}
-          </div>
+          <Textarea
+            id="cv_description"
+            label={`${t("common.description")} *`}
+            alwaysShowLabel
+            rows={4}
+            placeholder={t("cvs.descriptionPlaceholder")}
+            disabled={isSubmitting}
+            error={errors.description?.message}
+            {...register("description")}
+          />
 
           <div className="flex items-center justify-between pt-4 border-t border-zinc-200 dark:border-zinc-800">
             {isEdit && onDelete && initialData?.id ? (
@@ -210,24 +160,11 @@ export function CVDialog({
             )}
 
             <div className="flex items-center gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onClose}
-                disabled={isSubmitting}
-              >
+              <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
                 {t("common.cancel")}
               </Button>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="shadow-cv-button"
-              >
-                {isSubmitting
-                  ? t("common.saving")
-                  : isEdit
-                    ? t("common.saveChanges")
-                    : t("cvs.createCv")}
+              <Button type="submit" disabled={isSubmitting} className="shadow-cv-button">
+                {isSubmitting ? t("common.saving") : isEdit ? t("common.saveChanges") : t("cvs.createCv")}
               </Button>
             </div>
           </div>
@@ -237,9 +174,7 @@ export function CVDialog({
   );
 }
 
-export function CreateCVDialog(
-  props: Omit<CVDialogProps, "initialData" | "title">,
-) {
+export function CreateCVDialog(props: Omit<CVDialogProps, "initialData" | "title">) {
   return <CVDialog {...props} initialData={null} />;
 }
 

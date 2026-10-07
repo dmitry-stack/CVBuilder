@@ -86,6 +86,22 @@ export function ProfileAvatar({
     }
   };
 
+  const avatarContent = preview ? (
+    <Image
+      src={preview}
+      alt={`${userName}'s avatar`}
+      fill
+      className="object-cover"
+      unoptimized
+    />
+  ) : (
+    <div className="flex h-full w-full items-center justify-center text-white dark:text-[#2E2E2E]">
+      <span className="font-roboto text-5xl font-light uppercase select-none">
+        {initial}
+      </span>
+    </div>
+  );
+
   if (!editable) {
     return (
       <div data-slot="profile-avatar" className="relative inline-block">
@@ -93,21 +109,7 @@ export function ProfileAvatar({
           className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full bg-[#AEAEAE] dark:bg-[#626262] shadow-xs"
           aria-label={`${userName}'s avatar`}
         >
-          {preview ? (
-            <Image
-              src={preview}
-              alt={`${userName}'s avatar`}
-              fill
-              className="object-cover"
-              unoptimized
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center text-white dark:text-[#2E2E2E]">
-              <span className="font-roboto text-5xl font-light uppercase select-none">
-                {initial}
-              </span>
-            </div>
-          )}
+          {avatarContent}
         </div>
       </div>
     );
@@ -124,21 +126,7 @@ export function ProfileAvatar({
             className="relative h-32 w-32 shrink-0 overflow-hidden rounded-full bg-[#AEAEAE] dark:bg-[#626262] shadow-xs cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-cv-accent focus:ring-offset-2 transition-transform hover:opacity-95 disabled:opacity-60 disabled:cursor-not-allowed"
             aria-label="Change profile photo"
           >
-            {preview ? (
-              <Image
-                src={preview}
-                alt={`${userName}'s avatar`}
-                fill
-                className="object-cover"
-                unoptimized
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-white dark:text-[#2E2E2E]">
-                <span className="font-roboto text-5xl font-light uppercase select-none">
-                  {initial}
-                </span>
-              </div>
-            )}
+            {avatarContent}
 
             {isUploading && (
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">

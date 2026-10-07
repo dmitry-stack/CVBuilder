@@ -3,8 +3,9 @@
 import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { X, ChevronDown, AlertCircle } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Select } from "@/components/ui/select";
 import {
   cvSkillFormSchema,
   type CvSkillFormData,
@@ -38,16 +39,14 @@ export function CVSkillDialog({
   const isEdit = Boolean(initialData?.name);
 
   const {
-    register,
     handleSubmit,
     reset,
     control,
+    setValue,
     formState: { errors, isSubmitting: formIsSubmitting },
   } = useForm<CvSkillFormData>({
     resolver: zodResolver(cvSkillFormSchema),
-    defaultValues: {
-      name: initialData?.name || "",
-    },
+    defaultValues: { name: initialData?.name || "" },
   });
 
   const selectedName = useWatch({
@@ -59,18 +58,14 @@ export function CVSkillDialog({
 
   useEffect(() => {
     if (isOpen) {
-      reset({
-        name: initialData?.name || "",
-      });
+      reset({ name: initialData?.name || "" });
     }
   }, [isOpen, initialData, reset]);
 
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && !isSubmitting) {
-        onClose();
-      }
+      if (e.key === "Escape" && !isSubmitting) onClose();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -83,12 +78,8 @@ export function CVSkillDialog({
     onClose();
   };
 
-  const dialogTitle = isEdit
-    ? t("cvSkills.updateSkill")
-    : t("cvSkills.addSkill");
+  const dialogTitle = isEdit ? t("cvSkills.updateSkill") : t("cvSkills.addSkill");
 
-  // Build the list of selectable options:
-  // In edit mode, ensure the currently selected skill is in the options even if it was previously filtered
   const options =
     isEdit && initialData?.name
       ? [
@@ -109,14 +100,11 @@ export function CVSkillDialog({
           onClose();
         }
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs overflow-y-auto"
     >
-      <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-visible animate-in fade-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
-          <h2
-            id="cv-skill-dialog-title"
-            className="text-base font-medium text-zinc-900 dark:text-zinc-100 font-roboto"
-          >
+          <h2 id="cv-skill-dialog-title" className="text-base font-medium text-zinc-900 dark:text-zinc-100 font-roboto">
             {dialogTitle}
           </h2>
           <button
@@ -132,70 +120,29 @@ export function CVSkillDialog({
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="p-6 space-y-4">
-            <div>
-              <label
-                htmlFor="cv-skill-select"
-                className="block text-xs font-normal text-zinc-500 dark:text-zinc-400 mb-1 font-roboto"
-              >
-                {t("cvSkills.skill")}
-              </label>
-              <div className="relative">
-                <select
-                  id="cv-skill-select"
-                  {...register("name")}
-                  aria-invalid={Boolean(errors.name)}
-                  aria-describedby={errors.name ? "cv-skill-error" : undefined}
-                  className="w-full h-10 px-3.5 pr-8 bg-[#E2E2E4] dark:bg-zinc-800 text-sm text-zinc-800 dark:text-zinc-200 border border-transparent focus:outline-hidden focus:border-cv-accent appearance-none cursor-pointer"
-                >
-                  <option value="">{t("cvSkills.selectSkill")}</option>
-                  {options.map((opt) => (
-                    <option
-                      key={opt.name}
-                      value={opt.name}
-                      className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100"
-                    >
-                      {opt.name}
-                    </option>
-                  ))}
-                  {options.length === 0 && (
-                    <option value="" disabled>
-                      {t("cvSkills.noAvailableSkills")}
-                    </option>
-                  )}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
-              </div>
-              {errors.name && (
-                <p
-                  id="cv-skill-error"
-                  className="flex items-center gap-1 text-xs text-destructive mt-1.5 font-roboto"
-                >
-                  <AlertCircle className="h-3 w-3 shrink-0" />
-                  <span>{errors.name.message}</span>
-                </p>
-              )}
-            </div>
+            <Select
+              id="cv-skill-select"
+              label={t("cvSkills.skill")}
+              alwaysShowLabel
+              placeholder={t("cvSkills.selectSkill")}
+              options={options.map((opt) => ({
+                value: opt.name,
+                label: opt.name,
+              }))}
+              value={selectedName}
+              onChange={(val) =>
+                setValue("name", val, { shouldValidate: true, shouldDirty: true })
+              }
+              error={errors.name?.message}
+            />
           </div>
 
           <div className="flex items-center justify-end gap-2 px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-200 dark:border-zinc-800">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              disabled={isSubmitting}
-            >
+            <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
               {t("common.cancel")}
             </Button>
-            <Button
-              type="submit"
-              disabled={isSubmitting || !selectedName}
-              className="shadow-cv-button"
-            >
-              {isSubmitting
-                ? t("common.saving")
-                : isEdit
-                  ? t("common.save")
-                  : t("common.add")}
+            <Button type="submit" disabled={isSubmitting || !selectedName} className="shadow-cv-button">
+              {isSubmitting ? t("common.saving") : isEdit ? t("common.save") : t("common.add")}
             </Button>
           </div>
         </form>

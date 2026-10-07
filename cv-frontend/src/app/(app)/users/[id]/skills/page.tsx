@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: PageProps) {
   const { id } = await params;
 
   return {
-    title: `User Profile | CV Builder`,
+    title: `User Skills | CV Builder`,
     description: `Manage profile, skills, languages, and CVs for user ${id}`,
   };
 }

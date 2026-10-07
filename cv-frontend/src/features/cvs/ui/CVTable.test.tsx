@@ -12,6 +12,14 @@ vi.mock("@apollo/client/react", () => ({
   useMutation: vi.fn(() => [vi.fn().mockResolvedValue({})]),
 }));
 
+const mockPush = vi.fn();
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: mockPush,
+    replace: vi.fn(),
+  }),
+}));
+
 vi.mock("@/features/auth/hooks/useCurrentUser", () => ({
   useCurrentUser: vi.fn(() => ({
     currentUserId: "user-1",
@@ -191,5 +199,12 @@ describe("CVTable Component", () => {
         content.includes("Senior Frontend Engineer"),
       ),
     ).toBeInTheDocument();
+  });
+
+  it("navigates to cv details when clicking a cv row", () => {
+    render(<CVTable initialCvs={mockCvs} />);
+
+    fireEvent.click(screen.getByText("Senior Frontend Engineer"));
+    expect(mockPush).toHaveBeenCalledWith("/cvs/cv-1/details");
   });
 });
