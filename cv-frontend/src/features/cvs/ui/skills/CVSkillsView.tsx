@@ -100,7 +100,7 @@ export function CVSkillsView({ cvId }: CVSkillsViewProps) {
       data-testid="cv-skills-view"
       className="w-full pt-4 sm:pt-6 pb-16 font-roboto"
     >
-      {cv?.name && <HeaderSync userName={cv?.name} />}
+      <HeaderSync userName={cv?.name} entityId={cvId} />
 
       {skills.length === 0 ? (
         <CVSkillsEmptyState isOwner={isOwner} onAddClick={openAddDialog} />

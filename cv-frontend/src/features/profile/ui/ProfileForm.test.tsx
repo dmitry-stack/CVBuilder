@@ -43,6 +43,15 @@ const mockUser: UserProfileData = {
   created_at: "2024-01-14T12:00:00.000Z",
 };
 
+const mockPush = vi.fn();
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: mockPush }),
+}));
+
+vi.mock("@/features/auth/actions/send-verification.action", () => ({
+  sendVerificationAction: vi.fn().mockResolvedValue({ success: true }),
+}));
+
 describe("ProfileForm Component", () => {
   it("renders user information and form fields with initial data", () => {
     render(<ProfileForm initialData={mockUser} />);
@@ -57,41 +66,44 @@ describe("ProfileForm Component", () => {
     expect(screen.getByLabelText(/position/i)).toHaveValue("Software Engineer");
   });
 
-  it("renders Save and Cancel buttons, disabled initially when form is clean", () => {
-    render(<ProfileForm initialData={mockUser} />);
-
-    const saveButton = screen.getByRole("button", { name: /save/i });
-    const cancelButton = screen.getByRole("button", { name: /cancel/i });
-
-    expect(saveButton).toBeDisabled();
-    expect(cancelButton).toBeDisabled();
+  it("formats epoch millisecond timestamp string properly in member since date", () => {
+    const userWithEpoch = {
+      ...mockUser,
+      created_at: "1705309639797",
+    };
+    render(<ProfileForm initialData={userWithEpoch} />);
+    expect(screen.getByText(/Mon Jan 15 2024/i)).toBeInTheDocument();
   });
 
-  it("enables buttons when form is edited", () => {
+  it("renders Update button (disabled initially) and Verify Email button", () => {
+    render(<ProfileForm initialData={mockUser} />);
+
+    const updateButton = screen.getByRole("button", { name: /update/i });
+    const verifyButton = screen.getByRole("button", { name: /verify email/i });
+
+    expect(updateButton).toBeDisabled();
+    expect(verifyButton).toBeEnabled();
+    expect(screen.queryByRole("button", { name: /cancel/i })).not.toBeInTheDocument();
+  });
+
+  it("enables Update button when form is edited", () => {
     render(<ProfileForm initialData={mockUser} />);
 
     const firstNameInput = screen.getByLabelText(/first name/i);
     fireEvent.change(firstNameInput, { target: { value: "UpdatedName" } });
 
-    const saveButton = screen.getByRole("button", { name: /save/i });
-    const cancelButton = screen.getByRole("button", { name: /cancel/i });
-
-    expect(saveButton).toBeEnabled();
-    expect(cancelButton).toBeEnabled();
+    const updateButton = screen.getByRole("button", { name: /update/i });
+    expect(updateButton).toBeEnabled();
   });
 
-  it("resets form when Cancel is clicked", () => {
-    render(<ProfileForm initialData={mockUser} />);
+  it("triggers onVerifyEmail when Verify Email button is clicked", () => {
+    const handleVerify = vi.fn();
+    render(<ProfileForm initialData={mockUser} onVerifyEmail={handleVerify} />);
 
-    const firstNameInput = screen.getByLabelText(/first name/i);
-    fireEvent.change(firstNameInput, { target: { value: "ChangedName" } });
-    expect(firstNameInput).toHaveValue("ChangedName");
+    const verifyButton = screen.getByRole("button", { name: /verify email/i });
+    fireEvent.click(verifyButton);
 
-    const cancelButton = screen.getByRole("button", { name: /cancel/i });
-    fireEvent.click(cancelButton);
-
-    expect(firstNameInput).toHaveValue("Rostislav");
-    expect(cancelButton).toBeDisabled();
+    expect(handleVerify).toHaveBeenCalled();
   });
 
   it("calls onSave when form is submitted with valid data", async () => {
@@ -101,8 +113,8 @@ describe("ProfileForm Component", () => {
     const firstNameInput = screen.getByLabelText(/first name/i);
     fireEvent.change(firstNameInput, { target: { value: "NewName" } });
 
-    const saveButton = screen.getByRole("button", { name: /save/i });
-    fireEvent.click(saveButton);
+    const updateButton = screen.getByRole("button", { name: /update/i });
+    fireEvent.click(updateButton);
 
     await waitFor(() => {
       expect(handleSave).toHaveBeenCalledWith(
@@ -114,7 +126,7 @@ describe("ProfileForm Component", () => {
     });
   });
 
-  it("renders read-only inputs and hides save/cancel actions when viewing another user's profile", () => {
+  it("renders read-only inputs and hides update/verify actions when viewing another user's profile", () => {
     render(<ProfileForm initialData={mockUser} isOwner={false} />);
 
     expect(screen.getByLabelText(/first name/i)).toBeDisabled();
@@ -123,7 +135,10 @@ describe("ProfileForm Component", () => {
     expect(screen.getByLabelText(/position/i)).toBeDisabled();
 
     expect(
-      screen.queryByRole("button", { name: /save/i }),
+      screen.queryByRole("button", { name: /update/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /verify email/i }),
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /cancel/i }),
