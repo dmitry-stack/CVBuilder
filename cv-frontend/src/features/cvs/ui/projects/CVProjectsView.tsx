@@ -7,6 +7,7 @@ import { CVProjectsList } from "./CVProjectsList";
 import { CVProjectDialog } from "./CVProjectDialog";
 import { DeleteCVProjectDialog } from "./DeleteCVProjectDialog";
 import { CVProjectsSkeleton } from "./CVProjectsSkeleton";
+import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
 
 interface CVProjectsViewProps {
   cvId: string;
@@ -35,8 +36,15 @@ export function CVProjectsView({ cvId }: CVProjectsViewProps) {
     handleConfirmDelete,
   } = useCvProjects(cvId);
 
-  if (loading && !cv) {
+  const isInitialLoading = Boolean(loading && !cv);
+  const showSkeleton = useDelayedLoading(isInitialLoading);
+
+  if (showSkeleton) {
     return <CVProjectsSkeleton />;
+  }
+
+  if (isInitialLoading) {
+    return null;
   }
 
   return (

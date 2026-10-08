@@ -81,7 +81,7 @@ describe("CVDetailsView Component", () => {
     } as unknown as ReturnType<typeof useQuery>);
   });
 
-  it("renders loading skeleton when query is loading", () => {
+  it("renders loading skeleton when query is loading", async () => {
     vi.mocked(useQuery).mockReturnValue({
       data: null,
       loading: true,
@@ -93,7 +93,9 @@ describe("CVDetailsView Component", () => {
       </HeaderProvider>,
     );
 
-    expect(screen.getByLabelText("Loading CV details")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByLabelText("Loading CV details")).toBeInTheDocument();
+    });
   });
 
   it("renders CV details form with name, education, and description", () => {

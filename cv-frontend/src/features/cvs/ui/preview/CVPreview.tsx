@@ -8,6 +8,7 @@ import { CVPreviewSummary } from "./CVPreviewSummary";
 import { CVPreviewProjects } from "./CVPreviewProjects";
 import { CVPreviewSkills } from "./CVPreviewSkills";
 import { CVPreviewSkeleton } from "./CVPreviewSkeleton";
+import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
 
 interface CVPreviewProps {
   cvId: string;
@@ -28,8 +29,15 @@ export function CVPreview({ cvId }: CVPreviewProps) {
     handleExportPdf,
   } = useCvPreview(cvId);
 
-  if (loading && !cv) {
+  const isInitialLoading = Boolean(loading && !cv);
+  const showSkeleton = useDelayedLoading(isInitialLoading);
+
+  if (showSkeleton) {
     return <CVPreviewSkeleton />;
+  }
+
+  if (isInitialLoading) {
+    return null;
   }
 
   if (error && !cv) {

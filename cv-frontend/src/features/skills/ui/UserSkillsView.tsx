@@ -10,6 +10,7 @@ import { TrashXIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 import { SkillMasteryBar } from "./SkillMasteryBar";
 import { SkillsSkeleton } from "./SkillsSkeleton";
+import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
 import { SkillDialog } from "./SkillDialog";
 import { DeleteSkillDialog } from "./DeleteSkillDialog";
 import { useTranslation } from "@/i18n";
@@ -95,7 +96,7 @@ export function UserSkillsView({
   isOwner: propIsOwner,
 }: UserSkillsViewProps) {
   const { t } = useTranslation();
-  const { isOwnProfile } = useCurrentUser();
+  const { isOwnProfile, currentUser } = useCurrentUser();
   const isOwner =
     typeof propIsOwner === "boolean" ? propIsOwner : isOwnProfile(userId);
 
@@ -155,9 +156,12 @@ export function UserSkillsView({
   }, [isDeleteMode]);
 
   const profile = profileData?.profile || initialProfile;
-  const fullName = profile
-    ? `${profile.first_name || ""} ${profile.last_name || ""}`.trim()
-    : "";
+  const fullName =
+    (profile
+      ? `${profile.first_name || ""} ${profile.last_name || ""}`.trim() ||
+        (profile as { email?: string | null })?.email ||
+        ""
+      : "") || (isOwner ? currentUser?.email || "" : "");
 
   const skills: SkillItem[] = useMemo(() => {
     if (profileData?.profile?.skills) {
@@ -378,8 +382,15 @@ export function UserSkillsView({
     }
   };
 
-  if (profileLoading && !initialProfile) {
+  const isInitialLoading = Boolean(profileLoading && !initialProfile);
+  const showSkeleton = useDelayedLoading(isInitialLoading);
+
+  if (showSkeleton) {
     return <SkillsSkeleton />;
+  }
+
+  if (isInitialLoading) {
+    return null;
   }
 
   return (
@@ -501,7 +512,6 @@ export function UserSkillsView({
               </div>
             </section>
           ))}
-
         </div>
       )}
 

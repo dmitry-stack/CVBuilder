@@ -10,6 +10,7 @@ import { TrashXIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 import { LanguageProficiencyBar } from "./LanguageProficiencyBar";
 import { LanguagesSkeleton } from "./LanguagesSkeleton";
+import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
 import { LanguageDialog } from "./LanguageDialog";
 import { DeleteLanguageDialog } from "./DeleteLanguageDialog";
 import { useTranslation } from "@/i18n";
@@ -50,7 +51,7 @@ export function UserLanguagesView({
   isOwner: propIsOwner,
 }: UserLanguagesViewProps) {
   const { t } = useTranslation();
-  const { isOwnProfile } = useCurrentUser();
+  const { isOwnProfile, currentUser } = useCurrentUser();
   const isOwner =
     typeof propIsOwner === "boolean" ? propIsOwner : isOwnProfile(userId);
 
@@ -115,9 +116,12 @@ export function UserLanguagesView({
   }, [isDeleteMode]);
 
   const profile = profileData?.profile || initialProfile;
-  const fullName = profile
-    ? `${profile.first_name || ""} ${profile.last_name || ""}`.trim()
-    : "";
+  const fullName =
+    (profile
+      ? `${profile.first_name || ""} ${profile.last_name || ""}`.trim() ||
+        (profile as { email?: string | null })?.email ||
+        ""
+      : "") || (isOwner ? currentUser?.email || "" : "");
 
   const languages: LanguageItem[] = useMemo(() => {
     if (profileData?.profile?.languages) {
@@ -264,8 +268,15 @@ export function UserLanguagesView({
     }
   };
 
-  if (profileLoading && !initialProfile) {
+  const isInitialLoading = Boolean(profileLoading && !initialProfile);
+  const showSkeleton = useDelayedLoading(isInitialLoading);
+
+  if (showSkeleton) {
     return <LanguagesSkeleton />;
+  }
+
+  if (isInitialLoading) {
+    return null;
   }
 
   return (
