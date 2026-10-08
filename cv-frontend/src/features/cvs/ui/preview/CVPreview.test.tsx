@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { CVPreview } from "./CVPreview";
 import { HeaderProvider } from "@/components/layout/HeaderContext";
 import { useCvPreview } from "../../hooks/useCvPreview";
@@ -63,7 +63,7 @@ describe("CVPreview Component", () => {
 
   type CvPreviewResult = ReturnType<typeof useCvPreview>;
 
-  it("renders loading skeleton when loading and no cv", () => {
+  it("renders loading skeleton when loading and no cv", async () => {
     vi.mocked(useCvPreview).mockReturnValue({
       ...mockCvData,
       cv: null,
@@ -71,7 +71,9 @@ describe("CVPreview Component", () => {
     } as unknown as CvPreviewResult);
 
     renderComponent();
-    expect(screen.getByLabelText(/loading cv preview/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByLabelText(/loading cv preview/i)).toBeInTheDocument();
+    });
   });
 
   it("renders error state when error and no cv", () => {

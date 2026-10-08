@@ -19,6 +19,7 @@ import { useTranslation } from "@/i18n";
 import { useRouter, useSearchParams } from "next/navigation";
 import Pagination from "@/components/ui/Pagination";
 import { usePathname } from "next/navigation";
+import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
 
 export interface UserItem {
   id: string;
@@ -101,6 +102,7 @@ export function UsersTable() {
   });
 
   const isInitialLoading = loading && !data;
+  const showSkeleton = useDelayedLoading(isInitialLoading);
 
   const rawUsers: UserItem[] | undefined = useMemo(() => {
     if (data?.users?.items && data.users.items.length > 0) {
@@ -247,11 +249,11 @@ export function UsersTable() {
           </thead>
 
           <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
-            {isInitialLoading ? (
+            {showSkeleton ? (
               Array.from({ length: 5 }).map((_, idx) => (
                 <UsersTableRowSkeleton key={`skeleton-${idx}`} />
               ))
-            ) : filteredUsers.length === 0 ? (
+            ) : isInitialLoading ? null : filteredUsers.length === 0 ? (
               <tr>
                 <td
                   colSpan={7}
@@ -269,7 +271,7 @@ export function UsersTable() {
               filteredUsers.map((user) => (
                 <tr
                   key={user.id}
-                  onClick={() => router.push(`/users/${user.id}`)}
+
                   className="h-table-row hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
                 >
                   <td className="px-4">
@@ -317,7 +319,17 @@ export function UsersTable() {
                   </td>
 
                   <td className="px-4 text-right">
-                    <ChevronRight className="h-4 w-4 text-cv-muted dark:text-zinc-400 inline-block" />
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/users/${user.id}`);
+                      }}
+                      aria-label="View user details"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full text-cv-muted hover:text-cv-text hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[#C63031] dark:focus-visible:ring-[#C63031] cursor-pointer"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </button>
                   </td>
                 </tr>
               ))

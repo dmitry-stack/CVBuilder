@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { HeaderSync } from "@/components/layout/HeaderContext";
 import { SkillsSkeleton } from "@/features/skills/ui/SkillsSkeleton";
+import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
 import { useCvSkills } from "../../hooks/useCvSkills";
 import { CVSkillsList } from "./CVSkillsList";
 import { CVSkillsActions } from "./CVSkillsActions";
@@ -90,8 +91,15 @@ export function CVSkillsView({ cvId }: CVSkillsViewProps) {
     }
   };
 
-  if (loading) {
+  const isInitialLoading = Boolean(loading && !cv);
+  const showSkeleton = useDelayedLoading(isInitialLoading);
+
+  if (showSkeleton) {
     return <SkillsSkeleton />;
+  }
+
+  if (isInitialLoading) {
+    return null;
   }
 
   return (

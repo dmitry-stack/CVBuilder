@@ -3,6 +3,7 @@ query ProfileSkills($userId: ID!) {
     id
     first_name
     last_name
+    email
     skills {
       name
       categoryId

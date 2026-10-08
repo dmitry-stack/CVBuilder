@@ -17,6 +17,7 @@ import {
 } from "@/graphql/__generated__/graphql";
 import { cvFormSchema, type CvFormData } from "../../schemas/cv.schema";
 import { CVDetailsSkeleton } from "./CVDetailsSkeleton";
+import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
 import { useTranslation } from "@/i18n";
 
 interface CVDetailsViewProps {
@@ -96,8 +97,15 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
     }
   };
 
-  if (loading && !cv) {
+  const isInitialLoading = Boolean(loading && !cv);
+  const showSkeleton = useDelayedLoading(isInitialLoading);
+
+  if (showSkeleton) {
     return <CVDetailsSkeleton />;
+  }
+
+  if (isInitialLoading) {
+    return null;
   }
 
   return (
@@ -108,7 +116,10 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
     >
       <HeaderSync userName={cv?.name} entityId={cvId} />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-4xl space-y-5">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-4xl space-y-5"
+      >
         <Input
           id="cv_name"
           label={t("common.name")}

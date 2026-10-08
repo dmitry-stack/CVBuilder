@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { useQuery } from "@apollo/client/react";
 import { UserSkillsView } from "./UserSkillsView";
 import { HeaderProvider } from "@/components/layout/HeaderContext";
 
@@ -324,5 +325,23 @@ describe("UserSkillsView Component", () => {
     expect(
       screen.getByRole("button", { name: /Add Skill/i }),
     ).toBeInTheDocument();
+  });
+
+  it("renders loading skeleton when profile query is loading", async () => {
+    vi.mocked(useQuery).mockReturnValue({
+      data: null,
+      loading: true,
+      error: null,
+    } as unknown as ReturnType<typeof useQuery>);
+
+    render(
+      <HeaderProvider>
+        <UserSkillsView userId="user-1" />
+      </HeaderProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Loading skills")).toBeInTheDocument();
+    });
   });
 });
