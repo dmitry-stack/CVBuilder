@@ -3,6 +3,9 @@
 import { usePathname } from "next/navigation";
 import { ActionTabs } from "@/components/ui/ActionTabs";
 import { useTranslation } from "@/i18n";
+import { useQuery } from "@apollo/client/react";
+import { CvDocument } from "@/graphql/__generated__/graphql";
+import { HeaderSync } from "@/components/layout/HeaderContext";
 
 interface CVTabsProps {
   cvId?: string;
@@ -13,6 +16,13 @@ export function CVTabs({ cvId, userId }: CVTabsProps) {
   const pathname = usePathname();
   const { t } = useTranslation();
   const id = cvId || userId || "";
+
+  const { data } = useQuery(CvDocument, {
+    variables: { cvId: id },
+    skip: !id,
+    errorPolicy: "all",
+  });
+  const cvName = data?.cv?.name;
 
   const tabs = [
     {
@@ -37,5 +47,10 @@ export function CVTabs({ cvId, userId }: CVTabsProps) {
     },
   ];
 
-  return <ActionTabs tabs={tabs} />;
+  return (
+    <>
+      {cvName && <HeaderSync userName={cvName} entityId={id} />}
+      <ActionTabs tabs={tabs} />
+    </>
+  );
 }

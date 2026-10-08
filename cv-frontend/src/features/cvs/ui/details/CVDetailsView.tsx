@@ -106,7 +106,7 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
       data-testid="cv-details-view"
       className="w-full pt-4 sm:pt-6 pb-16 font-roboto"
     >
-      {cv?.name && <HeaderSync userName={cv.name} />}
+      <HeaderSync userName={cv?.name} entityId={cvId} />
 
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-4xl space-y-5">
         <Input

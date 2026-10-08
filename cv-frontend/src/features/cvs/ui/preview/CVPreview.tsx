@@ -61,7 +61,7 @@ export function CVPreview({ cvId }: CVPreviewProps) {
       data-testid="cv-preview-view"
       className="w-full px-32 pt-8 pb-16 font-roboto"
     >
-      {cv.name && <HeaderSync userName={cv.name} />}
+      <HeaderSync userName={cv.name} entityId={cvId} />
 
       <div id="cv-preview-content" className="space-y-6">
         <CVPreviewHeader

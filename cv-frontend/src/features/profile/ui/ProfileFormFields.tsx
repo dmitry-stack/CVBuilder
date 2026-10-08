@@ -22,7 +22,8 @@ interface ProfileFormFieldsProps {
   positionValue: string;
   availableDepartments: string[];
   availablePositions: string[];
-  onCancel: () => void;
+  onVerifyEmail?: () => void;
+  isVerifyingEmail?: boolean;
 }
 
 export function ProfileFormFields({
@@ -36,7 +37,8 @@ export function ProfileFormFields({
   positionValue,
   availableDepartments,
   availablePositions,
-  onCancel,
+  onVerifyEmail,
+  isVerifyingEmail,
 }: ProfileFormFieldsProps) {
   const { t } = useTranslation();
 
@@ -121,12 +123,12 @@ export function ProfileFormFields({
         <div className="flex items-center justify-end gap-3 pt-4">
           <Button
             type="button"
-            variant="outline"
+            variant="secondary"
             size="lg"
-            onClick={onCancel}
-            disabled={!isDirty || isSubmitting}
+            onClick={onVerifyEmail}
+            disabled={isVerifyingEmail}
           >
-            {t("common.cancel")}
+            {t("auth.verifyEmail")}
           </Button>
           <Button
             type="submit"
@@ -134,7 +136,7 @@ export function ProfileFormFields({
             disabled={!isDirty || isSubmitting}
             className="shadow-cv-button"
           >
-            {isSubmitting ? t("common.saving") : t("common.save")}
+            {isSubmitting ? t("common.saving") : t("common.update")}
           </Button>
         </div>
       )}

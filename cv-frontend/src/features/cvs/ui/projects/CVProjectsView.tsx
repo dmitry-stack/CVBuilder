@@ -45,7 +45,7 @@ export function CVProjectsView({ cvId }: CVProjectsViewProps) {
       data-testid="cv-projects-view"
       className="w-full pt-4 sm:pt-6 pb-16 font-roboto space-y-6"
     >
-      {cv?.name && <HeaderSync userName={cv.name} />}
+      <HeaderSync userName={cv?.name} entityId={cvId} />
 
       <CVProjectsHeader
         search={search}

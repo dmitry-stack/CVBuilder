@@ -16,6 +16,7 @@ import { notify } from "@/components/ui/toast";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { CVDialog } from "@/features/cvs/ui/CVDialog";
 import { DeleteCVDialog } from "@/features/cvs/ui/DeleteCVDialog";
+import { useHeaderContext } from "@/components/layout/HeaderContext";
 import { useTranslation } from "@/i18n";
 import type { CvFormData } from "../../users/schemas/cv.schema";
 
@@ -47,9 +48,15 @@ export interface CVTableProps {
 export function CVTable({ initialCvs, isOwner: propIsOwner, userId }: CVTableProps = {}) {
   const router = useRouter();
   const { t } = useTranslation();
+  const { setUserName } = useHeaderContext();
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState<SortField>("name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+
+  const handleNavigateToCv = (cvItem: CVItem) => {
+    setUserName(cvItem.name || null, cvItem.id);
+    router.push(`/cvs/${cvItem.id}/details`);
+  };
 
   const { currentUserId } = useCurrentUser();
   const isOwner =
@@ -372,7 +379,7 @@ export function CVTable({ initialCvs, isOwner: propIsOwner, userId }: CVTablePro
               filteredCvs.map((cv, index) => (
                 <Fragment key={cv.id}>
                   <tr
-                    onClick={() => router.push(`/cvs/${cv.id}/details`)}
+                    onClick={() => handleNavigateToCv(cv)}
                     className={`h-table-row hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors cursor-pointer ${
                       index > 0
                         ? "border-t border-zinc-200 dark:border-zinc-800"
@@ -404,7 +411,7 @@ export function CVTable({ initialCvs, isOwner: propIsOwner, userId }: CVTablePro
                     </td>
                   </tr>
                   <tr
-                    onClick={() => router.push(`/cvs/${cv.id}/details`)}
+                    onClick={() => handleNavigateToCv(cv)}
                     className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors border-t-0 cursor-pointer"
                   >
                     <td colSpan={4} className="px-4 py-2 border-t-0">

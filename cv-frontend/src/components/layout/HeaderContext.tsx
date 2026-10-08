@@ -26,9 +26,7 @@ export function HeaderProvider({ children }: { children: ReactNode }) {
 
   const setUserName = (name: string | null, newEntityId?: string | null) => {
     setUserNameState(name);
-    if (newEntityId !== undefined) {
-      setEntityIdState(newEntityId);
-    }
+    setEntityIdState(newEntityId !== undefined ? newEntityId : null);
   };
 
   return (
@@ -46,13 +44,15 @@ export function HeaderSync({
   userName,
   entityId,
 }: {
-  userName: string;
-  entityId?: string;
+  userName?: string | null;
+  entityId?: string | null;
 }) {
   const { setUserName } = useHeaderContext();
 
   useEffect(() => {
-    setUserName(userName, entityId);
+    if (userName !== undefined) {
+      setUserName(userName ?? null, entityId ?? null);
+    }
   }, [userName, entityId, setUserName]);
 
   return null;

@@ -153,4 +153,37 @@ describe("Header Component (Common Layout Header)", () => {
 
     expect(screen.getByText("Unknown Employee")).toBeInTheDocument();
   });
+
+  it("renders breadcrumbs when on /cvs/:id/details route with matching entityId", () => {
+    mockPathname = "/cvs/123/details";
+    render(
+      <HeaderProvider>
+        <HeaderSync userName="Fullstack CV" entityId="123" />
+        <Header />
+      </HeaderProvider>,
+    );
+
+    expect(screen.getByText("Fullstack CV")).toBeInTheDocument();
+    expect(screen.getByText("Details")).toBeInTheDocument();
+  });
+
+  it("updates breadcrumb correctly when navigating from user to CV", () => {
+    mockPathname = "/users/user-1";
+    const { rerender } = render(
+      <HeaderProvider>
+        <HeaderSync userName="John Doe" entityId="user-1" />
+        <Header />
+      </HeaderProvider>,
+    );
+    expect(screen.getByText("John Doe")).toBeInTheDocument();
+
+    mockPathname = "/cvs/cv-99/details";
+    rerender(
+      <HeaderProvider>
+        <HeaderSync userName="Senior Architect CV" entityId="cv-99" />
+        <Header />
+      </HeaderProvider>,
+    );
+    expect(screen.getByText("Senior Architect CV")).toBeInTheDocument();
+  });
 });
