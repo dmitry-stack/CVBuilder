@@ -66,6 +66,15 @@ describe("ProfileForm Component", () => {
     expect(screen.getByLabelText(/position/i)).toHaveValue("Software Engineer");
   });
 
+  it("formats epoch millisecond timestamp string properly in member since date", () => {
+    const userWithEpoch = {
+      ...mockUser,
+      created_at: "1705309639797",
+    };
+    render(<ProfileForm initialData={userWithEpoch} />);
+    expect(screen.getByText(/Mon Jan 15 2024/i)).toBeInTheDocument();
+  });
+
   it("renders Update button (disabled initially) and Verify Email button", () => {
     render(<ProfileForm initialData={mockUser} />);
 

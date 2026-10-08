@@ -37,13 +37,10 @@ function formatMemberSince(
 ): string {
   let dateText = "Sun Jan 14 2024";
   if (dateString) {
-    try {
-      const date = new Date(dateString);
-      if (!isNaN(date.getTime())) {
-        dateText = date.toDateString();
-      }
-    } catch {
-      // keep fallback
+    const raw = /^\d+$/.test(dateString.trim()) ? Number(dateString) : dateString;
+    const date = new Date(raw);
+    if (!isNaN(date.getTime())) {
+      dateText = date.toDateString();
     }
   }
   return t("profile.memberSince", { date: dateText });
