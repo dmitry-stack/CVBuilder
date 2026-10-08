@@ -17,6 +17,27 @@ export async function POST(request: NextRequest) {
     cache: "no-store",
   });
 
+  if (typeof response.text === "function") {
+    const responseText = await response.text();
+    try {
+      const data = JSON.parse(responseText);
+      return NextResponse.json(data, { status: response.status });
+    } catch {
+      return NextResponse.json(
+        {
+          errors: [
+            {
+              message: `Backend service error (${response.status}): ${responseText.slice(0, 200).trim() || response.statusText}`,
+            },
+          ],
+        },
+        { status: response.status >= 400 ? response.status : 502 },
+      );
+    }
+  }
+
   const data = await response.json();
   return NextResponse.json(data, { status: response.status });
 }
+
+
