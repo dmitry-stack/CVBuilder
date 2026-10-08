@@ -26,8 +26,22 @@ export async function executeAuthMutation<T>(
     cache: "no-store",
   });
 
+  if (typeof response.text === "function") {
+    const responseText = await response.text();
+    try {
+      return JSON.parse(responseText);
+    } catch {
+      const snippet = responseText.slice(0, 200).trim();
+      throw new Error(
+        `Backend responded with status ${response.status}: ${snippet || response.statusText || "Empty response"}`,
+      );
+    }
+  }
+
   return response.json();
 }
+
+
 
 type Tokens = { access_token: string; refresh_token: string };
 

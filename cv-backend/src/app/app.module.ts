@@ -1,3 +1,4 @@
+import { join } from "path";
 import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
@@ -27,7 +28,11 @@ import { AllExceptionsFilter } from "./filters/all-exceptions.filter";
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ["./**/*.graphql"],
+      typePaths: [
+        join(process.cwd(), "**/*.graphql"),
+        join(__dirname, "../**/*.graphql"),
+        "./**/*.graphql",
+      ],
       cache: "bounded",
       playground: true,
       introspection: true,
@@ -36,6 +41,7 @@ import { AllExceptionsFilter } from "./filters/all-exceptions.filter";
         Void,
       },
     }),
+
     TypeOrmModule.forRoot({
       type: "postgres",
       url: process.env.DATABASE_URL,
