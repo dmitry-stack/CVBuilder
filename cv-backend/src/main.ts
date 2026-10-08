@@ -17,8 +17,9 @@ async function start() {
       exceptionFactory: validationExceptionFactory,
     }),
   );
-  await app.listen(process.env.PORT);
+  await app.listen(process.env.PORT || 3001);
   console.log(`Application is running on: ${await app.getUrl()}`);
+
 }
 
 start();

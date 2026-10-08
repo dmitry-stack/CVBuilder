@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-
-const GRAPHQL_URL =
-  process.env.NEXT_PUBLIC_GRAPHQL_URL || "http://localhost:3001/api/graphql";
+import { getBackendGraphQLUrl } from "@/lib/auth/graphql-url";
 
 export async function POST(request: NextRequest) {
   const token = (await cookies()).get("access_token")?.value;
   const body = await request.text();
+  const graphqlUrl = getBackendGraphQLUrl();
 
-  const response = await fetch(GRAPHQL_URL, {
+  const response = await fetch(graphqlUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
