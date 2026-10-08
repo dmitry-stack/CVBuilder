@@ -5,7 +5,7 @@ import { json } from "body-parser";
 import { AppModule } from "./app/app.module";
 import { validationExceptionFactory } from "./app/util/validation.exception-factory";
 
-async function start() {
+async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(json({ limit: "500kb" }));
   app.enableCors({
@@ -17,9 +17,12 @@ async function start() {
       exceptionFactory: validationExceptionFactory,
     }),
   );
-  await app.listen(process.env.PORT || 3001);
-  console.log(`Application is running on: ${await app.getUrl()}`);
-
+  const port = process.env.PORT || 3001;
+  await app.listen(port);
+  console.log(`Application is running on port ${port}: ${await app.getUrl()}`);
 }
 
-start();
+bootstrap().catch((err) => {
+  console.error("BOOTSTRAP FAILED:", err);
+  process.exit(1);
+});
