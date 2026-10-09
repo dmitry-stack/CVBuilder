@@ -20,9 +20,10 @@ import type { LanguageFormData } from "../schemas/language.schema";
 export type { LanguageItem };
 export type UserLanguagesViewProps = UseUserLanguagesProps;
 
-export function UserLanguagesView(props: UserLanguagesViewProps) {
+export function UserLanguagesView(props: UserLanguagesViewProps = {}) {
   const { t } = useTranslation();
   const {
+    userId,
     isOwner,
     profileLoading,
     fullName,
@@ -44,7 +45,7 @@ export function UserLanguagesView(props: UserLanguagesViewProps) {
     handleCancelDeleteMode,
     handleConfirmDelete,
   } = useLanguageSelection({
-    userId: props.userId,
+    userId,
     deleteProfileLanguage,
   });
 
@@ -78,7 +79,10 @@ export function UserLanguagesView(props: UserLanguagesViewProps) {
     await handleSaveLanguage(formData, Boolean(dialogState.data));
   };
 
-  const isInitialLoading = Boolean(profileLoading && !props.initialProfile);
+  const isInitialLoading = Boolean(
+    (!userId && !props.initialProfile) ||
+      (profileLoading && !props.initialProfile && !languages.length),
+  );
   const showSkeleton = useDelayedLoading(isInitialLoading);
 
   if (showSkeleton) {
@@ -94,8 +98,8 @@ export function UserLanguagesView(props: UserLanguagesViewProps) {
       data-slot="user-languages-view"
       className="w-full pt-4 sm:pt-6 pb-16 font-roboto"
     >
-      {(!profileLoading || props.initialProfile) && (
-        <HeaderSync userName={fullName} entityId={props.userId} />
+      {(!profileLoading || props.initialProfile) && userId && (
+        <HeaderSync userName={fullName} entityId={userId} />
       )}
 
       {languages.length === 0 ? (

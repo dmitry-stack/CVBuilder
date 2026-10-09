@@ -25,7 +25,7 @@ export interface LanguageItem {
 }
 
 export interface UseUserLanguagesProps {
-  userId: string;
+  userId?: string;
   initialProfile?: {
     id: string;
     first_name?: string | null;
@@ -36,13 +36,16 @@ export interface UseUserLanguagesProps {
 }
 
 export function useUserLanguages({
-  userId,
+  userId: propUserId,
   initialProfile,
   isOwner: propIsOwner,
-}: UseUserLanguagesProps) {
+}: UseUserLanguagesProps = {}) {
   const { isOwnProfile, currentUser } = useCurrentUser();
+  const userId = propUserId || (currentUser?.id ? String(currentUser.id) : "");
   const isOwner =
-    typeof propIsOwner === "boolean" ? propIsOwner : isOwnProfile(userId);
+    typeof propIsOwner === "boolean"
+      ? propIsOwner
+      : Boolean(userId && isOwnProfile(userId));
 
   const { data: profileData, loading: profileLoading } =
     useQuery<ProfileLanguagesQuery>(ProfileLanguagesDocument, {
@@ -161,6 +164,7 @@ export function useUserLanguages({
   };
 
   return {
+    userId,
     isOwner,
     profileLoading,
     fullName,

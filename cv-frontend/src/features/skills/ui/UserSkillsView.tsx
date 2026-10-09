@@ -20,9 +20,10 @@ import type { SkillFormData } from "../schemas/skill.schema";
 export type { SkillItem };
 export type UserSkillsViewProps = UseUserSkillsProps;
 
-export function UserSkillsView(props: UserSkillsViewProps) {
+export function UserSkillsView(props: UserSkillsViewProps = {}) {
   const { t } = useTranslation();
   const {
+    userId,
     isOwner,
     profileLoading,
     fullName,
@@ -46,7 +47,7 @@ export function UserSkillsView(props: UserSkillsViewProps) {
     handleCancelDeleteMode,
     handleConfirmDelete,
   } = useSkillSelection({
-    userId: props.userId,
+    userId,
     deleteProfileSkill,
   });
 
@@ -81,7 +82,10 @@ export function UserSkillsView(props: UserSkillsViewProps) {
     await handleSaveSkill(formData, Boolean(dialogState.data));
   };
 
-  const isInitialLoading = Boolean(profileLoading && !props.initialProfile);
+  const isInitialLoading = Boolean(
+    (!userId && !props.initialProfile) ||
+      (profileLoading && !props.initialProfile && !skills.length),
+  );
   const showSkeleton = useDelayedLoading(isInitialLoading);
 
   if (showSkeleton) {
@@ -97,8 +101,8 @@ export function UserSkillsView(props: UserSkillsViewProps) {
       data-slot="user-skills-view"
       className="w-full pt-4 sm:pt-6 pb-16 font-roboto"
     >
-      {(!profileLoading || props.initialProfile) && (
-        <HeaderSync userName={fullName} entityId={props.userId} />
+      {(!profileLoading || props.initialProfile) && userId && (
+        <HeaderSync userName={fullName} entityId={userId} />
       )}
 
       {skills.length === 0 ? (

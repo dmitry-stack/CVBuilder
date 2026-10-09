@@ -26,7 +26,7 @@ export interface SkillItem {
 }
 
 export interface UseUserSkillsProps {
-  userId: string;
+  userId?: string;
   initialProfile?: {
     id: string;
     first_name?: string | null;
@@ -37,13 +37,16 @@ export interface UseUserSkillsProps {
 }
 
 export function useUserSkills({
-  userId,
+  userId: propUserId,
   initialProfile,
   isOwner: propIsOwner,
-}: UseUserSkillsProps) {
+}: UseUserSkillsProps = {}) {
   const { isOwnProfile, currentUser } = useCurrentUser();
+  const userId = propUserId || (currentUser?.id ? String(currentUser.id) : "");
   const isOwner =
-    typeof propIsOwner === "boolean" ? propIsOwner : isOwnProfile(userId);
+    typeof propIsOwner === "boolean"
+      ? propIsOwner
+      : Boolean(userId && isOwnProfile(userId));
 
   const { data: profileData, loading: profileLoading } = useQuery(
     ProfileSkillsDocument,
@@ -226,6 +229,7 @@ export function useUserSkills({
   };
 
   return {
+    userId,
     isOwner,
     profileLoading,
     fullName,
