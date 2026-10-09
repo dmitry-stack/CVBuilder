@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { compare, hash } from "bcrypt";
+import { compare, hash } from "bcryptjs";
 import { UserModel } from "./model/user.model";
 import { CreateUserInput, UpdateUserInput, AuthInput, SearchPaginationInput } from "src/graphql";
 import { ProfileService } from "src/profile/profile.service";

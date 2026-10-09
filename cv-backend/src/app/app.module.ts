@@ -45,7 +45,10 @@ import { AllExceptionsFilter } from "./filters/all-exceptions.filter";
     TypeOrmModule.forRoot({
       type: "postgres",
       url: process.env.DATABASE_URL,
-      ssl: process.env.DATABASE_SSL && { rejectUnauthorized: false },
+      ssl:
+        process.env.DATABASE_SSL === "true" || process.env.DATABASE_SSL === "1"
+          ? { rejectUnauthorized: false }
+          : false,
       autoLoadEntities: true,
       synchronize: true,
     }),

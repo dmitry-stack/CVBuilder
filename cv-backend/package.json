@@ -10,6 +10,7 @@
   "scripts": {
     "schema": "ts-node create-definitions",
     "start": "ts-node create-definitions && nest start --watch",
+    "start:prod": "node dist/main.js",
     "build": "nest build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
@@ -44,7 +45,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.1.17",
     "@nestjs/typeorm": "^11.0.0",
-    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -65,7 +66,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@nestjs/cli": "^11.0.16",
-    "@types/bcrypt": "^6.0.0",
+    "@types/bcryptjs": "^3.0.0",
     "@types/body-parser": "^1.19.6",
     "@types/node": "^22.12.0",
     "@types/passport-jwt": "^4.0.1",

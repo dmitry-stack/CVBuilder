@@ -1,3 +1,4 @@
+import { join } from "path";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { MailerModule } from "@nestjs-modules/mailer";
@@ -19,7 +20,7 @@ import { MailResolver } from "./mail.resolver";
         from: `"CV Innowise" <${process.env.MAIL_FROM}>`,
       },
       template: {
-        dir: "dist/mail/templates",
+        dir: join(__dirname, "templates"),
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
