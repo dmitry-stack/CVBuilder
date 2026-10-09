@@ -96,4 +96,17 @@ describe("Input component", () => {
     // Now focused, label appears
     expect(screen.getByText("Username")).toBeInTheDocument();
   });
+
+  it("does not render password toggle button when showPasswordToggle is false", () => {
+    render(
+      <Input
+        type="password"
+        placeholder="Password"
+        showPasswordToggle={false}
+      />,
+    );
+    expect(
+      screen.queryByRole("button", { name: /show password|hide password/i }),
+    ).not.toBeInTheDocument();
+  });
 });

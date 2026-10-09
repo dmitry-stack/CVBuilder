@@ -88,6 +88,7 @@ export function ChangePasswordForm() {
             placeholder={t("settings.currentPassword")}
             disabled={isPending}
             aria-invalid={errors.currentPassword ? "true" : undefined}
+            showPasswordToggle={false}
             className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
           />
           <button
@@ -125,6 +126,7 @@ export function ChangePasswordForm() {
             placeholder={t("settings.newPassword")}
             disabled={isPending}
             aria-invalid={errors.newPassword ? "true" : undefined}
+            showPasswordToggle={false}
             className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
           />
           <button
@@ -160,6 +162,7 @@ export function ChangePasswordForm() {
             placeholder={t("settings.confirmPassword")}
             disabled={isPending}
             aria-invalid={errors.confirmPassword ? "true" : undefined}
+            showPasswordToggle={false}
             className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
           />
           <button

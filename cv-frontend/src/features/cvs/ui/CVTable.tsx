@@ -1,369 +1,70 @@
 "use client";
 
-import { useState, useMemo, Fragment } from "react";
 import { useRouter } from "next/navigation";
-import { Search, ChevronDown, ChevronUp, Plus } from "lucide-react";
-import { useQuery, useMutation } from "@apollo/client/react";
-import {
-  CvsDocument,
-  CreateCvDocument,
-  UpdateCvDocument,
-  DeleteCvDocument,
-} from "@/graphql/__generated__/graphql";
-import { DropdownMenuButton } from "../../../components/ui/DropDownButton";
-import { Button } from "@/components/ui/button";
-import { notify } from "@/components/ui/toast";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { CVDialog } from "@/features/cvs/ui/CVDialog";
 import { DeleteCVDialog } from "@/features/cvs/ui/DeleteCVDialog";
 import { useHeaderContext } from "@/components/layout/HeaderContext";
 import { useTranslation } from "@/i18n";
-import type { CvFormData } from "../../users/schemas/cv.schema";
+import { CVTableToolbar } from "./CVTableToolbar";
+import { CVTableHeader } from "./CVTableHeader";
+import { CVTableRow } from "./CVTableRow";
+import {
+  useCvsTable,
+  type CVItem,
+  type UseCvsTableProps,
+} from "../hooks/useCvsTable";
 
-export interface CVItem {
-  id: string;
-  name: string;
-  education?: string | null;
-  description: string;
-  user?: {
-    id: string;
-    email: string;
-    profile?: {
-      first_name?: string | null;
-      last_name?: string | null;
-      avatar?: string | null;
-    } | null;
-  } | null;
-}
+export type { CVItem };
+export type CVTableProps = UseCvsTableProps;
 
-type SortField = "name" | "education" | "employee";
-type SortOrder = "asc" | "desc";
-
-export interface CVTableProps {
-  initialCvs?: CVItem[];
-  isOwner?: boolean;
-  userId?: string;
-}
-
-export function CVTable({ initialCvs, isOwner: propIsOwner, userId }: CVTableProps = {}) {
+export function CVTable(props: CVTableProps = {}) {
   const router = useRouter();
   const { t } = useTranslation();
   const { setUserName } = useHeaderContext();
-  const [search, setSearch] = useState("");
-  const [sortField, setSortField] = useState<SortField>("name");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+
+  const {
+    isOwner,
+    search,
+    setSearch,
+    sortField,
+    sortOrder,
+    handleSort,
+    filteredCvs,
+    dialogState,
+    setDialogState,
+    deleteDialogState,
+    setDeleteDialogState,
+    handleOpenCreate,
+    handleOpenEdit,
+    handleSave,
+    handleConfirmDelete,
+  } = useCvsTable(props);
 
   const handleNavigateToCv = (cvItem: CVItem) => {
     setUserName(cvItem.name || null, cvItem.id);
     router.push(`/cvs/${cvItem.id}/details`);
   };
 
-  const { currentUserId } = useCurrentUser();
-  const isOwner =
-    typeof propIsOwner === "boolean"
-      ? propIsOwner
-      : (userId ? currentUserId === userId : true);
-
-  const { data, refetch } = useQuery(CvsDocument, {
-    variables: {
-      params: {
-        search: search || undefined,
-        sort_by: sortField === "employee" ? "name" : sortField,
-        sort_order: sortOrder,
-        page: 1,
-        limit: 50,
-      },
-    },
-    errorPolicy: "ignore",
-  });
-
-  const [createCvMutation] = useMutation(CreateCvDocument, {
-    refetchQueries: [{ query: CvsDocument }],
-  });
-
-  const [updateCvMutation] = useMutation(UpdateCvDocument, {
-    refetchQueries: [{ query: CvsDocument }],
-  });
-
-  const [deleteCvMutation] = useMutation(DeleteCvDocument, {
-    refetchQueries: [{ query: CvsDocument }],
-  });
-
-  const [dialogState, setDialogState] = useState<{
-    isOpen: boolean;
-    data: (CvFormData & { id?: string }) | null;
-  }>({
-    isOpen: false,
-    data: null,
-  });
-
-  const [deleteDialogState, setDeleteDialogState] = useState<{
-    isOpen: boolean;
-    data: CVItem | null;
-  }>({
-    isOpen: false,
-    data: null,
-  });
-
-  const rawCvs: CVItem[] = useMemo(() => {
-    let items: CVItem[] = [];
-    if (data?.cvs?.items && data.cvs.items.length > 0) {
-      items = data.cvs.items.map((c) => ({
-        id: c.id,
-        name: c.name,
-        education: c.education || null,
-        description: c.description,
-        user: c.user
-          ? {
-              id: c.user.id,
-              email: c.user.email,
-            }
-          : null,
-      }));
-    } else if (initialCvs) {
-      items = initialCvs;
-    }
-
-    if (userId) {
-      items = items.filter((c) => c.user?.id === userId);
-    }
-    return items;
-  }, [data, initialCvs, userId]);
-
-  const filteredCvs = useMemo(() => {
-    let result = [...rawCvs];
-
-    if (search.trim()) {
-      const q = search.toLowerCase().trim();
-      result = result.filter((cv) => {
-        const name = (cv.name || "").toLowerCase();
-        const edu = (cv.education || "").toLowerCase();
-        const desc = (cv.description || "").toLowerCase();
-        const emp = (cv.user?.email || "").toLowerCase();
-        return (
-          name.includes(q) ||
-          edu.includes(q) ||
-          desc.includes(q) ||
-          emp.includes(q)
-        );
-      });
-    }
-
-    result.sort((a, b) => {
-      let valA = "";
-      let valB = "";
-
-      if (sortField === "name") {
-        valA = (a.name || "").toLowerCase();
-        valB = (b.name || "").toLowerCase();
-      } else if (sortField === "education") {
-        valA = (a.education || "").toLowerCase();
-        valB = (b.education || "").toLowerCase();
-      } else if (sortField === "employee") {
-        valA = (a.user?.email || "").toLowerCase();
-        valB = (b.user?.email || "").toLowerCase();
-      }
-
-      if (valA < valB) return sortOrder === "asc" ? -1 : 1;
-      if (valA > valB) return sortOrder === "asc" ? 1 : -1;
-      return 0;
-    });
-
-    return result;
-  }, [rawCvs, search, sortField, sortOrder]);
-
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortOrder("asc");
-    }
-  };
-
-  const handleOpenCreate = () => {
-    setDialogState({
-      isOpen: true,
-      data: null,
-    });
-  };
-
-  const handleOpenEdit = (cv: CVItem) => {
-    setDialogState({
-      isOpen: true,
-      data: {
-        id: cv.id,
-        name: cv.name,
-        education: cv.education || "",
-        description: cv.description,
-      },
-    });
-  };
-
-  const handleOpenDelete = (cv: CVItem) => {
-    setDeleteDialogState({
-      isOpen: true,
-      data: cv,
-    });
-  };
-
-  const handleSaveCv = async (formData: CvFormData & { id?: string }) => {
-    try {
-      if (formData.id) {
-        await updateCvMutation({
-          variables: {
-            cv: {
-              cvId: formData.id,
-              name: formData.name,
-              education: formData.education || undefined,
-              description: formData.description,
-            },
-          },
-        });
-        notify.success(`CV "${formData.name}" updated successfully!`);
-      } else {
-        if (!currentUserId) {
-          notify.error("User session is not ready. Please try again.");
-          return;
-        }
-        await createCvMutation({
-          variables: {
-            cv: {
-              name: formData.name,
-              education: formData.education || undefined,
-              description: formData.description,
-              userId: userId || currentUserId,
-            },
-          },
-        });
-        notify.success(`CV "${formData.name}" created successfully!`);
-      }
-      refetch?.();
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Failed to save CV.";
-      notify.error(message);
-      throw err;
-    }
-  };
-
-  const handleConfirmDelete = async () => {
-    if (!deleteDialogState.data?.id) return;
-    try {
-      await deleteCvMutation({
-        variables: {
-          cv: {
-            cvId: deleteDialogState.data.id,
-          },
-        },
-      });
-      notify.success(
-        `CV "${deleteDialogState.data.name}" deleted successfully!`,
-      );
-      refetch?.();
-    } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : "Failed to delete CV.";
-      notify.error(message);
-      throw err;
-    }
-  };
-
-  const getEmployeeDisplay = (cv: CVItem) => {
-    if (cv.user?.email) {
-      return cv.user.email;
-    }
-    return t("cvs.unknownEmployee");
+  const handleOpenDelete = (cvItem: CVItem) => {
+    setDeleteDialogState({ isOpen: true, data: cvItem });
   };
 
   return (
     <div className="w-full max-w-content mx-auto space-y-6">
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 px-1">
-        <div className="relative w-full max-w-search">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-cv-muted dark:text-zinc-400 pointer-events-none"
-            aria-hidden="true"
-          />
-          <input
-            type="text"
-            placeholder={t("cvs.searchPlaceholder")}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full h-10 pl-10 pr-4 rounded-full border border-cv-border dark:border-zinc-700 bg-transparent text-base leading-cv-input text-cv-text dark:text-zinc-100 placeholder:text-cv-placeholder focus:outline-hidden focus:border-cv-text dark:focus:border-zinc-400 transition-colors"
-            aria-label={t("cvs.searchAria")}
-          />
-        </div>
+      <CVTableToolbar
+        search={search}
+        onSearchChange={setSearch}
+        isOwner={isOwner}
+        onOpenCreate={handleOpenCreate}
+      />
 
-        {isOwner && (
-          <div className="flex items-center justify-end">
-            <Button
-              type="button"
-              variant="primary-v2"
-              size="sm"
-              onClick={handleOpenCreate}
-              className="inline-flex items-center gap-1.5"
-            >
-              <Plus className="h-3.5 w-3.5" />
-              <span>{t("cvs.createCv")}</span>
-            </Button>
-          </div>
-        )}
-      </div>
-
-      <div className=" overflow-x-auto">
+      <div className="overflow-x-auto">
         <table className="w-full border-collapse text-left">
-          <thead>
-            <tr className="h-table-header border-b border-zinc-200 dark:border-zinc-800 bg-transparent">
-              <th className="px-4 text-sm font-medium leading-6 tracking-cv text-cv-text dark:text-zinc-100">
-                <button
-                  type="button"
-                  onClick={() => handleSort("name")}
-                  className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden cursor-pointer"
-                >
-                  <span>{t("common.name")}</span>
-                  {sortField === "name" &&
-                    (sortOrder === "asc" ? (
-                      <ChevronDown className="h-4 w-4 text-cv-muted" />
-                    ) : (
-                      <ChevronUp className="h-4 w-4 text-cv-muted" />
-                    ))}
-                </button>
-              </th>
-
-              <th className="px-4 text-sm font-medium leading-6 tracking-cv text-cv-text dark:text-zinc-100">
-                <button
-                  type="button"
-                  onClick={() => handleSort("education")}
-                  className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden cursor-pointer"
-                >
-                  <span>{t("cvs.education")}</span>
-                  {sortField === "education" &&
-                    (sortOrder === "asc" ? (
-                      <ChevronDown className="h-4 w-4 text-cv-muted" />
-                    ) : (
-                      <ChevronUp className="h-4 w-4 text-cv-muted" />
-                    ))}
-                </button>
-              </th>
-
-              <th className="px-4 text-sm font-medium leading-6 tracking-cv text-cv-text dark:text-zinc-100">
-                <button
-                  type="button"
-                  onClick={() => handleSort("employee")}
-                  className="flex items-center gap-1.5 hover:text-primary transition-colors focus:outline-hidden cursor-pointer"
-                >
-                  <span>{t("cvs.employee")}</span>
-                  {sortField === "employee" &&
-                    (sortOrder === "asc" ? (
-                      <ChevronDown className="h-4 w-4 text-cv-muted" />
-                    ) : (
-                      <ChevronUp className="h-4 w-4 text-cv-muted" />
-                    ))}
-                </button>
-              </th>
-
-              <th className="w-18 px-4" aria-label="Actions" />
-            </tr>
-          </thead>
+          <CVTableHeader
+            sortField={sortField}
+            sortOrder={sortOrder}
+            onSort={handleSort}
+          />
 
           <tbody>
             {filteredCvs.length === 0 ? (
@@ -377,50 +78,15 @@ export function CVTable({ initialCvs, isOwner: propIsOwner, userId }: CVTablePro
               </tr>
             ) : (
               filteredCvs.map((cv, index) => (
-                <Fragment key={cv.id}>
-                  <tr
-                    onClick={() => handleNavigateToCv(cv)}
-                    className={`h-table-row hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors cursor-pointer ${
-                      index > 0
-                        ? "border-t border-zinc-200 dark:border-zinc-800"
-                        : ""
-                    }`}
-                  >
-                    <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100">
-                      {cv.name || ""}
-                    </td>
-
-                    <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100">
-                      {cv.education || ""}
-                    </td>
-
-                    <td className="px-4 font-roboto text-sm leading-5 tracking-cv text-cv-text dark:text-zinc-100 truncate max-w-email">
-                      {getEmployeeDisplay(cv)}
-                    </td>
-
-                    <td
-                      className="px-4 text-right"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <DropdownMenuButton
-                        id={cv.id}
-                        viewHref={`/cvs/${cv.id}/details`}
-                        onUpdate={isOwner ? () => handleOpenEdit(cv) : undefined}
-                        onDelete={isOwner ? () => handleOpenDelete(cv) : undefined}
-                      />
-                    </td>
-                  </tr>
-                  <tr
-                    onClick={() => handleNavigateToCv(cv)}
-                    className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors border-t-0 cursor-pointer"
-                  >
-                    <td colSpan={4} className="px-4 py-2 border-t-0">
-                      <div className="font-roboto text-sm leading-5 tracking-cv text-cv-text/50 dark:text-zinc-100">
-                        {cv.description}
-                      </div>
-                    </td>
-                  </tr>
-                </Fragment>
+                <CVTableRow
+                  key={cv.id}
+                  cv={cv}
+                  index={index}
+                  isOwner={isOwner}
+                  onNavigate={handleNavigateToCv}
+                  onOpenEdit={handleOpenEdit}
+                  onOpenDelete={handleOpenDelete}
+                />
               ))
             )}
           </tbody>
@@ -430,13 +96,7 @@ export function CVTable({ initialCvs, isOwner: propIsOwner, userId }: CVTablePro
       <CVDialog
         isOpen={dialogState.isOpen}
         onClose={() => setDialogState({ isOpen: false, data: null })}
-        onSave={handleSaveCv}
-        onDelete={(id, name) => {
-          setDeleteDialogState({
-            isOpen: true,
-            data: { id, name: name || "", description: "" },
-          });
-        }}
+        onSave={handleSave}
         initialData={dialogState.data}
       />
 
@@ -444,7 +104,7 @@ export function CVTable({ initialCvs, isOwner: propIsOwner, userId }: CVTablePro
         isOpen={deleteDialogState.isOpen}
         onClose={() => setDeleteDialogState({ isOpen: false, data: null })}
         onConfirm={handleConfirmDelete}
-        cvName={deleteDialogState.data?.name}
+        cvName={deleteDialogState.data?.name || ""}
       />
     </div>
   );

@@ -46,7 +46,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       Boolean(defaultValue || value),
     );
 
-    const isPasswordType = type === "password" || Boolean(showPasswordToggle);
+    const isPasswordType =
+      showPasswordToggle !== undefined
+        ? showPasswordToggle
+        : type === "password";
     const effectiveType = isPasswordType
       ? showPassword
         ? "text"

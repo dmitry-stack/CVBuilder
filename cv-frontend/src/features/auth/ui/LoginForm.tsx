@@ -89,6 +89,7 @@ export default function LoginForm() {
               placeholder={t("auth.password")}
               disabled={isPending}
               aria-invalid={errors.password ? "true" : undefined}
+              showPasswordToggle={false}
               className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
             />
 
