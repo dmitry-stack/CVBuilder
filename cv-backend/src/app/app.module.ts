@@ -46,9 +46,19 @@ import { AllExceptionsFilter } from "./filters/all-exceptions.filter";
 
     TypeOrmModule.forRoot({
       type: "postgres",
-      url: process.env.DATABASE_URL,
+      url:
+        process.env.DATABASE_URL ||
+        process.env.POSTGRES_URL ||
+        process.env.POSTGRES_PRISMA_URL,
       ssl:
-        process.env.DATABASE_SSL === "true" || process.env.DATABASE_SSL === "1"
+        process.env.DATABASE_SSL === "true" ||
+        process.env.DATABASE_SSL === "1" ||
+        (process.env.DATABASE_SSL !== "false" &&
+          Boolean(
+            (process.env.DATABASE_URL && !process.env.DATABASE_URL.includes("localhost")) ||
+              process.env.POSTGRES_URL ||
+              process.env.POSTGRES_PRISMA_URL,
+          ))
           ? { rejectUnauthorized: false }
           : false,
       autoLoadEntities: true,

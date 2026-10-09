@@ -17,7 +17,7 @@ import { MailResolver } from "./mail.resolver";
         url: process.env.SMTP_URL,
       },
       defaults: {
-        from: `"CV Innowise" <${process.env.MAIL_FROM}>`,
+        from: `"CV Innowise" <${process.env.MAIL_FROM || "noreply@example.com"}>`,
       },
       template: {
         dir: join(__dirname, "templates"),

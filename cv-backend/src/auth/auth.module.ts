@@ -10,7 +10,10 @@ import { RefreshTokenStrategy } from "./strategies/refresh_token.strategy";
 @Module({
   imports: [
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      secret:
+        process.env.JWT_SECRET ||
+        process.env.AUTH_SECRET ||
+        "cvbuilder_jwt_secret_key_default",
     }),
     UsersModule,
     MailModule,

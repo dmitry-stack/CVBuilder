@@ -36,17 +36,22 @@ export class MailService {
     }
     await this.mailRepository.save(mail);
 
-    await this.mailerService.sendMail({
-      to: email,
-      subject: "Verify email.",
-      template: "./confirm-email.hbs",
-      context: {
-        code: otp,
-        duration: "2 hours",
-        url,
-        from: process.env.MAIL_FROM,
-      },
-    });
+    try {
+      await this.mailerService.sendMail({
+        to: email,
+        subject: "Verify email.",
+        template: "./confirm-email.hbs",
+        context: {
+          code: otp,
+          duration: "2 hours",
+          url,
+          from: process.env.MAIL_FROM,
+        },
+      });
+    } catch (error) {
+      console.warn(`[MailService] Failed to send verification email to ${email}:`, error);
+      console.info(`[MailService] Verification OTP for ${email}: ${otp}`);
+    }
   }
 
   async verifyEmail({ otp }: VerifyMailInput, email: string) {
@@ -63,15 +68,19 @@ export class MailService {
   }
 
   async sendResetPasswordEmail(email: string, url: string) {
-    return await this.mailerService.sendMail({
-      to: email,
-      subject: "Password reset.",
-      template: "./reset_password.hbs",
-      context: {
-        duration: "10 minutes",
-        url,
-        from: process.env.MAIL_FROM,
-      },
-    });
+    try {
+      return await this.mailerService.sendMail({
+        to: email,
+        subject: "Password reset.",
+        template: "./reset_password.hbs",
+        context: {
+          duration: "10 minutes",
+          url,
+          from: process.env.MAIL_FROM,
+        },
+      });
+    } catch (error) {
+      console.warn(`[MailService] Failed to send reset password email to ${email}:`, error);
+    }
   }
 }
