@@ -11,7 +11,7 @@ export default async function SkillsPage() {
   const currentUser = await getCurrentUser();
 
   if (!currentUser?.id) {
-    redirect("/signin");
+    redirect("/signin?callbackUrl=/skills");
   }
 
   return (

@@ -11,7 +11,7 @@ export default async function LanguagesPage() {
   const currentUser = await getCurrentUser();
 
   if (!currentUser?.id) {
-    redirect("/signin");
+    redirect("/signin?callbackUrl=/languages");
   }
 
   return (

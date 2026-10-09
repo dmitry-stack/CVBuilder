@@ -23,15 +23,39 @@ function isAuthError(error: unknown): boolean {
     return error.errors.some(
       (e) =>
         e.extensions?.code === "UNAUTHENTICATED" ||
-        e.message?.toLowerCase().includes("unauthorized"),
+        e.message?.toLowerCase().includes("unauthorized") ||
+        e.message?.toLowerCase().includes("unauthenticated"),
     );
   }
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "statusCode" in error &&
-    (error as { statusCode?: number }).statusCode === 401
-  );
+  if (typeof error === "object" && error !== null) {
+    if (
+      "statusCode" in error &&
+      (error as { statusCode?: number }).statusCode === 401
+    ) {
+      return true;
+    }
+    if ("networkError" in error) {
+      const netErr = (error as { networkError?: unknown }).networkError;
+      if (
+        typeof netErr === "object" &&
+        netErr !== null &&
+        "statusCode" in netErr &&
+        (netErr as { statusCode?: number }).statusCode === 401
+      ) {
+        return true;
+      }
+    }
+    if (
+      "message" in error &&
+      typeof (error as { message?: unknown }).message === "string"
+    ) {
+      const msg = (error as { message: string }).message.toLowerCase();
+      if (msg.includes("unauthenticated") || msg.includes("unauthorized")) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 function waitForFreshToken(onUnauthorized?: () => void): Promise<void> {
@@ -101,7 +125,16 @@ export function ApolloProviderWrapper({ children }: { children: ReactNode }) {
   }, [router]);
 
   const handleUnauthorized = useCallback(() => {
-    routerRef.current?.push("/signin");
+    if (typeof window !== "undefined") {
+      const currentPath = window.location.pathname + window.location.search;
+      const callbackParam =
+        currentPath && currentPath !== "/signin" && currentPath !== "/signup"
+          ? `?callbackUrl=${encodeURIComponent(currentPath)}`
+          : "";
+      routerRef.current?.push(`/signin${callbackParam}`);
+    } else {
+      routerRef.current?.push("/signin");
+    }
   }, []);
 
   const makeClientWithRouter = useCallback(() => {

@@ -43,7 +43,21 @@ export default function LoginForm() {
       if (result.serverError) {
         setServerError(result.serverError);
       } else if (result.success) {
-        router.push(callbackUrl || "/users");
+        let target = callbackUrl || "/users";
+        if (target.startsWith("http://") || target.startsWith("https://")) {
+          try {
+            const url = new URL(target);
+            if (
+              typeof window !== "undefined" &&
+              url.origin === window.location.origin
+            ) {
+              target = url.pathname + url.search;
+            }
+          } catch {
+            target = "/users";
+          }
+        }
+        router.push(target);
         router.refresh();
       }
     });
