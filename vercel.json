@@ -4,7 +4,11 @@
     "cv-backend": {
       "root": "cv-backend",
       "framework": "nestjs",
-      "installCommand": "pnpm install"
+      "functions": {
+        "**": {
+          "includeFiles": "{**/*.graphql,dist/**/*.graphql,src/**/*.graphql,mail/templates/**/*,dist/mail/templates/**/*}"
+        }
+      }
     },
     "cv-frontend": {
       "root": "cv-frontend",
