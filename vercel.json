@@ -3,7 +3,8 @@
   "services": {
     "cv-backend": {
       "root": "cv-backend",
-      "framework": "nestjs"
+      "framework": "nestjs",
+      "installCommand": "pnpm install"
     },
     "cv-frontend": {
       "root": "cv-frontend",
