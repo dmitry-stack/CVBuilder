@@ -59,9 +59,12 @@ cv-frontend/
     │   ├── globals.css         # Tailwind v4 imports, @theme inline, and color tokens
     │   ├── layout.tsx          # Root HTML layout & ApolloProviderWrapper
     │   └── page.tsx            # Root dynamic redirect
-    ├── components/
-    │   ├── layout/             # Layout components (Navbar.tsx / Sidebar)
-    │   └── ui/                 # Reusable design system primitives (button.tsx, input.tsx)
+    ├── shared/
+    │   ├── components/
+    │   │   ├── layout/             # Layout components (Navbar.tsx / Sidebar)
+    │   │   └── ui/                 # Reusable design system primitives (button.tsx, input.tsx)
+    │   ├── lib/                    # Shared pure utilities and hooks
+    │   └── assets/                 # Shared SVGs and images
     ├── features/               # Feature domain modules
     │   ├── auth/
     │   ├── users/
@@ -420,7 +423,7 @@ cv-frontend/
    - Infer types using `z.infer<typeof schema>`.
    - Colocate unit tests in `<name>.schema.test.ts`.
 3. **UI Components:**
-   - Keep shared headless primitives in `src/components/ui/`.
+   - Keep shared headless primitives in `src/shared/components/ui/`.
    - Keep feature-specific widgets in `src/features/<feature>/ui/`.
    - Use Tailwind semantic tokens (`text-primary`, `bg-background`, `border-border`) rather than hardcoded hex colors.
 4. **Testing Policy:**

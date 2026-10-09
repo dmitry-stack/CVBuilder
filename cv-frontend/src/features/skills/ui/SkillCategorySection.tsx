@@ -1,7 +1,7 @@
 "use client";
 
 import { Pencil, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { SkillMasteryBar } from "./SkillMasteryBar";
 import type { SkillItem } from "../hooks/useUserSkills";
 
@@ -25,10 +25,7 @@ export function SkillCategorySection({
   onOpenEdit,
 }: SkillCategorySectionProps) {
   return (
-    <section
-      data-slot="skill-category-section"
-      className="space-y-4"
-    >
+    <section data-slot="skill-category-section" className="space-y-4">
       <h2 className="text-base font-normal text-[#2E2E2E] dark:text-zinc-100 font-roboto">
         {categoryName}
       </h2>
@@ -49,10 +46,7 @@ export function SkillCategorySection({
                 }
               }}
               onKeyDown={(e) => {
-                if (
-                  isDeleteMode &&
-                  (e.key === " " || e.key === "Enter")
-                ) {
+                if (isDeleteMode && (e.key === " " || e.key === "Enter")) {
                   e.preventDefault();
                   onToggleSelect(skill.name);
                 }
@@ -80,9 +74,7 @@ export function SkillCategorySection({
                         : "border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900",
                     )}
                   >
-                    {isSelected && (
-                      <Check className="h-3 w-3 stroke-[3]" />
-                    )}
+                    {isSelected && <Check className="h-3 w-3 stroke-[3]" />}
                   </div>
                 )}
                 <SkillMasteryBar

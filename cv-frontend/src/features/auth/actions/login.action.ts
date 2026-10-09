@@ -4,7 +4,7 @@ import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
 import {
   executeAuthMutation,
   setAuthCookies,
-} from "@/lib/auth/graphql-auth.server";
+} from "@/shared/lib/auth/graphql-auth.server";
 import {
   LoginDocument,
   type LoginMutation,

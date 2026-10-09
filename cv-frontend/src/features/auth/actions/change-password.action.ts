@@ -5,7 +5,7 @@ import {
   changePasswordSchema,
   type ChangePasswordFormData,
 } from "../schemas/auth.schema";
-import { executeAuthMutation } from "@/lib/auth/graphql-auth.server";
+import { executeAuthMutation } from "@/shared/lib/auth/graphql-auth.server";
 import {
   ChangePasswordDocument,
   type ChangePasswordMutation,

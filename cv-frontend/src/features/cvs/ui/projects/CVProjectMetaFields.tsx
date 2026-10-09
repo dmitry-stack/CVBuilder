@@ -3,8 +3,8 @@
 import { useMemo } from "react";
 import { FieldErrors } from "react-hook-form";
 import { ChevronDown } from "lucide-react";
-import { Select, type SelectOption } from "@/components/ui/select";
-import { DatePicker } from "@/components/ui/date-picker";
+import { Select, type SelectOption } from "@/shared/components/ui/select";
+import { DatePicker } from "@/shared/components/ui/date-picker";
 import { useTranslation } from "@/i18n";
 import type { CvProjectFormData } from "../../schemas/cv-project.schema";
 import type { CvProjectItem } from "../../lib/cv-projects.utils";

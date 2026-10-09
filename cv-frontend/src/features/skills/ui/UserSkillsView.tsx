@@ -1,14 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { HeaderSync } from "@/components/layout/HeaderContext";
+import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { SkillsSkeleton } from "./SkillsSkeleton";
-import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
+import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 import { SkillDialog } from "./SkillDialog";
 import { DeleteSkillDialog } from "./DeleteSkillDialog";
 import { SkillCategorySection } from "./SkillCategorySection";
 import { SkillsActionBar } from "./SkillsActionBar";
-import { useUserSkills, type SkillItem, type UseUserSkillsProps } from "../hooks/useUserSkills";
+import {
+  useUserSkills,
+  type SkillItem,
+  type UseUserSkillsProps,
+} from "../hooks/useUserSkills";
 import { useSkillSelection } from "../hooks/useSkillSelection";
 import { useTranslation } from "@/i18n";
 import type { SkillFormData } from "../schemas/skill.schema";

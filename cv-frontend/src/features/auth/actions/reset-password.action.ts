@@ -4,7 +4,7 @@ import {
   resetPasswordSchema,
   type ResetPasswordFormData,
 } from "../schemas/auth.schema";
-import { executeAuthMutation } from "@/lib/auth/graphql-auth.server";
+import { executeAuthMutation } from "@/shared/lib/auth/graphql-auth.server";
 import {
   ResetPasswordDocument,
   type ResetPasswordMutation,

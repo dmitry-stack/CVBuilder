@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string | React.ReactNode;
   alwaysShowLabel?: boolean;
@@ -41,10 +40,10 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     const isInvalid =
       ariaInvalid === "true" || ariaInvalid === true || Boolean(error);
-    const hasValue =
-      value !== undefined ? Boolean(value) : hasInternalValue;
+    const hasValue = value !== undefined ? Boolean(value) : hasInternalValue;
     const showTopLabel = Boolean(
-      label && (alwaysShowLabel || isFocused || hasValue || disabled || isInvalid),
+      label &&
+      (alwaysShowLabel || isFocused || hasValue || disabled || isInvalid),
     );
 
     const handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
@@ -68,7 +67,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         ref={ref}
         id={textareaId}
         disabled={disabled}
-        placeholder={showTopLabel ? placeholder : (placeholder || label)}
+        placeholder={showTopLabel ? placeholder : placeholder || label}
         aria-invalid={isInvalid ? "true" : undefined}
         onFocus={handleFocus}
         onBlur={handleBlur}

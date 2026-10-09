@@ -9,7 +9,7 @@ import {
   UpdateCvProjectDocument,
   RemoveCvProjectDocument,
 } from "@/graphql/__generated__/graphql";
-import { notify } from "@/components/ui/toast";
+import { notify } from "@/shared/components/ui/toast";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import {
   filterAndSortProjects,

@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useQuery, useMutation } from "@apollo/client/react";
-import { notify } from "@/components/ui/toast";
+import { notify } from "@/shared/components/ui/toast";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import type { SkillFormData, MasteryType } from "../schemas/skill.schema";
 import {

@@ -1,13 +1,13 @@
 "use client";
 
-import { HeaderSync } from "@/components/layout/HeaderContext";
+import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { useCvProjects } from "../../hooks/useCvProjects";
 import { CVProjectsHeader } from "./CVProjectsHeader";
 import { CVProjectsList } from "./CVProjectsList";
 import { CVProjectDialog } from "./CVProjectDialog";
 import { DeleteCVProjectDialog } from "./DeleteCVProjectDialog";
 import { CVProjectsSkeleton } from "./CVProjectsSkeleton";
-import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
+import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 
 interface CVProjectsViewProps {
   cvId: string;

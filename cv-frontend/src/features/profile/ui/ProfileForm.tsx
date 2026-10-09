@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { ProfileSkeleton } from "./ProfileSkeleton";
 import { ProfileFormFields } from "./ProfileFormFields";
-import { HeaderSync } from "@/components/layout/HeaderContext";
+import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
-import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
+import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 import { useProfileFormData } from "../hooks/useProfileFormData";
 import { sendVerificationAction } from "@/features/auth/actions/send-verification.action";
 import { useTranslation, type TranslationKey } from "@/i18n";

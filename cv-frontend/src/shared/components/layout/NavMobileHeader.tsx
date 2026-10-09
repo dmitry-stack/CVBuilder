@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/logo.svg";
+import logo from "@/shared/assets/logo.svg";
 import { useTranslation } from "@/i18n";
 import { NavLinks } from "./NavLinks";
 import { NavUserProfile } from "./NavUserProfile";

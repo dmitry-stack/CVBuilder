@@ -1,7 +1,7 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { TrashXIcon } from "@/components/ui/icons";
+import { TrashXIcon } from "@/shared/components/ui/icons";
 import { useTranslation } from "@/i18n";
 
 export interface SkillsActionBarProps {

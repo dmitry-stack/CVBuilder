@@ -3,8 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
-import logo from "@/assets/logo.svg";
+import { cn } from "@/shared/lib/utils";
+import logo from "@/shared/assets/logo.svg";
 import { useTranslation } from "@/i18n";
 import { NavLinks } from "./NavLinks";
 import { NavUserProfile } from "./NavUserProfile";

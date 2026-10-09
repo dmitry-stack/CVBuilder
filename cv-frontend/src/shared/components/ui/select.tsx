@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 export interface SelectOption {
   value: string;
@@ -55,9 +55,15 @@ export function Select({
 
   const selectedValue = value !== undefined ? value : internalValue;
   const selectedOption = options.find((opt) => opt.value === selectedValue);
-  const isInvalid = ariaInvalid === "true" || ariaInvalid === true || Boolean(error);
+  const isInvalid =
+    ariaInvalid === "true" || ariaInvalid === true || Boolean(error);
   const showTopLabel = Boolean(
-    label && (alwaysShowLabel || isOpen || Boolean(selectedValue) || disabled || isInvalid),
+    label &&
+    (alwaysShowLabel ||
+      isOpen ||
+      Boolean(selectedValue) ||
+      disabled ||
+      isInvalid),
   );
 
   React.useEffect(() => {
@@ -71,7 +77,9 @@ export function Select({
 
   React.useEffect(() => {
     if (isOpen && listboxRef.current) {
-      const selectedEl = listboxRef.current.querySelector<HTMLElement>('[aria-selected="true"]');
+      const selectedEl = listboxRef.current.querySelector<HTMLElement>(
+        '[aria-selected="true"]',
+      );
       if (selectedEl && typeof selectedEl.scrollIntoView === "function") {
         selectedEl.scrollIntoView({ block: "nearest" });
       }
@@ -80,7 +88,10 @@ export function Select({
 
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
@@ -106,20 +117,34 @@ export function Select({
   };
 
   return (
-    <div ref={containerRef} className={cn("relative w-full text-left", containerClassName)}>
+    <div
+      ref={containerRef}
+      className={cn("relative w-full text-left", containerClassName)}
+    >
       {label && showTopLabel && (
         <label
           htmlFor={selectId}
           className={cn(
             "block text-xs font-roboto mb-1 transition-colors",
-            isInvalid ? "text-[#C63031]" : disabled ? "text-[#8E8E93]" : "text-cv-text dark:text-[#F5F5F7]",
+            isInvalid
+              ? "text-[#C63031]"
+              : disabled
+                ? "text-[#8E8E93]"
+                : "text-cv-text dark:text-[#F5F5F7]",
           )}
         >
           {label}
         </label>
       )}
 
-      {name && <input type="hidden" name={name} value={selectedValue} disabled={disabled} />}
+      {name && (
+        <input
+          type="hidden"
+          name={name}
+          value={selectedValue}
+          disabled={disabled}
+        />
+      )}
 
       <button
         id={selectId}
@@ -137,18 +162,46 @@ export function Select({
         className={cn(
           "flex h-12 w-full items-center justify-between border bg-transparent px-3 font-roboto text-sm sm:text-base leading-5 tracking-cv transition-colors outline-none",
           "border-[#C4C4C6] dark:border-[#424242] hover:border-[#8E8E93] dark:hover:border-[#8E8E93]",
-          isOpen ? "border-[#1C1C1E] dark:border-[#F5F5F7]" : "focus:border-[#1C1C1E] dark:focus:border-[#F5F5F7]",
+          isOpen
+            ? "border-[#1C1C1E] dark:border-[#F5F5F7]"
+            : "focus:border-[#1C1C1E] dark:focus:border-[#F5F5F7]",
           "text-cv-text dark:text-[#F5F5F7]",
           "disabled:bg-[#D1D1D6] dark:disabled:bg-[#424242] disabled:text-[#8E8E93] dark:disabled:text-[#8E8E93] disabled:border-transparent dark:disabled:border-transparent disabled:cursor-not-allowed",
-          isInvalid && "border-[#C63031]! dark:border-[#C63031]! focus:border-[#C63031]! dark:focus:border-[#C63031]!",
+          isInvalid &&
+            "border-[#C63031]! dark:border-[#C63031]! focus:border-[#C63031]! dark:focus:border-[#C63031]!",
           className,
         )}
       >
-        <span className={cn("truncate", !selectedOption && (disabled ? "text-[#8E8E93]" : "text-[#C4C4C6] dark:text-[#626262]"))}>
-          {selectedOption ? selectedOption.label : (showTopLabel ? placeholder : (placeholder || label))}
+        <span
+          className={cn(
+            "truncate",
+            !selectedOption &&
+              (disabled
+                ? "text-[#8E8E93]"
+                : "text-[#C4C4C6] dark:text-[#626262]"),
+          )}
+        >
+          {selectedOption
+            ? selectedOption.label
+            : showTopLabel
+              ? placeholder
+              : placeholder || label}
         </span>
-        <span className={cn("ml-2 shrink-0 transition-colors", isInvalid ? "text-[#C63031]" : disabled ? "text-[#8E8E93]" : "text-cv-muted dark:text-[#8E8E93]")}>
-          {isOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+        <span
+          className={cn(
+            "ml-2 shrink-0 transition-colors",
+            isInvalid
+              ? "text-[#C63031]"
+              : disabled
+                ? "text-[#8E8E93]"
+                : "text-cv-muted dark:text-[#8E8E93]",
+          )}
+        >
+          {isOpen ? (
+            <ChevronUp className="h-5 w-5" />
+          ) : (
+            <ChevronDown className="h-5 w-5" />
+          )}
         </span>
       </button>
 
@@ -186,7 +239,9 @@ export function Select({
         </ul>
       )}
 
-      {error && <p className="mt-1 text-xs text-[#C63031] font-roboto">{error}</p>}
+      {error && (
+        <p className="mt-1 text-xs text-[#C63031] font-roboto">{error}</p>
+      )}
     </div>
   );
 }

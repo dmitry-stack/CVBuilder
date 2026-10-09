@@ -1,7 +1,7 @@
 "use client";
 
 import { Pencil, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { LanguageProficiencyBar } from "./LanguageProficiencyBar";
 import type { LanguageItem } from "../hooks/useUserLanguages";
 

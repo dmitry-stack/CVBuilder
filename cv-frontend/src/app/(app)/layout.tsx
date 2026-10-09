@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
-import { HeaderProvider } from "@/components/layout/HeaderContext";
-import { SidebarProvider } from "@/components/layout/SidebarContext";
-import { AppShell } from "@/components/layout/AppShell";
+import { HeaderProvider } from "@/shared/components/layout/HeaderContext";
+import { SidebarProvider } from "@/shared/components/layout/SidebarContext";
+import { AppShell } from "@/shared/components/layout/AppShell";
 
 export const metadata = {
   title: "CV Builder",

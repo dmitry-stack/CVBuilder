@@ -2,10 +2,9 @@
 
 import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string | React.ReactNode;
   showPasswordToggle?: boolean;
@@ -58,10 +57,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const isInvalid =
       ariaInvalid === "true" || ariaInvalid === true || Boolean(error);
-    const hasValue =
-      value !== undefined ? Boolean(value) : hasInternalValue;
+    const hasValue = value !== undefined ? Boolean(value) : hasInternalValue;
     const showTopLabel = Boolean(
-      label && (alwaysShowLabel || isFocused || hasValue || disabled || isInvalid),
+      label &&
+      (alwaysShowLabel || isFocused || hasValue || disabled || isInvalid),
     );
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -91,7 +90,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           type={effectiveType}
           disabled={disabled}
-          placeholder={showTopLabel ? placeholder : (placeholder || label)}
+          placeholder={showTopLabel ? placeholder : placeholder || label}
           aria-invalid={isInvalid ? "true" : undefined}
           onFocus={handleFocus}
           onBlur={handleBlur}

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Calendar as CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { DatePickerCalendar } from "./date-picker-calendar";
 
 export interface DatePickerProps {
@@ -159,7 +159,7 @@ export function DatePicker({
                 : "text-[#C4C4C6] dark:text-[#626262]"),
           )}
         >
-          {selectedStr || (showTopLabel ? placeholder : (placeholder || label))}
+          {selectedStr || (showTopLabel ? placeholder : placeholder || label)}
         </span>
 
         <CalendarIcon
@@ -175,7 +175,10 @@ export function DatePicker({
       </button>
 
       {isOpen && (
-        <div id={`${datePickerId}-dialog`} className="absolute left-0 top-full z-50 mt-1">
+        <div
+          id={`${datePickerId}-dialog`}
+          className="absolute left-0 top-full z-50 mt-1"
+        >
           <DatePickerCalendar
             selectedDate={selectedDate}
             onSelect={handleSelectDate}

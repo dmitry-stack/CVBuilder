@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ChevronDown, ChevronUp, X, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import type { SelectOption } from "./select";
 
 export interface MultiSelectProps {
@@ -42,24 +42,37 @@ export function MultiSelect({
   const selectId = id || generatedId;
   const [isOpen, setIsOpen] = React.useState(false);
   const [openUpward, setOpenUpward] = React.useState(false);
-  const [internalValues, setInternalValues] = React.useState(defaultValues || []);
+  const [internalValues, setInternalValues] = React.useState(
+    defaultValues || [],
+  );
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const selectedValues = values !== undefined ? values : internalValues;
-  const isInvalid = ariaInvalid === "true" || ariaInvalid === true || Boolean(error);
+  const isInvalid =
+    ariaInvalid === "true" || ariaInvalid === true || Boolean(error);
   const showTopLabel = Boolean(
-    label && (alwaysShowLabel || isOpen || selectedValues.length > 0 || disabled || isInvalid),
+    label &&
+    (alwaysShowLabel ||
+      isOpen ||
+      selectedValues.length > 0 ||
+      disabled ||
+      isInvalid),
   );
 
   React.useEffect(() => {
     if (!isOpen || !containerRef.current) return;
     const { bottom, top } = containerRef.current.getBoundingClientRect();
-    setOpenUpward(window.innerHeight - bottom < 220 && top > window.innerHeight - bottom);
+    setOpenUpward(
+      window.innerHeight - bottom < 220 && top > window.innerHeight - bottom,
+    );
   }, [isOpen]);
 
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
@@ -69,7 +82,9 @@ export function MultiSelect({
 
   const toggleOption = (val: string) => {
     if (disabled) return;
-    const next = selectedValues.includes(val) ? selectedValues.filter((i) => i !== val) : [...selectedValues, val];
+    const next = selectedValues.includes(val)
+      ? selectedValues.filter((i) => i !== val)
+      : [...selectedValues, val];
     if (values === undefined) setInternalValues(next);
     onChange?.(next);
   };
@@ -83,20 +98,34 @@ export function MultiSelect({
   };
 
   return (
-    <div ref={containerRef} className={cn("relative w-full text-left", containerClassName)}>
+    <div
+      ref={containerRef}
+      className={cn("relative w-full text-left", containerClassName)}
+    >
       {label && showTopLabel && (
         <label
           htmlFor={selectId}
           className={cn(
             "block text-xs font-roboto mb-1 transition-colors",
-            isInvalid ? "text-[#C63031]" : disabled ? "text-[#8E8E93]" : "text-cv-text dark:text-[#F5F5F7]",
+            isInvalid
+              ? "text-[#C63031]"
+              : disabled
+                ? "text-[#8E8E93]"
+                : "text-cv-text dark:text-[#F5F5F7]",
           )}
         >
           {label}
         </label>
       )}
 
-      {name && <input type="hidden" name={name} value={JSON.stringify(selectedValues)} disabled={disabled} />}
+      {name && (
+        <input
+          type="hidden"
+          name={name}
+          value={JSON.stringify(selectedValues)}
+          disabled={disabled}
+        />
+      )}
 
       <div
         id={selectId}
@@ -108,8 +137,11 @@ export function MultiSelect({
         className={cn(
           "flex min-h-12 w-full cursor-pointer items-center justify-between border bg-transparent p-2 font-roboto text-sm transition-colors",
           "border-[#C4C4C6] dark:border-[#424242] hover:border-[#8E8E93] dark:hover:border-[#8E8E93]",
-          isOpen ? "border-[#1C1C1E] dark:border-[#F5F5F7]" : "focus-within:border-[#1C1C1E] dark:focus-within:border-[#F5F5F7]",
-          disabled && "bg-[#D1D1D6] dark:bg-[#424242] border-transparent cursor-not-allowed",
+          isOpen
+            ? "border-[#1C1C1E] dark:border-[#F5F5F7]"
+            : "focus-within:border-[#1C1C1E] dark:focus-within:border-[#F5F5F7]",
+          disabled &&
+            "bg-[#D1D1D6] dark:bg-[#424242] border-transparent cursor-not-allowed",
           isInvalid && "border-[#C63031]! dark:border-[#C63031]!",
           className,
         )}
@@ -119,10 +151,22 @@ export function MultiSelect({
             const opt = options.find((o) => o.value === val);
             const labelText = opt ? opt.label : val;
             return (
-              <span key={val} className={cn("inline-flex items-center gap-1 rounded-full border border-[#C4C4C6] px-2.5 py-0.5 text-xs text-cv-text dark:border-[#555555] dark:text-[#F5F5F7]", disabled && "opacity-70 border-transparent")}>
+              <span
+                key={val}
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-full border border-[#C4C4C6] px-2.5 py-0.5 text-xs text-cv-text dark:border-[#555555] dark:text-[#F5F5F7]",
+                  disabled && "opacity-70 border-transparent",
+                )}
+              >
                 <span>{labelText}</span>
                 {!disabled && (
-                  <button type="button" tabIndex={-1} onClick={(e) => removeOption(val, e)} className="hover:text-[#C63031] transition-colors" aria-label={`Remove ${labelText}`}>
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    onClick={(e) => removeOption(val, e)}
+                    className="hover:text-[#C63031] transition-colors"
+                    aria-label={`Remove ${labelText}`}
+                  >
                     <X className="h-3 w-3" />
                   </button>
                 )}
@@ -130,14 +174,33 @@ export function MultiSelect({
             );
           })}
           {selectedValues.length === 0 && (
-            <span className={cn(disabled ? "text-[#8E8E93]" : "text-[#C4C4C6] dark:text-[#626262]")}>
-              {showTopLabel ? placeholder : (placeholder || label)}
+            <span
+              className={cn(
+                disabled
+                  ? "text-[#8E8E93]"
+                  : "text-[#C4C4C6] dark:text-[#626262]",
+              )}
+            >
+              {showTopLabel ? placeholder : placeholder || label}
             </span>
           )}
         </div>
 
-        <span className={cn("ml-2 shrink-0 transition-colors", isInvalid ? "text-[#C63031]" : disabled ? "text-[#8E8E93]" : "text-cv-muted dark:text-[#8E8E93]")}>
-          {isOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+        <span
+          className={cn(
+            "ml-2 shrink-0 transition-colors",
+            isInvalid
+              ? "text-[#C63031]"
+              : disabled
+                ? "text-[#8E8E93]"
+                : "text-cv-muted dark:text-[#8E8E93]",
+          )}
+        >
+          {isOpen ? (
+            <ChevronUp className="h-5 w-5" />
+          ) : (
+            <ChevronDown className="h-5 w-5" />
+          )}
         </span>
       </div>
 
@@ -183,7 +246,9 @@ export function MultiSelect({
         </ul>
       )}
 
-      {error && <p className="mt-1 text-xs text-[#C63031] font-roboto">{error}</p>}
+      {error && (
+        <p className="mt-1 text-xs text-[#C63031] font-roboto">{error}</p>
+      )}
     </div>
   );
 }

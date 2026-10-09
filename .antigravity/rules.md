@@ -27,9 +27,9 @@ src/features/<feature>/
 └── ui/            # Feature-specific React components & test suites
 ```
 
-- **Shared UI**: Place reusable design system primitives in `src/components/ui/` (e.g. `input.tsx`, `button.tsx`).
-- **Layouts**: Place navigation and shell components in `src/components/layout/` (e.g. `Navbar.tsx`).
-- **Utilities**: Place shared pure helpers in `src/lib/`.
+- **Shared UI**: Place reusable design system primitives in `src/shared/components/ui/` (e.g. `input.tsx`, `button.tsx`).
+- **Layouts**: Place navigation and shell components in `src/shared/components/layout/` (e.g. `Navbar.tsx`).
+- **Utilities**: Place shared pure helpers in `src/shared/lib/`.
 
 ### 2.2 GraphQL Operations & Codegen
 

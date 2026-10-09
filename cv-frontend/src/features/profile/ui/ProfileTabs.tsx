@@ -1,8 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { ActionTabs } from "@/components/ui/ActionTabs";
-import { HeaderSync } from "@/components/layout/HeaderContext";
+import { ActionTabs } from "@/shared/components/ui/ActionTabs";
+import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useTranslation } from "@/i18n";
 

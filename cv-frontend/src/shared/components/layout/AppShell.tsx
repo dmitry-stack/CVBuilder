@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 import { Navbar } from "./Navbar";
 import { Header } from "./Header";
 import { useSidebarContext } from "./SidebarContext";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { isCollapsed } = useSidebarContext();

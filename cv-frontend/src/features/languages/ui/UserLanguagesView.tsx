@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { HeaderSync } from "@/components/layout/HeaderContext";
+import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { LanguagesSkeleton } from "./LanguagesSkeleton";
-import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
+import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 import { LanguageDialog } from "./LanguageDialog";
 import { DeleteLanguageDialog } from "./DeleteLanguageDialog";
 import { LanguageListItem } from "./LanguageListItem";

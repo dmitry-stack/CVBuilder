@@ -5,7 +5,7 @@ import {
   verifyEmailSchema,
   type VerifyEmailFormData,
 } from "../schemas/auth.schema";
-import { executeAuthMutation } from "@/lib/auth/graphql-auth.server";
+import { executeAuthMutation } from "@/shared/lib/auth/graphql-auth.server";
 import {
   VerifyMailDocument,
   type VerifyMailMutation,

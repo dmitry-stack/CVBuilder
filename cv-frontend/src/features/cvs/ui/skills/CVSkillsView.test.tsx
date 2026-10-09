@@ -7,7 +7,7 @@ import {
   within,
 } from "@testing-library/react";
 import { CVSkillsView } from "./CVSkillsView";
-import { HeaderProvider } from "@/components/layout/HeaderContext";
+import { HeaderProvider } from "@/shared/components/layout/HeaderContext";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 

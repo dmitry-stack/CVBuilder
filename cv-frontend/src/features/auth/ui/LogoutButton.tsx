@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useApolloClient } from "@apollo/client/react";
 import { logoutAction } from "@/features/auth/actions/logout.action";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 
 export function LogoutButton() {
   const router = useRouter();

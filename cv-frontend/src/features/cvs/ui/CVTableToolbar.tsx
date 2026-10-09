@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/i18n";
 
 export interface CVTableToolbarProps {

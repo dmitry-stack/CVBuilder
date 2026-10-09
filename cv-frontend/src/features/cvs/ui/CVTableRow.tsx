@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment } from "react";
-import { DropdownMenuButton } from "@/components/ui/DropDownButton";
+import { DropdownMenuButton } from "@/shared/components/ui/DropDownButton";
 import { useTranslation } from "@/i18n";
 import type { CVItem } from "../hooks/useCvsTable";
 

@@ -1,14 +1,14 @@
 "use client";
 
 import { AlertCircle } from "lucide-react";
-import { HeaderSync } from "@/components/layout/HeaderContext";
+import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { useCvPreview } from "../../hooks/useCvPreview";
 import { CVPreviewHeader } from "./CVPreviewHeader";
 import { CVPreviewSummary } from "./CVPreviewSummary";
 import { CVPreviewProjects } from "./CVPreviewProjects";
 import { CVPreviewSkills } from "./CVPreviewSkills";
 import { CVPreviewSkeleton } from "./CVPreviewSkeleton";
-import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
+import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 
 interface CVPreviewProps {
   cvId: string;

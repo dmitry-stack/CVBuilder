@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { CVDialog } from "@/features/cvs/ui/CVDialog";
 import { DeleteCVDialog } from "@/features/cvs/ui/DeleteCVDialog";
-import { useHeaderContext } from "@/components/layout/HeaderContext";
+import { useHeaderContext } from "@/shared/components/layout/HeaderContext";
 import { useTranslation } from "@/i18n";
 import { CVTableToolbar } from "./CVTableToolbar";
 import { CVTableHeader } from "./CVTableHeader";

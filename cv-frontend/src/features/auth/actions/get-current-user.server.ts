@@ -2,7 +2,7 @@
 
 import { cache } from "react";
 import { cookies } from "next/headers";
-import { executeAuthMutation } from "@/lib/auth/graphql-auth.server";
+import { executeAuthMutation } from "@/shared/lib/auth/graphql-auth.server";
 import { MeDocument, type MeQuery } from "@/graphql/__generated__/graphql";
 
 export const getCurrentUser = cache(async () => {

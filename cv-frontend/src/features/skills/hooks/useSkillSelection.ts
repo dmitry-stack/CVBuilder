@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { notify } from "@/components/ui/toast";
+import { notify } from "@/shared/components/ui/toast";
 
 interface UseSkillSelectionProps {
   userId: string;

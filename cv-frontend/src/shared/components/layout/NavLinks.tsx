@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Users, TrendingUp, Languages, FileUser } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { useTranslation, type TranslationKey } from "@/i18n";
 
 interface NavItem {
@@ -40,10 +40,7 @@ interface NavLinksProps {
   onItemClick?: () => void;
 }
 
-export function NavLinks({
-  isCollapsed = false,
-  onItemClick,
-}: NavLinksProps) {
+export function NavLinks({ isCollapsed = false, onItemClick }: NavLinksProps) {
   const pathname = usePathname();
   const { t } = useTranslation();
 

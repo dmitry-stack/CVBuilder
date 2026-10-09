@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Select } from "@/components/ui/select";
+import { Button } from "@/shared/components/ui/button";
+import { Select } from "@/shared/components/ui/select";
 import {
   cvSkillFormSchema,
   type CvSkillFormData,
