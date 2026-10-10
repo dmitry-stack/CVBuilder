@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CV Builder — Frontend Application
+
+The frontend client for the CV Builder platform, built with **Next.js 16 (App Router)**, **React 19**, **Apollo GraphQL Client**, **Tailwind CSS v4**, and **Base UI**.
+
+---
+
+## Features
+
+- **Authentication & Security**: Email/password sign-in and registration, 6-digit email confirmation code verification, forgot/reset password flows, and automatic token refresh via Apollo Client request queuing.
+- **Employee Directory**: Paginated, searchable listing of employees with profile links.
+- **Profile Management**: Profile information editing, ownership-based access control, read-only peer views, and Cloudinary avatar uploads.
+- **CV Management**: Full lifecycle management of CVs (creation, editing, details, projects, skills, preview, and PDF export).
+- **Skills Catalog**: 5-tier mastery indicator (*No Expertise*, *Novice*, *Advanced*, *Competent*, *Expert*) with category grouping and single/batch deletion modes.
+- **Languages**: CEFR-compliant language proficiency tracking (**A1** through **Native**) with visual progress bars.
+- **Design System & UX**: Theme toggle (Light/Dark mode via `next-themes`), internationalization (English & Russian via `useTranslation`), offline banner detection, and unsupported mobile resolution protection.
+
+---
+
+## Tech Stack & Dependencies
+
+- **Framework**: Next.js `16.3.5` (App Router, Server Components & Route Handlers)
+- **UI Library**: React `19.2.8` & React DOM `19.2.8`
+- **Data Fetching**: `@apollo/client` `^4.3.0` & `@apollo/experimental-nextjs-app-support` `^0.14.5`
+- **Styling**: Tailwind CSS `v4` (`@tailwindcss/postcss`, `tw-animate-css`)
+- **Component Primitives**: `@base-ui/react` `^1.8.0`
+- **Forms & Validation**: `react-hook-form` `^7.88.0` with `@hookform/resolvers` and `zod` `^4.6.5`
+- **Icons**: `lucide-react` `^1.46.0`
+- **Testing**: `vitest` `^5.0.1`, `@testing-library/react` `^16.3.3`, `@testing-library/jest-dom` `^7.0.1`
+- **Code Generation**: `@graphql-codegen/cli` `^7.4.1` with typed document nodes
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### 1. Prerequisites
+- Node.js `>= 22.x`
+- npm installed
+- Backend GraphQL API running at `http://localhost:3001/api/graphql`
 
+### 2. Install Dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Environment Configuration
+Create or edit `.env` in the `cv-frontend/` directory:
+```env
+AUTH_SECRET="691558a02592e6d7ea53d8fc6275e491"
+VITE_GRAPHQL_URL="http://localhost:3001/api/graphql"
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Generate GraphQL Types
+Generate typed document nodes from GraphQL operation files:
+```bash
+npm run codegen
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 5. Start Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Running Unit Tests & Quality Gates
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Running Tests
+The project contains 400+ unit tests across components, hooks, utilities, actions, and validation schemas:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Run all unit tests
+npm run test
 
-## Deploy on Vercel
+# Run tests in watch mode
+npx vitest
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Run a specific test file
+npm run test -- src/shared/components/layout/Navbar.test.tsx
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Run tests with coverage
+npx vitest run --coverage
+```
+
+### Quality Verification Gates
+Always verify all gates pass before committing changes:
+```bash
+npm run typecheck    # TypeScript verification (tsc --noEmit)
+npm run lint         # ESLint code check
+npm run test         # Vitest unit tests suite
+npm run build        # Production Next.js build
+```
