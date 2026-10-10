@@ -57,7 +57,7 @@ export function Header() {
               ) : (
                 <span
                   data-slot="header-user-skeleton"
-                  className="h-4 w-28 rounded-xs bg-zinc-200 dark:bg-zinc-800 animate-pulse inline-block align-middle"
+                  className="h-4 w-28 rounded-xs bg-zinc-200 dark:bg-zinc-700 animate-pulse inline-block align-middle"
                   aria-label="Loading user name"
                 />
               )}
@@ -122,7 +122,7 @@ export function Header() {
               ) : (
                 <span
                   data-slot="header-cv-skeleton"
-                  className="h-4 w-32 rounded-xs bg-zinc-200 dark:bg-zinc-800 animate-pulse inline-block align-middle"
+                  className="h-4 w-32 rounded-xs bg-zinc-200 dark:bg-zinc-700 animate-pulse inline-block align-middle"
                   aria-label="Loading CV name"
                 />
               )}

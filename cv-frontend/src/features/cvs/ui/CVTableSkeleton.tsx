@@ -31,7 +31,7 @@ export function CVTableSkeleton({ rowCount = 5 }: CVTableSkeletonProps) {
         </div>
       </div>
 
-      <div className="overflow-x-auto bg-white dark:bg-zinc-950 shadow-xs">
+      <div className="overflow-x-auto">
         <table className="w-full border-collapse text-left">
           <thead>
             <tr className="h-table-header border-b border-zinc-200 dark:border-zinc-800 bg-transparent">
