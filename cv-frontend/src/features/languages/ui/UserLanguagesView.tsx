@@ -264,7 +264,9 @@ export function UserLanguagesView({
     }
   };
 
-  if (profileLoading && !initialProfile) {
+  const isProfileLoading = Boolean(profileLoading && !initialProfile);
+
+  if (isProfileLoading) {
     return <LanguagesSkeleton />;
   }
 
@@ -273,7 +275,7 @@ export function UserLanguagesView({
       data-slot="user-languages-view"
       className="w-full pt-4 sm:pt-6 pb-16 font-roboto"
     >
-      {(!profileLoading || initialProfile) && (
+      {!isProfileLoading && (
         <HeaderSync userName={fullName} entityId={userId} />
       )}
 
