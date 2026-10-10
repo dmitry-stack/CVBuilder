@@ -27,18 +27,6 @@ function subscribeSidebar(callback: () => void) {
   };
 }
 
-function getSidebarSnapshot(): boolean {
-  if (typeof window === "undefined") return false;
-  try {
-    return localStorage.getItem(STORAGE_KEY) === "true";
-  } catch {
-    return false;
-  }
-}
-
-function getServerSnapshot(): boolean {
-  return false;
-}
 
 const SidebarContext = createContext<SidebarContextType>({
   isCollapsed: false,
@@ -46,10 +34,34 @@ const SidebarContext = createContext<SidebarContextType>({
   toggleCollapse: () => {},
 });
 
-export function SidebarProvider({ children }: { children: ReactNode }) {
+interface SidebarProviderProps {
+  children: ReactNode;
+  defaultCollapsed?: boolean;
+}
+
+export function SidebarProvider({
+  children,
+  defaultCollapsed = false,
+}: SidebarProviderProps) {
+  const getSnapshot = useCallback(() => {
+    if (typeof window === "undefined") return defaultCollapsed;
+    try {
+      const item = localStorage.getItem(STORAGE_KEY);
+      if (item === null) return defaultCollapsed;
+      return item === "true";
+    } catch {
+      return defaultCollapsed;
+    }
+  }, [defaultCollapsed]);
+
+  const getServerSnapshot = useCallback(
+    () => defaultCollapsed,
+    [defaultCollapsed],
+  );
+
   const isCollapsed = useSyncExternalStore(
     subscribeSidebar,
-    getSidebarSnapshot,
+    getSnapshot,
     getServerSnapshot,
   );
 
@@ -57,6 +69,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
     if (typeof window !== "undefined") {
       try {
         localStorage.setItem(STORAGE_KEY, String(collapsed));
+        document.cookie = `${STORAGE_KEY}=${collapsed}; path=/; max-age=31536000; SameSite=Lax`;
       } catch {
         // Ignore storage access errors
       }
@@ -65,8 +78,8 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const toggleCollapse = useCallback(() => {
-    setIsCollapsed(!getSidebarSnapshot());
-  }, [setIsCollapsed]);
+    setIsCollapsed(!getSnapshot());
+  }, [setIsCollapsed, getSnapshot]);
 
   return (
     <SidebarContext.Provider

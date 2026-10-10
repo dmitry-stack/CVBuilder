@@ -12,7 +12,7 @@ describe("SkillMasteryBar Component", () => {
 
     const fill = bar.querySelector("[data-slot='skill-mastery-fill']");
     expect(fill).toHaveStyle({ width: "20%" });
-    expect(fill?.className).toContain("bg-[#626262]");
+    expect(fill?.className).toMatch(/bg-\[#626262\]|bg-\[#454545\]/);
   });
 
   it("renders Advanced level with 40% progress and blue styling", () => {

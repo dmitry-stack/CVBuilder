@@ -39,7 +39,7 @@ export function Navbar({
   const renderDesktopHeader = () => {
     if (isCollapsed) {
       return (
-        <div className="flex flex-col items-center justify-center pt-3 pb-2 gap-2">
+        <div className="flex h-14 items-center justify-center">
           <Link
             href="/users"
             title={t("nav.brand")}
@@ -93,7 +93,7 @@ export function Navbar({
 
       <aside
         className={cn(
-          "fixed top-0 bottom-0 left-0 z-40 hidden  bg-white dark:border-zinc-800 dark:bg-[#2E2E2E] md:flex md:flex-col ",
+          "fixed top-0 bottom-0 left-0 z-40 hidden border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-[#2E2E2E] md:flex md:flex-col transition-[width] duration-300 ease-in-out",
           isCollapsed ? "w-16" : "w-50",
         )}
         aria-label="Sidebar Navigation"
@@ -103,7 +103,7 @@ export function Navbar({
           type="button"
           onClick={toggleCollapse}
           aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className="absolute -right-3 top-5 z-50 hidden md:flex h-6 w-6 items-center justify-center rounded-full  bg-white dark:bg-[#2E2E2E] text-cv-text dark:text-[#F5F5F7]  cursor-pointer"
+          className="absolute -right-3 top-4 z-50 hidden md:flex h-6 w-6 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#2E2E2E] text-cv-text dark:text-[#F5F5F7] shadow-xs hover:bg-zinc-100 dark:hover:bg-[#383838] transition-colors cursor-pointer"
         >
           {isCollapsed ? (
             <ChevronRight className="h-3.5 w-3.5" />

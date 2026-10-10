@@ -13,14 +13,14 @@ interface MasteryVisualConfig {
 const MASTERY_MAP: Record<MasteryLevel, MasteryVisualConfig> = {
   NoExpertise: {
     percentage: 0,
-    barColor: "bg-[#626262]",
-    trackColor: "bg-[#454545] dark:bg-zinc-800",
+    barColor: "bg-[#454545]",
+    trackColor: " bg-[#626262]",
     label: "No Expertise",
   },
   Novice: {
     percentage: 20,
-    barColor: "bg-[#626262]",
-    trackColor: "bg-[#454545] dark:bg-zinc-800",
+    barColor: "bg-[#454545]",
+    trackColor: " bg-[#626262] ",
     label: "Novice",
   },
   Advanced: {

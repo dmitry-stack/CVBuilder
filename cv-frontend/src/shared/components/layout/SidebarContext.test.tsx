@@ -58,4 +58,14 @@ describe("SidebarContext", () => {
 
     expect(result.current.isCollapsed).toBe(true);
   });
+
+  it("respects defaultCollapsed prop", () => {
+    const { result } = renderHook(() => useSidebarContext(), {
+      wrapper: ({ children }) => (
+        <SidebarProvider defaultCollapsed={true}>{children}</SidebarProvider>
+      ),
+    });
+
+    expect(result.current.isCollapsed).toBe(true);
+  });
 });
