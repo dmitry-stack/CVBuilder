@@ -17,6 +17,9 @@ async function bootstrap() {
       exceptionFactory: validationExceptionFactory,
     }),
   );
+  app.getHttpAdapter().get("/", (_req, res) => {
+    res.json({ status: "ok", service: "cv-builder-backend" });
+  });
   const port = process.env.PORT || 3001;
   await app.listen(port);
   console.log(`Application is running on port ${port}: ${await app.getUrl()}`);
