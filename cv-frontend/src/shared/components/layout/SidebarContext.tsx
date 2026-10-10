@@ -8,6 +8,14 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
+import {
+  SIDEBAR_STORAGE_KEY,
+  SIDEBAR_COOKIE_KEY,
+} from "./sidebar.constants";
+
+export { SIDEBAR_STORAGE_KEY, SIDEBAR_COOKIE_KEY };
+
+const CHANGE_EVENT = "cv_sidebar_change";
 
 interface SidebarContextType {
   isCollapsed: boolean;
@@ -15,19 +23,22 @@ interface SidebarContextType {
   toggleCollapse: () => void;
 }
 
-const STORAGE_KEY = "cv_sidebar_collapsed";
-const CHANGE_EVENT = "cv_sidebar_change";
+export interface SidebarProviderProps {
+  children: ReactNode;
+  defaultCollapsed?: boolean;
+}
+
+function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
 
 const SidebarContext = createContext<SidebarContextType>({
   isCollapsed: false,
   setIsCollapsed: () => {},
   toggleCollapse: () => {},
 });
-
-interface SidebarProviderProps {
-  children: ReactNode;
-  defaultCollapsed?: boolean;
-}
 
 export function SidebarProvider({
   children,
@@ -39,19 +50,41 @@ export function SidebarProvider({
     }
     if (typeof window !== "undefined") {
       try {
-        const item = localStorage.getItem(STORAGE_KEY);
-        if (item !== null) return item === "true";
+        const stored = localStorage.getItem(SIDEBAR_STORAGE_KEY);
+        if (stored !== null) {
+          return stored === "true";
+        }
       } catch {
         // Ignore storage access errors
+      }
+      const cookieVal = getCookie(SIDEBAR_COOKIE_KEY);
+      if (cookieVal !== null) {
+        return cookieVal === "true";
       }
     }
     return false;
   });
 
   useEffect(() => {
+    try {
+      const stored = localStorage.getItem(SIDEBAR_STORAGE_KEY);
+      if (stored !== null) {
+        document.cookie = `${SIDEBAR_COOKIE_KEY}=${stored}; path=/; max-age=31536000; SameSite=Lax`;
+      } else {
+        const cookieVal = getCookie(SIDEBAR_COOKIE_KEY);
+        if (cookieVal !== null) {
+          localStorage.setItem(SIDEBAR_STORAGE_KEY, cookieVal);
+        }
+      }
+    } catch {
+      // Ignore storage access errors
+    }
+  }, []);
+
+  useEffect(() => {
     const handleStorageChange = () => {
       try {
-        const stored = localStorage.getItem(STORAGE_KEY);
+        const stored = localStorage.getItem(SIDEBAR_STORAGE_KEY);
         if (stored !== null) {
           setIsCollapsed(stored === "true");
         }
@@ -72,8 +105,8 @@ export function SidebarProvider({
     setIsCollapsed(collapsed);
     if (typeof window !== "undefined") {
       try {
-        localStorage.setItem(STORAGE_KEY, String(collapsed));
-        document.cookie = `${STORAGE_KEY}=${collapsed}; path=/; max-age=31536000; SameSite=Lax`;
+        localStorage.setItem(SIDEBAR_STORAGE_KEY, String(collapsed));
+        document.cookie = `${SIDEBAR_COOKIE_KEY}=${collapsed}; path=/; max-age=31536000; SameSite=Lax`;
       } catch {
         // Ignore storage access errors
       }
@@ -86,8 +119,8 @@ export function SidebarProvider({
       const next = !prev;
       if (typeof window !== "undefined") {
         try {
-          localStorage.setItem(STORAGE_KEY, String(next));
-          document.cookie = `${STORAGE_KEY}=${next}; path=/; max-age=31536000; SameSite=Lax`;
+          localStorage.setItem(SIDEBAR_STORAGE_KEY, String(next));
+          document.cookie = `${SIDEBAR_COOKIE_KEY}=${next}; path=/; max-age=31536000; SameSite=Lax`;
         } catch {
           // Ignore storage access errors
         }

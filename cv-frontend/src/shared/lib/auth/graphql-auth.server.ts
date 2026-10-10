@@ -2,9 +2,7 @@
 
 import { cookies } from "next/headers";
 import { print, type ASTNode } from "graphql";
-
-const GRAPHQL_URL =
-  process.env.NEXT_PUBLIC_GRAPHQL_URL || "http://localhost:3001/api/graphql";
+import { getBackendGraphQLUrl } from "./graphql-url";
 
 type GraphQLResponse<T> = {
   data?: T;
@@ -17,7 +15,8 @@ export async function executeAuthMutation<T>(
   headers?: Record<string, string>,
 ): Promise<GraphQLResponse<T>> {
   const queryString = typeof query === "string" ? query : print(query);
-  const response = await fetch(GRAPHQL_URL, {
+  const graphqlUrl = getBackendGraphQLUrl();
+  const response = await fetch(graphqlUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,8 +26,22 @@ export async function executeAuthMutation<T>(
     cache: "no-store",
   });
 
+  if (typeof response.text === "function") {
+    const responseText = await response.text();
+    try {
+      return JSON.parse(responseText);
+    } catch {
+      const snippet = responseText.slice(0, 200).trim();
+      throw new Error(
+        `Backend responded with status ${response.status}: ${snippet || response.statusText || "Empty response"}`,
+      );
+    }
+  }
+
   return response.json();
 }
+
+
 
 type Tokens = { access_token: string; refresh_token: string };
 

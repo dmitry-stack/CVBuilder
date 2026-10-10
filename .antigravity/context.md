@@ -30,8 +30,10 @@
 | **Component Primitives** | `@base-ui/react` | Headless, accessible primitives (Base UI button) |
 | **Testing** | Vitest + RTL | `vitest`, `@testing-library/react`, `@testing-library/jest-dom`, JSDOM environment |
 | **Cookies / Storage** | `js-cookie` | Client-side cookie management for `access_token` and `refresh_token` |
+| **Deployment** | Vercel Services | Multi-service monorepo (`vercel.json`) with internal backend binding (`CV_BACKEND_URL`) |
 
 ---
+
 
 ## 3. Architecture & Codebase Structure
 

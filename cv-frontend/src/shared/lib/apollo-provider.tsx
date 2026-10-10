@@ -7,7 +7,8 @@ import {
   ApolloNextAppProvider,
   ApolloClient,
   InMemoryCache,
-} from "@apollo/client-integration-nextjs";
+} from "@apollo/experimental-nextjs-app-support";
+
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, type ReactNode } from "react";
 import { refreshAction } from "@/features/auth/actions/refresh.action";
