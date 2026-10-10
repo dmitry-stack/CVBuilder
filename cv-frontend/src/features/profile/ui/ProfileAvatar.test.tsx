@@ -14,7 +14,7 @@ vi.mock("../hooks/useAvatarUpload", () => ({
   })),
 }));
 
-vi.mock("@/components/ui/toast", () => ({
+vi.mock("@/shared/components/ui/toast", () => ({
   notify: {
     success: vi.fn(),
     error: vi.fn(),

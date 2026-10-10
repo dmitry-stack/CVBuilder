@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { CVProjectsView } from "./CVProjectsView";
-import { HeaderProvider } from "@/components/layout/HeaderContext";
+import { HeaderProvider } from "@/shared/components/layout/HeaderContext";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
@@ -129,7 +129,7 @@ describe("CVProjectsView Component", () => {
     });
   });
 
-  it("renders loading skeleton when cv query is loading", () => {
+  it("renders loading skeleton when cv query is loading", async () => {
     vi.mocked(useQuery).mockReturnValue({ data: null, loading: true } as never);
 
     render(
@@ -138,7 +138,9 @@ describe("CVProjectsView Component", () => {
       </HeaderProvider>,
     );
 
-    expect(screen.getByLabelText("Loading projects")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByLabelText("Loading projects")).toBeInTheDocument();
+    });
   });
 
   it("renders projects list with exact columns, descriptions, and badges matching cvProjects.png", () => {

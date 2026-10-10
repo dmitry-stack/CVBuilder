@@ -13,7 +13,7 @@ import {
   downloadBlob,
 } from "../lib/cv-preview.utils";
 import { groupSkillsByCategory, type SkillItem } from "../lib/cv-skills.utils";
-import { notify } from "@/components/ui/toast";
+import { notify } from "@/shared/components/ui/toast";
 
 export function useCvPreview(cvId: string) {
   const [isExporting, setIsExporting] = useState(false);

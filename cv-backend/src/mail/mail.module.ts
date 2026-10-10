@@ -1,3 +1,5 @@
+import { join } from "path";
+import { existsSync } from "fs";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { MailerModule } from "@nestjs-modules/mailer";
@@ -6,9 +8,6 @@ import { UsersModule } from "src/users/users.module";
 import { MailService } from "./mail.service";
 import { MailModel } from "./model/mail.model";
 import { MailResolver } from "./mail.resolver";
-
-import { join } from "path";
-import { existsSync } from "fs";
 
 function getMailTransportConfig() {
   const smtpUrl = process.env.SMTP_URL;

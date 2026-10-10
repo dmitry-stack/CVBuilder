@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { NoInternetView } from "@/features/system/ui/NoInternetView";
+import { NoInternetView } from "@/shared/providers/system/ui/NoInternetView";
 
 export const metadata: Metadata = {
   title: "No Internet Connection | CV Builder",

@@ -4,7 +4,7 @@ import {
   UserSkillsView,
   type UserSkillsViewProps,
 } from "@/features/skills/ui/UserSkillsView";
-import { executeAuthMutation } from "@/lib/auth/graphql-auth.server";
+import { executeAuthMutation } from "@/shared/lib/auth/graphql-auth.server";
 import {
   ProfileSkillsDocument,
   type ProfileSkillsQuery,
@@ -42,11 +42,13 @@ export default async function UserSkillsPage({ params }: PageProps) {
           id: res.data.profile.id,
           first_name: res.data.profile.first_name,
           last_name: res.data.profile.last_name,
-          skills: res.data.profile.skills.map((s) => ({
-            name: s.name,
-            categoryId: s.categoryId,
-            mastery: s.mastery as MasteryType,
-          })),
+          skills: res.data.profile.skills.map(
+            (s: NonNullable<ProfileSkillsQuery["profile"]>["skills"][number]) => ({
+              name: s.name,
+              categoryId: s.categoryId,
+              mastery: s.mastery as MasteryType,
+            }),
+          ),
         };
       }
     } catch {

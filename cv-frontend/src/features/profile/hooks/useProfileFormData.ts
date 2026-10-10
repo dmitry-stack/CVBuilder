@@ -5,7 +5,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { profileSchema, type ProfileFormData } from "../schemas/profile.schema";
-import { notify } from "@/components/ui/toast";
+import { notify } from "@/shared/components/ui/toast";
 import {
   UserDocument,
   DepartmentsDocument,

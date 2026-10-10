@@ -38,6 +38,11 @@ export class MailService {
 
     console.log(`[MailService] Verification OTP generated for ${email}: ${otp}`);
 
+    if (!process.env.SMTP_URL) {
+      console.warn("SMTP_URL is not configured; skipping email dispatch.");
+      return;
+    }
+
     try {
       await this.mailerService.sendMail({
         to: email,
@@ -72,6 +77,11 @@ export class MailService {
 
   async sendResetPasswordEmail(email: string, url: string) {
     console.log(`[MailService] Password reset link generated for ${email}: ${url}`);
+
+    if (!process.env.SMTP_URL) {
+      console.warn("SMTP_URL is not configured; skipping email dispatch.");
+      return;
+    }
 
     try {
       const res = await this.mailerService.sendMail({

@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Pencil } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { SkillMasteryBar } from "@/features/skills/ui/SkillMasteryBar";
 import type { SkillItem } from "../../lib/cv-skills.utils";
 

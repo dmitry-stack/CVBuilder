@@ -11,5 +11,16 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./vitest.setup.ts"],
     pool: "threads",
+    coverage: {
+      provider: "v8",
+      exclude: [
+        "shared/components/ui/**",
+        "graphql/__generated__/**",
+        "**/icons.tsx",
+        "**/*.svg",
+        "**/*.d.ts",
+        "**/index.ts",
+      ],
+    },
   },
 });

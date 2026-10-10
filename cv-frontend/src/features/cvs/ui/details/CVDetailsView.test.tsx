@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { CVDetailsView } from "./CVDetailsView";
-import { HeaderProvider } from "@/components/layout/HeaderContext";
+import { HeaderProvider } from "@/shared/components/layout/HeaderContext";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
@@ -81,7 +81,7 @@ describe("CVDetailsView Component", () => {
     } as unknown as ReturnType<typeof useQuery>);
   });
 
-  it("renders loading skeleton when query is loading", () => {
+  it("renders loading skeleton when query is loading", async () => {
     vi.mocked(useQuery).mockReturnValue({
       data: null,
       loading: true,
@@ -93,7 +93,9 @@ describe("CVDetailsView Component", () => {
       </HeaderProvider>,
     );
 
-    expect(screen.getByLabelText("Loading CV details")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByLabelText("Loading CV details")).toBeInTheDocument();
+    });
   });
 
   it("renders CV details form with name, education, and description", () => {

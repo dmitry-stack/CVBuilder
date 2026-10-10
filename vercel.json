@@ -1,0 +1,29 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "cv-backend": {
+      "root": "cv-backend",
+      "framework": "nestjs"
+    },
+    "cv-frontend": {
+      "root": "cv-frontend",
+      "framework": "nextjs",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "cv-backend",
+          "format": "url",
+          "env": "CV_BACKEND_URL"
+        }
+      ]
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "cv-frontend"
+      }
+    }
+  ]
+}

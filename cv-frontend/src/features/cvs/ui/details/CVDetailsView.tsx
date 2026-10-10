@@ -3,12 +3,12 @@
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Textarea } from "@/shared/components/ui/textarea";
 import { useQuery, useMutation } from "@apollo/client/react";
-import { notify } from "@/components/ui/toast";
-import { HeaderSync } from "@/components/layout/HeaderContext";
+import { notify } from "@/shared/components/ui/toast";
+import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import {
   CvDocument,
@@ -17,6 +17,7 @@ import {
 } from "@/graphql/__generated__/graphql";
 import { cvFormSchema, type CvFormData } from "../../schemas/cv.schema";
 import { CVDetailsSkeleton } from "./CVDetailsSkeleton";
+import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 import { useTranslation } from "@/i18n";
 
 interface CVDetailsViewProps {
@@ -96,8 +97,15 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
     }
   };
 
-  if (loading && !cv) {
+  const isInitialLoading = Boolean(loading && !cv);
+  const showSkeleton = useDelayedLoading(isInitialLoading);
+
+  if (showSkeleton) {
     return <CVDetailsSkeleton />;
+  }
+
+  if (isInitialLoading) {
+    return null;
   }
 
   return (
@@ -108,7 +116,10 @@ export function CVDetailsView({ cvId }: CVDetailsViewProps) {
     >
       <HeaderSync userName={cv?.name} entityId={cvId} />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-4xl space-y-5">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-4xl space-y-5"
+      >
         <Input
           id="cv_name"
           label={t("common.name")}

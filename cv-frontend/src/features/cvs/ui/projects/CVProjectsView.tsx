@@ -1,12 +1,13 @@
 "use client";
 
-import { HeaderSync } from "@/components/layout/HeaderContext";
+import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { useCvProjects } from "../../hooks/useCvProjects";
 import { CVProjectsHeader } from "./CVProjectsHeader";
 import { CVProjectsList } from "./CVProjectsList";
 import { CVProjectDialog } from "./CVProjectDialog";
 import { DeleteCVProjectDialog } from "./DeleteCVProjectDialog";
 import { CVProjectsSkeleton } from "./CVProjectsSkeleton";
+import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 
 interface CVProjectsViewProps {
   cvId: string;
@@ -35,8 +36,15 @@ export function CVProjectsView({ cvId }: CVProjectsViewProps) {
     handleConfirmDelete,
   } = useCvProjects(cvId);
 
-  if (loading && !cv) {
+  const isInitialLoading = Boolean(loading && !cv);
+  const showSkeleton = useDelayedLoading(isInitialLoading);
+
+  if (showSkeleton) {
     return <CVProjectsSkeleton />;
+  }
+
+  if (isInitialLoading) {
+    return null;
   }
 
   return (

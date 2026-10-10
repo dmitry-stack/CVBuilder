@@ -1,8 +1,8 @@
 "use client";
 
 import type { UseFormRegister, FieldErrors } from "react-hook-form";
-import { Select } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+import { Select } from "@/shared/components/ui/select";
+import { Input } from "@/shared/components/ui/input";
 import { SkillMasteryBar } from "./SkillMasteryBar";
 import { useTranslation } from "@/i18n";
 import {

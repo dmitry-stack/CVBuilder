@@ -5,9 +5,9 @@ import type {
   FieldErrors,
   UseFormSetValue,
 } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Select } from "@/shared/components/ui/select";
+import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/i18n";
 import type { ProfileFormData } from "../schemas/profile.schema";
 

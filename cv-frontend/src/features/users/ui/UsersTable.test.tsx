@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useQuery } from "@apollo/client/react";
 import { UsersTable } from "./UsersTable";
@@ -218,8 +218,8 @@ describe("UsersTable component", () => {
     expect(screen.getByText("Artem")).toBeInTheDocument();
   });
 
-  it("renders 5 skeleton rows when query is in loading state", () => {
-    vi.mocked(useQuery).mockReturnValueOnce({
+  it("renders 5 skeleton rows when query is in loading state", async () => {
+    vi.mocked(useQuery).mockReturnValue({
       data: null,
       loading: true,
       error: null,
@@ -227,10 +227,12 @@ describe("UsersTable component", () => {
 
     const { container } = render(<UsersTable />);
 
-    const skeletonRows = container.querySelectorAll(
-      '[data-slot="users-table-row-skeleton"]',
-    );
-    expect(skeletonRows.length).toBe(5);
+    await waitFor(() => {
+      const skeletonRows = container.querySelectorAll(
+        '[data-slot="users-table-row-skeleton"]',
+      );
+      expect(skeletonRows.length).toBe(5);
+    });
   });
 
   it("renders pagination controls and updates pagination on search", () => {

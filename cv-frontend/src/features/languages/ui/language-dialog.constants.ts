@@ -1,5 +1,5 @@
 import { proficiencyLevels, type ProficiencyType } from "../schemas/language.schema";
-import type { SelectOption } from "@/components/ui/select";
+import type { SelectOption } from "@/shared/components/ui/select";
 
 export const PROFICIENCY_LABELS: Record<ProficiencyType, string> = {
   A1: "A1 - Beginner",

@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { ProfileSkeleton } from "./ProfileSkeleton";
 import { ProfileFormFields } from "./ProfileFormFields";
-import { HeaderSync } from "@/components/layout/HeaderContext";
+import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 import { useProfileFormData } from "../hooks/useProfileFormData";
 import { sendVerificationAction } from "@/features/auth/actions/send-verification.action";
 import { useTranslation, type TranslationKey } from "@/i18n";
@@ -37,7 +38,9 @@ function formatMemberSince(
 ): string {
   let dateText = "Sun Jan 14 2024";
   if (dateString) {
-    const raw = /^\d+$/.test(dateString.trim()) ? Number(dateString) : dateString;
+    const raw = /^\d+$/.test(dateString.trim())
+      ? Number(dateString)
+      : dateString;
     const date = new Date(raw);
     if (!isNaN(date.getTime())) {
       dateText = date.toDateString();
@@ -112,8 +115,15 @@ export function ProfileForm({
     }
   };
 
-  if (userLoading && !initialData) {
+  const isInitialLoading = Boolean(userLoading && !initialData);
+  const showSkeleton = useDelayedLoading(isInitialLoading);
+
+  if (showSkeleton) {
     return <ProfileSkeleton />;
+  }
+
+  if (isInitialLoading) {
+    return null;
   }
 
   if (userError && !initialData && !userData?.user) {
@@ -136,33 +146,37 @@ export function ProfileForm({
     );
   }
 
-  const fullName =
-    `${activeUser.first_name} ${activeUser.last_name}`.trim() ||
-    activeUser.email ||
-    "User";
+  const hasName = Boolean(
+    activeUser.first_name?.trim() || activeUser.last_name?.trim(),
+  );
+  const displayName = hasName
+    ? `${activeUser.first_name} ${activeUser.last_name}`.trim()
+    : activeUser.email || "";
 
   return (
     <div
       data-slot="profile-container"
       className="w-full flex flex-col items-center pt-4 sm:pt-8 pb-16"
     >
-      <HeaderSync userName={fullName} entityId={effectiveUserId} />
+      <HeaderSync userName={displayName} entityId={effectiveUserId} />
 
       <div className="flex flex-col items-center text-center">
         <ProfileAvatar
           userId={effectiveUserId}
           initialAvatar={activeUser.avatar}
-          userName={fullName}
+          userName={displayName || undefined}
           editable={isOwner}
         />
 
         <h1 className="mt-4 text-2xl font-medium text-zinc-900 dark:text-zinc-100 font-roboto">
-          {fullName}
+          {displayName}
         </h1>
 
-        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400 font-roboto">
-          {activeUser.email}
-        </p>
+        {hasName && activeUser.email && (
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400 font-roboto">
+            {activeUser.email}
+          </p>
+        )}
 
         <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500 font-roboto">
           {formatMemberSince(t, activeUser.created_at)}

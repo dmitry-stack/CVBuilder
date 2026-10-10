@@ -6,7 +6,7 @@ import {
   type UserProfileData,
 } from "@/features/profile/ui/ProfileForm";
 import { ProfileSkeleton } from "@/features/profile/ui/ProfileSkeleton";
-import { executeAuthMutation } from "@/lib/auth/graphql-auth.server";
+import { executeAuthMutation } from "@/shared/lib/auth/graphql-auth.server";
 import { UserDocument, type UserQuery } from "@/graphql/__generated__/graphql";
 
 interface PageProps {

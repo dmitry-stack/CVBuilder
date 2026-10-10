@@ -13,7 +13,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { verifyEmailAction } from "../actions/verify-email.action";
 import { sendVerificationAction } from "../actions/send-verification.action";
 import { useTranslation } from "@/i18n";

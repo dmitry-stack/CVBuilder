@@ -1,6 +1,6 @@
 "use client";
 
-import { Select } from "@/components/ui/select";
+import { Select } from "@/shared/components/ui/select";
 import { ChangePasswordForm } from "@/features/settings";
 import { useTheme } from "next-themes";
 import { useTranslation, LANGUAGES, type Language } from "@/i18n";

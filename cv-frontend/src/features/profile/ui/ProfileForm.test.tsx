@@ -18,7 +18,7 @@ vi.mock("@apollo/client/react", () => ({
   }),
 }));
 
-vi.mock("@/components/layout/HeaderContext", () => ({
+vi.mock("@/shared/components/layout/HeaderContext", () => ({
   HeaderSync: () => null,
 }));
 
@@ -75,6 +75,19 @@ describe("ProfileForm Component", () => {
     expect(screen.getByText(/Mon Jan 15 2024/i)).toBeInTheDocument();
   });
 
+  it("displays email instead of name when first_name and last_name are empty", () => {
+    const userWithoutName = {
+      ...mockUser,
+      first_name: "",
+      last_name: "",
+    };
+    render(<ProfileForm initialData={userWithoutName} />);
+
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "thorn_pear@icloud.com",
+    );
+  });
+
   it("renders Update button (disabled initially) and Verify Email button", () => {
     render(<ProfileForm initialData={mockUser} />);
 
@@ -83,7 +96,9 @@ describe("ProfileForm Component", () => {
 
     expect(updateButton).toBeDisabled();
     expect(verifyButton).toBeEnabled();
-    expect(screen.queryByRole("button", { name: /cancel/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /cancel/i }),
+    ).not.toBeInTheDocument();
   });
 
   it("enables Update button when form is edited", () => {
@@ -145,7 +160,7 @@ describe("ProfileForm Component", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("renders ProfileSkeleton while profile data is loading", () => {
+  it("renders ProfileSkeleton while profile data is loading", async () => {
     vi.mocked(useQuery).mockReturnValue({
       data: null,
       loading: true,
@@ -153,9 +168,11 @@ describe("ProfileForm Component", () => {
     } as unknown as ReturnType<typeof useQuery>);
 
     const { container } = render(<ProfileForm userId="1" />);
-    expect(
-      container.querySelector('[data-slot="profile-skeleton"]'),
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        container.querySelector('[data-slot="profile-skeleton"]'),
+      ).toBeInTheDocument();
+    });
 
     vi.mocked(useQuery).mockReturnValue({
       data: null,

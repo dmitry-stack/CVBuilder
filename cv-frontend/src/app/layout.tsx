@@ -3,12 +3,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { roboto } from "./fonts";
 import { ReactNode } from "react";
-import { ApolloProviderWrapper } from "@/lib/apollo-provider";
-import { AppToastContainer } from "@/components/ui/toast";
+import { ApolloProviderWrapper } from "@/shared/lib/apollo-provider";
+import { AppToastContainer } from "@/shared/components/ui/toast";
 import { ThemeProvider } from "next-themes";
 import { LanguageProvider } from "@/i18n";
-import { OfflineGuard } from "@/features/system/ui/OfflineGuard";
-import { DeviceGuard } from "@/features/system/ui/DeviceGuard";
+import { OfflineGuard } from "@/shared/providers/system/ui/OfflineGuard";
+import { DeviceGuard } from "@/shared/providers/system/ui/DeviceGuard";
 
 export const metadata: Metadata = {
   title: "CV Builder",

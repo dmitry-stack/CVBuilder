@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { compare } from "bcrypt";
+import { compare } from "bcryptjs";
 import { UsersService } from "../users/users.service";
 import { MailService } from "src/mail/mail.service";
 import {

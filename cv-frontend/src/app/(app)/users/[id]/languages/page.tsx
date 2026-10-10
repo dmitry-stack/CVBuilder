@@ -4,7 +4,7 @@ import {
   UserLanguagesView,
   type UserLanguagesViewProps,
 } from "@/features/languages/ui/UserLanguagesView";
-import { executeAuthMutation } from "@/lib/auth/graphql-auth.server";
+import { executeAuthMutation } from "@/shared/lib/auth/graphql-auth.server";
 import {
   ProfileLanguagesDocument,
   type ProfileLanguagesQuery,
@@ -44,10 +44,12 @@ export default async function UserLanguagesPage({ params }: PageProps) {
           id: res.data.profile.id,
           first_name: res.data.profile.first_name,
           last_name: res.data.profile.last_name,
-          languages: res.data.profile.languages.map((l) => ({
-            name: l.name,
-            proficiency: l.proficiency as ProficiencyType,
-          })),
+          languages: res.data.profile.languages.map(
+            (l: NonNullable<ProfileLanguagesQuery["profile"]>["languages"][number]) => ({
+              name: l.name,
+              proficiency: l.proficiency as ProficiencyType,
+            }),
+          ),
         };
       }
     } catch {

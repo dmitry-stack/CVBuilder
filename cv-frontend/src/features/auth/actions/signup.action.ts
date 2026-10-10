@@ -5,7 +5,7 @@ import { signupSchema, type SignupFormData } from "../schemas/auth.schema";
 import {
   executeAuthMutation,
   setAuthCookies,
-} from "@/lib/auth/graphql-auth.server";
+} from "@/shared/lib/auth/graphql-auth.server";
 import {
   SignupDocument,
   type SignupMutation,

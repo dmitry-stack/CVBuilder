@@ -5,7 +5,7 @@ import {
   executeAuthMutation,
   setAuthCookies,
   clearAuthCookies,
-} from "@/lib/auth/graphql-auth.server";
+} from "@/shared/lib/auth/graphql-auth.server";
 import {
   UpdateTokenDocument,
   type UpdateTokenMutation,

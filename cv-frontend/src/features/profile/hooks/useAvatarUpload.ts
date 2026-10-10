@@ -11,7 +11,7 @@ import {
   type UserQuery,
 } from "@/graphql/__generated__/graphql";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
-import { notify } from "@/components/ui/toast";
+import { notify } from "@/shared/components/ui/toast";
 import { validateAvatarFile, fileToBase64 } from "../lib/avatar.utils";
 
 interface UseAvatarUploadOptions {

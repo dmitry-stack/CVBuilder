@@ -7,7 +7,7 @@ import {
   within,
 } from "@testing-library/react";
 import { CVSkillsView } from "./CVSkillsView";
-import { HeaderProvider } from "@/components/layout/HeaderContext";
+import { HeaderProvider } from "@/shared/components/layout/HeaderContext";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
@@ -120,7 +120,7 @@ describe("CVSkillsView Component", () => {
     });
   });
 
-  it("renders loading skeleton when query is loading", () => {
+  it("renders loading skeleton when query is loading", async () => {
     vi.mocked(useQuery).mockReturnValue({
       data: null,
       loading: true,
@@ -132,7 +132,9 @@ describe("CVSkillsView Component", () => {
       </HeaderProvider>,
     );
 
-    expect(screen.getByLabelText("Loading skills")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByLabelText("Loading skills")).toBeInTheDocument();
+    });
   });
 
   it("renders empty state when CV has no skills and does not auto-sync", () => {

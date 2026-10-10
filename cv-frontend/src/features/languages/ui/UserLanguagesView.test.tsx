@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { useQuery } from "@apollo/client/react";
 import { UserLanguagesView } from "./UserLanguagesView";
-import { HeaderProvider } from "@/components/layout/HeaderContext";
+import { HeaderProvider } from "@/shared/components/layout/HeaderContext";
 
 const mockDeleteProfileLanguage = vi.fn().mockResolvedValue({
   data: {
@@ -307,5 +308,23 @@ describe("UserLanguagesView Component", () => {
     expect(
       screen.getByRole("button", { name: /Add Language/i }),
     ).toBeInTheDocument();
+  });
+
+  it("renders loading skeleton when profile query is loading", async () => {
+    vi.mocked(useQuery).mockReturnValue({
+      data: null,
+      loading: true,
+      error: null,
+    } as unknown as ReturnType<typeof useQuery>);
+
+    render(
+      <HeaderProvider>
+        <UserLanguagesView userId="user-1" />
+      </HeaderProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Loading languages")).toBeInTheDocument();
+    });
   });
 });

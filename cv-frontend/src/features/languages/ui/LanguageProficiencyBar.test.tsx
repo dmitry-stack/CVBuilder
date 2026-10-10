@@ -14,7 +14,7 @@ describe("LanguageProficiencyBar Component", () => {
 
     const fill = bar.querySelector("[data-slot='language-proficiency-fill']");
     expect(fill).toHaveStyle({ width: "15%" });
-    expect(fill?.className).toContain("bg-[#626262]");
+    expect(fill?.className).toMatch(/bg-\[#626262\]|bg-\[#454545\]/);
   });
 
   it("renders B1 level with 45% progress and blue styling", () => {

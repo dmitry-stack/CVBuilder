@@ -589,6 +589,7 @@ export type ProfileLanguagesQuery = {
     id: string;
     first_name: string | null;
     last_name: string | null;
+    email: string | null;
     languages: Array<{ name: string; proficiency: Proficiency }>;
   };
 };
@@ -663,6 +664,7 @@ export type ProfileSkillsQuery = {
     id: string;
     first_name: string | null;
     last_name: string | null;
+    email: string | null;
     skills: Array<{
       name: string;
       categoryId: string | null;
@@ -2742,6 +2744,7 @@ export const ProfileLanguagesDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "first_name" } },
                 { kind: "Field", name: { kind: "Name", value: "last_name" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "languages" },
@@ -3176,6 +3179,7 @@ export const ProfileSkillsDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "first_name" } },
                 { kind: "Field", name: { kind: "Name", value: "last_name" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "skills" },

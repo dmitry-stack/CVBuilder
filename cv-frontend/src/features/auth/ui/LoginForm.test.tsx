@@ -6,6 +6,7 @@ import { loginAction } from "../actions/login.action";
 
 const mockPush = vi.fn();
 const mockRefresh = vi.fn();
+const mockGetSearchParam = vi.fn();
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
@@ -13,7 +14,7 @@ vi.mock("next/navigation", () => ({
     refresh: mockRefresh,
   }),
   useSearchParams: () => ({
-    get: vi.fn().mockReturnValue(null),
+    get: (key: string) => mockGetSearchParam(key),
   }),
 }));
 
@@ -24,6 +25,7 @@ vi.mock("../actions/login.action", () => ({
 describe("LoginForm Component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockGetSearchParam.mockReturnValue(null);
   });
 
   it("should display input fields and a sign-in button", () => {
@@ -68,6 +70,26 @@ describe("LoginForm Component", () => {
         password: "password123",
       });
       expect(mockPush).toHaveBeenCalledWith("/users");
+    });
+  });
+
+  it("should redirect to callbackUrl when callbackUrl is provided", async () => {
+    mockGetSearchParam.mockImplementation((key: string) => {
+      if (key === "callbackUrl") return "/cvs";
+      return null;
+    });
+
+    const user = userEvent.setup();
+    vi.mocked(loginAction).mockResolvedValueOnce({ success: true });
+
+    render(<LoginForm />);
+
+    await user.type(screen.getByPlaceholderText(/email/i), "test@example.com");
+    await user.type(screen.getByPlaceholderText(/password/i), "password123");
+    await user.click(screen.getByRole("button", { name: /sign in/i }));
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/cvs");
     });
   });
 
