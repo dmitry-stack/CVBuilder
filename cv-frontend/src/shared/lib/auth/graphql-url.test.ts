@@ -26,8 +26,15 @@ describe("getBackendGraphQLUrl", () => {
     expect(getBackendGraphQLUrl()).toBe("https://custom.backend.com/api/graphql");
   });
 
-  it("prioritizes CV_BACKEND_URL binding over NEXT_PUBLIC_GRAPHQL_URL", () => {
-    process.env.NEXT_PUBLIC_GRAPHQL_URL = "https://fallback.com/api/graphql";
+  it("prioritizes explicit NEXT_PUBLIC_GRAPHQL_URL over CV_BACKEND_URL binding", () => {
+    process.env.NEXT_PUBLIC_GRAPHQL_URL = "https://custom.backend.com/api/graphql";
+    process.env.CV_BACKEND_URL = "https://cv-backend-service.vercel.app";
+    expect(getBackendGraphQLUrl()).toBe(
+      "https://custom.backend.com/api/graphql",
+    );
+  });
+
+  it("resolves from CV_BACKEND_URL binding when NEXT_PUBLIC_GRAPHQL_URL is not set", () => {
     process.env.CV_BACKEND_URL = "https://cv-backend-service.vercel.app";
     expect(getBackendGraphQLUrl()).toBe(
       "https://cv-backend-service.vercel.app/api/graphql",
@@ -59,8 +66,13 @@ describe("getBackendGraphQLUrl", () => {
     expect(getBackendGraphQLUrl()).toBe("https://api.example.com/api/graphql");
   });
 
-  it("resolves from VITE_GRAPHQL_URL when set", () => {
-    process.env.VITE_GRAPHQL_URL = "https://vite.backend.com/api/graphql";
+  it("resolves and appends /api/graphql from NEXT_PUBLIC_GRAPHQL_URL when given base host", () => {
+    process.env.NEXT_PUBLIC_GRAPHQL_URL = "https://custom.backend.com";
+    expect(getBackendGraphQLUrl()).toBe("https://custom.backend.com/api/graphql");
+  });
+
+  it("resolves and appends /api/graphql from VITE_GRAPHQL_URL when given base host", () => {
+    process.env.VITE_GRAPHQL_URL = "https://vite.backend.com/";
     expect(getBackendGraphQLUrl()).toBe("https://vite.backend.com/api/graphql");
   });
 });
