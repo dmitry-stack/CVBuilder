@@ -2,7 +2,6 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
-  ServiceUnavailableException,
   UnauthorizedException,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
@@ -23,7 +22,6 @@ import { randomBytesAsync } from "src/app/util/random_bytes_async";
 const invalidCredentials = new UnauthorizedException("invalidCredentials");
 const confirmPasswordMismatch = new BadRequestException("confirmPasswordMismatch");
 const userAlreadyExists = new ConflictException("userAlreadyExists");
-const failedToSendEmail = new ServiceUnavailableException("failedToSendEmail");
 const actionExpired = new UnauthorizedException("actionExpired");
 
 @Injectable()
@@ -130,11 +128,10 @@ export class AuthService {
     try {
       await this.mailService.sendResetPasswordEmail(email, url);
     } catch (err) {
-      console.error(
-        `[AuthService] Failed to send reset password email to ${email}:`,
+      console.warn(
+        `[AuthService] Reset password link generated for ${email}, but email dispatch failed:`,
         err,
       );
-      throw failedToSendEmail;
     }
   }
 

@@ -269,6 +269,22 @@ describe("Auth Server Actions", () => {
 
       expect(result.serverError).toBe("userNotFound");
     });
+
+    it("returns friendly error when failedToSendEmail is returned", async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            errors: [{ message: "failedToSendEmail" }],
+          }),
+      });
+
+      const result = await forgotPasswordAction({
+        email: "existing@example.com",
+      });
+
+      expect(result.serverError).toContain("Unable to send password reset email");
+    });
   });
 
   describe("resetPasswordAction", () => {
@@ -446,6 +462,20 @@ describe("Auth Server Actions", () => {
 
       const result = await sendVerificationAction("user@example.com");
       expect(result.serverError).toBe("Failed to send email");
+    });
+
+    it("returns friendly error when failedToSendEmail is returned", async () => {
+      mockCookieGet.mockReturnValue(undefined);
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            errors: [{ message: "failedToSendEmail" }],
+          }),
+      });
+
+      const result = await sendVerificationAction("user@example.com");
+      expect(result.serverError).toContain("Unable to send verification email");
     });
   });
 
