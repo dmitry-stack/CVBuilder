@@ -4,13 +4,16 @@ import { MailService } from "./mail.service";
 import { GetOrigin } from "src/app/decorators/get_origin.decorator";
 import { VerifyMailDto } from "./dto/mail.dto";
 
+import { Public } from "src/auth/guards/public.decorator";
+
 @Resolver()
 export class MailResolver {
   constructor(private readonly mailService: MailService) {}
 
+  @Public()
   @Mutation("sendVerification")
-  sendVerification(@Args("email") email: string, @GetOrigin() origin: string) {
-    this.mailService.sendVerificationEmail(email, `${origin}/verify-email`);
+  async sendVerification(@Args("email") email: string, @GetOrigin() origin: string) {
+    return await this.mailService.sendVerificationEmail(email, `${origin}/verify-email`);
   }
 
   @Mutation("verifyMail")

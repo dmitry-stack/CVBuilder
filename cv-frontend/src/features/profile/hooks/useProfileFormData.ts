@@ -171,11 +171,13 @@ export function useProfileFormData({
     });
   };
 
+  const isEffectiveLoading = Boolean(userLoading && !initialData);
+
   return {
     effectiveUserId,
     activeUser,
     userData,
-    userLoading,
+    userLoading: isEffectiveLoading,
     userError,
     refetchUser,
     availableDepartments,

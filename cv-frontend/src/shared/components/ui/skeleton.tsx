@@ -6,7 +6,7 @@ export function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="skeleton"
       className={cn(
-        "animate-pulse rounded-md bg-zinc-200 dark:bg-zinc-800",
+        "animate-pulse rounded-md bg-zinc-200 dark:bg-zinc-700",
         className,
       )}
       {...props}
@@ -46,7 +46,7 @@ export interface TableSkeletonProps {
 
 export function TableSkeleton({ rowCount = 5, cols = 7 }: TableSkeletonProps) {
   return (
-    <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs overflow-x-auto">
+    <div className="overflow-x-auto">
       <table className="w-full border-collapse text-left">
         <thead>
           <tr className="h-table-header border-b border-zinc-200 dark:border-zinc-800 bg-transparent">

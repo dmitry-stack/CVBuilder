@@ -88,7 +88,7 @@ export function UsersTable() {
     }
   };
 
-  const { data, loading } = useQuery(UsersDocument, {
+  const { data, previousData, loading } = useQuery(UsersDocument, {
     variables: {
       params: {
         search: debouncedSearch.trim() || undefined,
@@ -101,12 +101,13 @@ export function UsersTable() {
     errorPolicy: "ignore",
   });
 
-  const isInitialLoading = loading && !data;
+  const displayData = data ?? previousData;
+  const isInitialLoading = loading && !displayData;
   const showSkeleton = useDelayedLoading(isInitialLoading);
 
-  const rawUsers: UserItem[] | undefined = useMemo(() => {
-    if (data?.users?.items && data.users.items.length > 0) {
-      return data.users.items.map(
+  const users: UserItem[] = useMemo(() => {
+    if (displayData?.users?.items && displayData.users.items.length > 0) {
+      return displayData.users.items.map(
         (u: UsersQuery["users"]["items"][number]) => ({
           id: u.id,
           first_name: u.profile?.first_name || null,
@@ -118,36 +119,8 @@ export function UsersTable() {
         }),
       );
     }
-  }, [data]);
-
-  const filteredUsers = useMemo(() => {
-    if (!rawUsers) return [];
-    let result = [...rawUsers];
-
-    if (search.trim()) {
-      const q = search.toLowerCase().trim();
-      result = result.filter((user) => {
-        const fn = (user.first_name || "").toLowerCase();
-        const ln = (user.last_name || "").toLowerCase();
-
-        const dep = (user.department || "").toLowerCase();
-        const pos = (user.position || "").toLowerCase();
-        return (
-          fn.includes(q) || ln.includes(q) || dep.includes(q) || pos.includes(q)
-        );
-      });
-    }
-
-    result.sort((a, b) => {
-      const valA = (a[sortField] || "").toLowerCase();
-      const valB = (b[sortField] || "").toLowerCase();
-      if (valA < valB) return sortOrder === "asc" ? -1 : 1;
-      if (valA > valB) return sortOrder === "asc" ? 1 : -1;
-      return 0;
-    });
-
-    return result;
-  }, [rawUsers, search, sortField, sortOrder]);
+    return [];
+  }, [displayData]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -253,7 +226,7 @@ export function UsersTable() {
               Array.from({ length: 5 }).map((_, idx) => (
                 <UsersTableRowSkeleton key={`skeleton-${idx}`} />
               ))
-            ) : isInitialLoading ? null : filteredUsers.length === 0 ? (
+            ) : isInitialLoading ? null : users.length === 0 ? (
               <tr>
                 <td
                   colSpan={7}
@@ -268,7 +241,7 @@ export function UsersTable() {
                 </td>
               </tr>
             ) : (
-              filteredUsers.map((user) => (
+              users.map((user) => (
                 <tr
                   key={user.id}
 
@@ -339,7 +312,7 @@ export function UsersTable() {
       </div>
 
       <Pagination
-        totalPages={Math.max(1, data?.users?.total_pages ?? 1)}
+        totalPages={Math.max(1, displayData?.users?.total_pages ?? 1)}
         currentPage={currentPage}
         currentLimit={currentLimit}
         changePageLimit={handleSetPageLimit}

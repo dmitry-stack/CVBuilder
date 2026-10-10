@@ -98,9 +98,14 @@ export class AuthService {
 
     const url = `${origin}/verify-email`;
 
-    await this.mailService.sendVerificationEmail(email, url).catch(() => {
-      throw failedToSendEmail;
-    });
+    try {
+      await this.mailService.sendVerificationEmail(email, url);
+    } catch (err) {
+      console.warn(
+        `[AuthService] User created (${email}) but verification email could not be delivered:`,
+        err,
+      );
+    }
 
     return { user, ...tokens };
   }
@@ -109,7 +114,7 @@ export class AuthService {
     const user = await this.usersService.findOneByEmailOptional(email);
 
     if (!user) {
-      throw failedToSendEmail;
+      return;
     }
 
     const jti = (await randomBytesAsync(16)).toString("hex");
@@ -122,9 +127,15 @@ export class AuthService {
     const token = await this.jwtService.signAsync(payload, { expiresIn: "10m" });
     const url = `${origin}/reset-password?token=${token}`;
 
-    await this.mailService.sendResetPasswordEmail(email, url).catch(() => {
+    try {
+      await this.mailService.sendResetPasswordEmail(email, url);
+    } catch (err) {
+      console.error(
+        `[AuthService] Failed to send reset password email to ${email}:`,
+        err,
+      );
       throw failedToSendEmail;
-    });
+    }
   }
 
   async resetPassword({ newPassword, confirmPassword }: ResetPasswordInput, token: string) {

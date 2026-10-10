@@ -36,6 +36,8 @@ export class MailService {
     }
     await this.mailRepository.save(mail);
 
+    console.log(`[MailService] Verification OTP generated for ${email}: ${otp}`);
+
     if (!process.env.SMTP_URL) {
       console.warn("SMTP_URL is not configured; skipping email dispatch.");
       return;
@@ -53,8 +55,10 @@ export class MailService {
           from: process.env.MAIL_FROM,
         },
       });
+      console.log(`[MailService] Verification email sent to ${email}`);
     } catch (err) {
-      console.error("Failed to send verification email:", err);
+      console.error(`[MailService] Failed to send verification email to ${email}:`, err);
+      throw err;
     }
   }
 
@@ -72,13 +76,15 @@ export class MailService {
   }
 
   async sendResetPasswordEmail(email: string, url: string) {
+    console.log(`[MailService] Password reset link generated for ${email}: ${url}`);
+
     if (!process.env.SMTP_URL) {
       console.warn("SMTP_URL is not configured; skipping email dispatch.");
       return;
     }
 
     try {
-      return await this.mailerService.sendMail({
+      const res = await this.mailerService.sendMail({
         to: email,
         subject: "Password reset.",
         template: "./reset_password.hbs",
@@ -88,8 +94,11 @@ export class MailService {
           from: process.env.MAIL_FROM,
         },
       });
+      console.log(`[MailService] Password reset email sent to ${email}`);
+      return res;
     } catch (err) {
-      console.error("Failed to send reset password email:", err);
+      console.error(`[MailService] Failed to send password reset email to ${email}:`, err);
+      throw err;
     }
   }
 }

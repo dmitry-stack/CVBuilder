@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useQuery } from "@apollo/client/react";
 import { UsersTable } from "./UsersTable";
@@ -85,21 +85,40 @@ vi.mock("next/navigation", () => ({
 }));
 
 vi.mock("@apollo/client/react", () => ({
-  useQuery: vi.fn().mockReturnValue({
-    data: MOCK_GRAPHQL_USERS,
-    loading: false,
-    error: null,
-  }),
+  useQuery: vi.fn(),
 }));
 
 describe("UsersTable component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(useQuery).mockReturnValue({
-      data: MOCK_GRAPHQL_USERS,
-      loading: false,
-      error: null,
-    } as unknown as ReturnType<typeof useQuery>);
+    vi.mocked(useQuery).mockImplementation((_doc, options: unknown) => {
+      const opts = options as { variables?: { params?: { search?: string } } } | undefined;
+      const search = opts?.variables?.params?.search;
+      let items = [...MOCK_GRAPHQL_USERS.users.items];
+      if (search) {
+        const q = search.toLowerCase();
+        items = items.filter((u) => {
+          const fn = (u.profile?.first_name || "").toLowerCase();
+          const ln = (u.profile?.last_name || "").toLowerCase();
+          const dep = (u.department?.name || "").toLowerCase();
+          const pos = (u.position?.name || "").toLowerCase();
+          return (
+            fn.includes(q) || ln.includes(q) || dep.includes(q) || pos.includes(q)
+          );
+        });
+      }
+      return {
+        data: {
+          users: {
+            ...MOCK_GRAPHQL_USERS.users,
+            items,
+            total: items.length,
+          },
+        },
+        loading: false,
+        error: null,
+      } as unknown as ReturnType<typeof useQuery>;
+    });
   });
 
   it("renders the users table container", () => {
@@ -153,29 +172,39 @@ describe("UsersTable component", () => {
   });
 
   it("filters employees when searching", () => {
+    vi.useFakeTimers();
     render(<UsersTable />);
 
     const searchInput = screen.getByRole("textbox", {
       name: /search employees/i,
     });
     fireEvent.change(searchInput, { target: { value: "Nolan" } });
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
 
     expect(screen.getByText("Christopher")).toBeInTheDocument();
     expect(screen.getByText("Nolan")).toBeInTheDocument();
     expect(screen.queryByText("Harlanov")).not.toBeInTheDocument();
+    vi.useRealTimers();
   });
 
   it("displays empty state message when search yields no results", () => {
+    vi.useFakeTimers();
     render(<UsersTable />);
 
     const searchInput = screen.getByRole("textbox", {
       name: /search employees/i,
     });
     fireEvent.change(searchInput, { target: { value: "NonExistentName123" } });
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
 
     expect(
       screen.getByText(/no employees found matching "NonExistentName123"/i),
     ).toBeInTheDocument();
+    vi.useRealTimers();
   });
 
   it("sorts table rows when clicking column header", () => {
