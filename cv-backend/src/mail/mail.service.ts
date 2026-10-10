@@ -36,17 +36,25 @@ export class MailService {
     }
     await this.mailRepository.save(mail);
 
-    await this.mailerService.sendMail({
-      to: email,
-      subject: "Verify email.",
-      template: "./confirm-email.hbs",
-      context: {
-        code: otp,
-        duration: "2 hours",
-        url,
-        from: process.env.MAIL_FROM,
-      },
-    });
+    console.log(`[MailService] Verification OTP generated for ${email}: ${otp}`);
+
+    try {
+      await this.mailerService.sendMail({
+        to: email,
+        subject: "Verify email.",
+        template: "./confirm-email.hbs",
+        context: {
+          code: otp,
+          duration: "2 hours",
+          url,
+          from: process.env.MAIL_FROM,
+        },
+      });
+      console.log(`[MailService] Verification email sent to ${email}`);
+    } catch (err) {
+      console.error(`[MailService] Failed to send verification email to ${email}:`, err);
+      throw err;
+    }
   }
 
   async verifyEmail({ otp }: VerifyMailInput, email: string) {
@@ -63,15 +71,24 @@ export class MailService {
   }
 
   async sendResetPasswordEmail(email: string, url: string) {
-    return await this.mailerService.sendMail({
-      to: email,
-      subject: "Password reset.",
-      template: "./reset_password.hbs",
-      context: {
-        duration: "10 minutes",
-        url,
-        from: process.env.MAIL_FROM,
-      },
-    });
+    console.log(`[MailService] Password reset link generated for ${email}: ${url}`);
+
+    try {
+      const res = await this.mailerService.sendMail({
+        to: email,
+        subject: "Password reset.",
+        template: "./reset_password.hbs",
+        context: {
+          duration: "10 minutes",
+          url,
+          from: process.env.MAIL_FROM,
+        },
+      });
+      console.log(`[MailService] Password reset email sent to ${email}`);
+      return res;
+    } catch (err) {
+      console.error(`[MailService] Failed to send password reset email to ${email}:`, err);
+      throw err;
+    }
   }
 }
