@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
     },
     body,
     cache: "no-store",
+    signal: AbortSignal.timeout(30000),
   });
 
   if (typeof response.text === "function") {

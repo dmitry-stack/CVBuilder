@@ -15,6 +15,9 @@ import { MailResolver } from "./mail.resolver";
       transport: {
         pool: true,
         url: process.env.SMTP_URL,
+        connectionTimeout: 5000,
+        greetingTimeout: 5000,
+        socketTimeout: 5000,
       },
       defaults: {
         from: `"CV Innowise" <${process.env.MAIL_FROM}>`,

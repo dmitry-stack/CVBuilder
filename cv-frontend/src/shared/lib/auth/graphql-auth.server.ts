@@ -24,6 +24,7 @@ export async function executeAuthMutation<T>(
     },
     body: JSON.stringify({ query: queryString, variables }),
     cache: "no-store",
+    signal: AbortSignal.timeout(15000),
   });
 
   if (typeof response.text === "function") {
