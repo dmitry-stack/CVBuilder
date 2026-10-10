@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { CVProjectsView } from "./CVProjectsView";
-import { HeaderProvider } from "@/components/layout/HeaderContext";
+import { HeaderProvider } from "@/shared/components/layout/HeaderContext";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 

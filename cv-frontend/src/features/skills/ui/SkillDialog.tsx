@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { X, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { DeleteSkillDialog } from "./DeleteSkillDialog";
 import {
   SkillDialogFormFields,

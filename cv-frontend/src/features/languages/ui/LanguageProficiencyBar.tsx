@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 export type ProficiencyLevel =
   "A1" | "A2" | "B1" | "B2" | "C1" | "C2" | "Native";
@@ -17,15 +17,15 @@ export const PROFICIENCY_MAP: Record<
 > = {
   A1: {
     percentage: 15,
-    barColor: "bg-[#626262]",
-    trackColor: "bg-[#454545] dark:bg-zinc-800",
+    barColor: "bg-[#454545]",
+    trackColor: "bg-[#626262]",
     label: "A1",
     description: "Beginner",
   },
   A2: {
     percentage: 30,
-    barColor: "bg-[#626262]",
-    trackColor: "bg-[#454545] dark:bg-zinc-800",
+    barColor: "bg-[#454545]",
+    trackColor: "bg-[#626262]",
     label: "A2",
     description: "Elementary",
   },

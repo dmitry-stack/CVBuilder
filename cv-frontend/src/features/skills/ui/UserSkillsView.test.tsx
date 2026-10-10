@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useQuery } from "@apollo/client/react";
 import { UserSkillsView } from "./UserSkillsView";
-import { HeaderProvider } from "@/components/layout/HeaderContext";
+import { HeaderProvider } from "@/shared/components/layout/HeaderContext";
 
 const mockDeleteProfileSkill = vi.fn().mockResolvedValue({
   data: {

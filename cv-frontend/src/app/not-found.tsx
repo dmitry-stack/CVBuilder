@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import errorSvg from "@/assets/error.svg";
+import { Button } from "@/shared/components/ui/button";
+import errorSvg from "@/shared/assets/error.svg";
 
 export default function NotFound() {
   const router = useRouter();

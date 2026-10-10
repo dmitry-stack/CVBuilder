@@ -5,7 +5,7 @@ import {
   forgotPasswordSchema,
   type ForgotPasswordFormData,
 } from "../schemas/auth.schema";
-import { executeAuthMutation } from "@/lib/auth/graphql-auth.server";
+import { executeAuthMutation } from "@/shared/lib/auth/graphql-auth.server";
 import {
   ForgotPasswordDocument,
   type ForgotPasswordMutation,

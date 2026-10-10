@@ -18,7 +18,7 @@ vi.mock("@apollo/client/react", () => ({
   }),
 }));
 
-vi.mock("@/components/layout/HeaderContext", () => ({
+vi.mock("@/shared/components/layout/HeaderContext", () => ({
   HeaderSync: () => null,
 }));
 

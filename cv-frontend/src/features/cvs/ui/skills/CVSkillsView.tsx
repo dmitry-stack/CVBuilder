@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { HeaderSync } from "@/components/layout/HeaderContext";
+import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { SkillsSkeleton } from "@/features/skills/ui/SkillsSkeleton";
-import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
+import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 import { useCvSkills } from "../../hooks/useCvSkills";
 import { CVSkillsList } from "./CVSkillsList";
 import { CVSkillsActions } from "./CVSkillsActions";

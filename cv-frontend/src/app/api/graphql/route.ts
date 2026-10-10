@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getBackendGraphQLUrl } from "@/lib/auth/graphql-url";
+import { getBackendGraphQLUrl } from "@/shared/lib/auth/graphql-url";
 
 export async function POST(request: NextRequest) {
   const token = (await cookies()).get("access_token")?.value;

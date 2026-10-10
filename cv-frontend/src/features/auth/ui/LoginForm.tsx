@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
 import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
 import { loginAction } from "../actions/login.action";
 import { useTranslation } from "@/i18n";
@@ -43,7 +43,21 @@ export default function LoginForm() {
       if (result.serverError) {
         setServerError(result.serverError);
       } else if (result.success) {
-        router.push(callbackUrl || "/users");
+        let target = callbackUrl || "/users";
+        if (target.startsWith("http://") || target.startsWith("https://")) {
+          try {
+            const url = new URL(target);
+            if (
+              typeof window !== "undefined" &&
+              url.origin === window.location.origin
+            ) {
+              target = url.pathname + url.search;
+            }
+          } catch {
+            target = "/users";
+          }
+        }
+        router.push(target);
         router.refresh();
       }
     });
@@ -89,6 +103,7 @@ export default function LoginForm() {
               placeholder={t("auth.password")}
               disabled={isPending}
               aria-invalid={errors.password ? "true" : undefined}
+              showPasswordToggle={false}
               className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
             />
 

@@ -17,9 +17,9 @@ import {
 import { UsersTableRowSkeleton } from "./UsersTableRowSkeleton";
 import { useTranslation } from "@/i18n";
 import { useRouter, useSearchParams } from "next/navigation";
-import Pagination from "@/components/ui/Pagination";
+import Pagination from "@/shared/components/ui/Pagination";
 import { usePathname } from "next/navigation";
-import { useDelayedLoading } from "@/lib/hooks/useDelayedLoading";
+import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 
 export interface UserItem {
   id: string;

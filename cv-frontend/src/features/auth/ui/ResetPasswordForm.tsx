@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, AlertCircle, CheckCircle2, Eye, EyeOff } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
 import {
   resetPasswordSchema,
   type ResetPasswordFormData,
@@ -114,6 +114,7 @@ export default function ResetPasswordForm() {
               placeholder={t("auth.newPassword")}
               disabled={isPending || !token}
               aria-invalid={errors.newPassword ? "true" : undefined}
+              showPasswordToggle={false}
               className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
             />
             <button
@@ -149,6 +150,7 @@ export default function ResetPasswordForm() {
               placeholder={t("auth.confirmPassword")}
               disabled={isPending || !token}
               aria-invalid={errors.confirmPassword ? "true" : undefined}
+              showPasswordToggle={false}
               className="h-12 w-full border border-cv-border bg-transparent px-3 pr-13 font-roboto text-base leading-5 tracking-cv text-cv-text placeholder:text-cv-placeholder focus-visible:border-cv-text dark:border-[#AEAEAE] dark:text-[#F5F5F7] dark:placeholder:text-[#626262] dark:focus-visible:border-white focus-visible:ring-0 focus:outline-hidden transition-colors"
             />
             <button

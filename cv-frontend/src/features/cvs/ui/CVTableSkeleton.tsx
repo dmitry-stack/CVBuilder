@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 
 interface CVTableSkeletonProps {
   rowCount?: number;
