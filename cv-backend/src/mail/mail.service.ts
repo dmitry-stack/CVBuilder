@@ -36,17 +36,26 @@ export class MailService {
     }
     await this.mailRepository.save(mail);
 
-    await this.mailerService.sendMail({
-      to: email,
-      subject: "Verify email.",
-      template: "./confirm-email.hbs",
-      context: {
-        code: otp,
-        duration: "2 hours",
-        url,
-        from: process.env.MAIL_FROM,
-      },
-    });
+    if (!process.env.SMTP_URL) {
+      console.warn("SMTP_URL is not configured; skipping email dispatch.");
+      return;
+    }
+
+    try {
+      await this.mailerService.sendMail({
+        to: email,
+        subject: "Verify email.",
+        template: "./confirm-email.hbs",
+        context: {
+          code: otp,
+          duration: "2 hours",
+          url,
+          from: process.env.MAIL_FROM,
+        },
+      });
+    } catch (err) {
+      console.error("Failed to send verification email:", err);
+    }
   }
 
   async verifyEmail({ otp }: VerifyMailInput, email: string) {
@@ -63,15 +72,24 @@ export class MailService {
   }
 
   async sendResetPasswordEmail(email: string, url: string) {
-    return await this.mailerService.sendMail({
-      to: email,
-      subject: "Password reset.",
-      template: "./reset_password.hbs",
-      context: {
-        duration: "10 minutes",
-        url,
-        from: process.env.MAIL_FROM,
-      },
-    });
+    if (!process.env.SMTP_URL) {
+      console.warn("SMTP_URL is not configured; skipping email dispatch.");
+      return;
+    }
+
+    try {
+      return await this.mailerService.sendMail({
+        to: email,
+        subject: "Password reset.",
+        template: "./reset_password.hbs",
+        context: {
+          duration: "10 minutes",
+          url,
+          from: process.env.MAIL_FROM,
+        },
+      });
+    } catch (err) {
+      console.error("Failed to send reset password email:", err);
+    }
   }
 }
