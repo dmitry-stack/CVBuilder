@@ -6,7 +6,7 @@ export function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="skeleton"
       className={cn(
-        "animate-pulse rounded-md bg-zinc-200 dark:bg-zinc-800",
+        "animate-pulse rounded-md bg-zinc-200 dark:bg-zinc-700",
         className,
       )}
       {...props}

@@ -34,7 +34,7 @@ interface TableSkeletonProps {
 
 export function TableSkeleton({ rowCount = 5, cols = 7 }: TableSkeletonProps) {
   return (
-    <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs overflow-x-auto">
+    <div className="overflow-x-auto">
       <table className="w-full border-collapse text-left">
         <thead>
           <tr className="h-table-header border-b border-zinc-200 dark:border-zinc-800 bg-transparent">
