@@ -13,12 +13,14 @@ interface NavMobileHeaderProps {
   userName?: string;
   userInitial?: string;
   userAvatar?: string | null;
+  isLoading?: boolean;
 }
 
 export function NavMobileHeader({
   userName,
   userInitial,
   userAvatar,
+  isLoading,
 }: NavMobileHeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { t } = useTranslation();
@@ -95,6 +97,7 @@ export function NavMobileHeader({
                   userInitial={userInitial}
                   userAvatar={userAvatar}
                   onItemClick={handleClose}
+                  isLoading={isLoading}
                 />
               </div>
             </div>

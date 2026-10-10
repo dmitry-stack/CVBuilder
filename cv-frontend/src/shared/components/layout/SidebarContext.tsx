@@ -3,8 +3,9 @@
 import {
   createContext,
   useContext,
+  useState,
+  useEffect,
   useCallback,
-  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -16,17 +17,6 @@ interface SidebarContextType {
 
 const STORAGE_KEY = "cv_sidebar_collapsed";
 const CHANGE_EVENT = "cv_sidebar_change";
-
-function subscribeSidebar(callback: () => void) {
-  if (typeof window === "undefined") return () => {};
-  window.addEventListener("storage", callback);
-  window.addEventListener(CHANGE_EVENT, callback);
-  return () => {
-    window.removeEventListener("storage", callback);
-    window.removeEventListener(CHANGE_EVENT, callback);
-  };
-}
-
 
 const SidebarContext = createContext<SidebarContextType>({
   isCollapsed: false,
@@ -41,31 +31,45 @@ interface SidebarProviderProps {
 
 export function SidebarProvider({
   children,
-  defaultCollapsed = false,
+  defaultCollapsed,
 }: SidebarProviderProps) {
-  const getSnapshot = useCallback(() => {
-    if (typeof window === "undefined") return defaultCollapsed;
-    try {
-      const item = localStorage.getItem(STORAGE_KEY);
-      if (item === null) return defaultCollapsed;
-      return item === "true";
-    } catch {
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (defaultCollapsed !== undefined) {
       return defaultCollapsed;
     }
-  }, [defaultCollapsed]);
+    if (typeof window !== "undefined") {
+      try {
+        const item = localStorage.getItem(STORAGE_KEY);
+        if (item !== null) return item === "true";
+      } catch {
+        // Ignore storage access errors
+      }
+    }
+    return false;
+  });
 
-  const getServerSnapshot = useCallback(
-    () => defaultCollapsed,
-    [defaultCollapsed],
-  );
+  useEffect(() => {
+    const handleStorageChange = () => {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored !== null) {
+          setIsCollapsed(stored === "true");
+        }
+      } catch {
+        // Ignore storage access errors
+      }
+    };
 
-  const isCollapsed = useSyncExternalStore(
-    subscribeSidebar,
-    getSnapshot,
-    getServerSnapshot,
-  );
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener(CHANGE_EVENT, handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener(CHANGE_EVENT, handleStorageChange);
+    };
+  }, []);
 
-  const setIsCollapsed = useCallback((collapsed: boolean) => {
+  const handleSetIsCollapsed = useCallback((collapsed: boolean) => {
+    setIsCollapsed(collapsed);
     if (typeof window !== "undefined") {
       try {
         localStorage.setItem(STORAGE_KEY, String(collapsed));
@@ -78,14 +82,26 @@ export function SidebarProvider({
   }, []);
 
   const toggleCollapse = useCallback(() => {
-    setIsCollapsed(!getSnapshot());
-  }, [setIsCollapsed, getSnapshot]);
+    setIsCollapsed((prev) => {
+      const next = !prev;
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem(STORAGE_KEY, String(next));
+          document.cookie = `${STORAGE_KEY}=${next}; path=/; max-age=31536000; SameSite=Lax`;
+        } catch {
+          // Ignore storage access errors
+        }
+        window.dispatchEvent(new Event(CHANGE_EVENT));
+      }
+      return next;
+    });
+  }, []);
 
   return (
     <SidebarContext.Provider
       value={{
         isCollapsed,
-        setIsCollapsed,
+        setIsCollapsed: handleSetIsCollapsed,
         toggleCollapse,
       }}
     >

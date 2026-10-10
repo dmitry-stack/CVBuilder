@@ -196,4 +196,42 @@ describe("Navbar / Aside Sidebar", () => {
 
     expect(sidebar).toHaveAttribute("data-collapsed", "false");
   });
+
+  it("renders profile image and name skeleton when user profile is loading in expanded mode", () => {
+    const { container } = render(<Navbar isLoading />);
+
+    const skeletonContainer = container.querySelector(
+      '[data-slot="nav-user-skeleton"]',
+    );
+    expect(skeletonContainer).toBeInTheDocument();
+
+    const avatarSkeleton = container.querySelector(
+      '[data-slot="nav-user-avatar-skeleton"]',
+    );
+    expect(avatarSkeleton).toBeInTheDocument();
+
+    const nameSkeleton = container.querySelector(
+      '[data-slot="nav-user-name-skeleton"]',
+    );
+    expect(nameSkeleton).toBeInTheDocument();
+  });
+
+  it("renders profile image skeleton when loading in collapsed mode", () => {
+    const { container } = render(<Navbar isCollapsed isLoading />);
+
+    const skeletonContainer = container.querySelector(
+      '[data-slot="nav-user-skeleton"]',
+    );
+    expect(skeletonContainer).toBeInTheDocument();
+
+    const avatarSkeleton = container.querySelector(
+      '[data-slot="nav-user-avatar-skeleton"]',
+    );
+    expect(avatarSkeleton).toBeInTheDocument();
+
+    const nameSkeleton = container.querySelector(
+      '[data-slot="nav-user-name-skeleton"]',
+    );
+    expect(nameSkeleton).not.toBeInTheDocument();
+  });
 });

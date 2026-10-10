@@ -15,6 +15,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
 } from "@/shared/components/ui/dropdown-menu";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 import { useTranslation } from "@/i18n";
 
 interface NavUserProfileProps {
@@ -23,6 +24,7 @@ interface NavUserProfileProps {
   userInitial?: string;
   userAvatar?: string | null;
   onItemClick?: () => void;
+  isLoading?: boolean;
 }
 
 export function NavUserProfile({
@@ -31,12 +33,18 @@ export function NavUserProfile({
   userInitial: userInitialProp,
   userAvatar: userAvatarProp,
   onItemClick,
+  isLoading: isLoadingProp,
 }: NavUserProfileProps) {
-  const { currentUser, currentUserId } = useCurrentUser();
+  const { currentUser, currentUserId, loading } = useCurrentUser();
   const router = useRouter();
   const client = useApolloClient();
   const { t } = useTranslation();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const isLoading =
+    isLoadingProp !== undefined
+      ? isLoadingProp
+      : loading && !userNameProp && !currentUser;
 
   const fetchedFullName = [currentUser?.first_name, currentUser?.last_name]
     .filter(Boolean)
@@ -94,6 +102,42 @@ export function NavUserProfile({
       )}
     </div>
   );
+
+  if (isLoading) {
+    if (isCollapsed) {
+      return (
+        <div
+          data-slot="nav-user-skeleton"
+          aria-label="Loading user profile"
+          className="flex h-12 w-12 mx-auto items-center justify-center"
+        >
+          <Skeleton
+            data-slot="nav-user-avatar-skeleton"
+            className="h-10 w-10 rounded-full"
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div
+        data-slot="nav-user-skeleton"
+        aria-label="Loading user profile"
+        className="flex h-14 w-full items-center gap-2 pl-2 pr-3"
+      >
+        <Skeleton
+          data-slot="nav-user-avatar-skeleton"
+          className="h-10 w-10 shrink-0 rounded-full"
+        />
+        <div className="min-w-0 flex-1">
+          <Skeleton
+            data-slot="nav-user-name-skeleton"
+            className="h-4 w-28 rounded-xs"
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <DropdownMenu>
