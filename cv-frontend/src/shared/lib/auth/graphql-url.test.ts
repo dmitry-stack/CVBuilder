@@ -9,6 +9,8 @@ describe("getBackendGraphQLUrl", () => {
     delete process.env.CV_BACKEND_URL;
     delete process.env.BACKEND_URL;
     delete process.env.NEXT_PUBLIC_GRAPHQL_URL;
+    delete process.env.NEXT_PUBLIC_GRAPHQL_API_URL;
+    delete process.env.VITE_GRAPHQL_URL;
   });
 
   afterEach(() => {
@@ -50,5 +52,15 @@ describe("getBackendGraphQLUrl", () => {
   it("supports BACKEND_URL alias", () => {
     process.env.BACKEND_URL = "http://localhost:4000";
     expect(getBackendGraphQLUrl()).toBe("http://localhost:4000/api/graphql");
+  });
+
+  it("resolves from NEXT_PUBLIC_GRAPHQL_API_URL when set", () => {
+    process.env.NEXT_PUBLIC_GRAPHQL_API_URL = "https://api.example.com/api/graphql";
+    expect(getBackendGraphQLUrl()).toBe("https://api.example.com/api/graphql");
+  });
+
+  it("resolves from VITE_GRAPHQL_URL when set", () => {
+    process.env.VITE_GRAPHQL_URL = "https://vite.backend.com/api/graphql";
+    expect(getBackendGraphQLUrl()).toBe("https://vite.backend.com/api/graphql");
   });
 });

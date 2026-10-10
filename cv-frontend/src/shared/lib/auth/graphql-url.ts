@@ -18,6 +18,9 @@ export function getBackendGraphQLUrl(): string {
   }
 
   return (
-    process.env.NEXT_PUBLIC_GRAPHQL_URL || "http://localhost:3001/api/graphql"
+    process.env.NEXT_PUBLIC_GRAPHQL_URL ||
+    process.env.NEXT_PUBLIC_GRAPHQL_API_URL ||
+    process.env.VITE_GRAPHQL_URL ||
+    "http://localhost:3001/api/graphql"
   );
 }
