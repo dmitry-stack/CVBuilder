@@ -40,11 +40,16 @@ export async function sendVerificationAction(
     );
 
     if (result.errors?.length) {
-      return {
-        serverError:
-          result.errors[0]?.message ||
-          "Failed to send verification email. Please try again.",
-      };
+      const message =
+        result.errors[0]?.message ||
+        "Failed to send verification email. Please try again.";
+      if (message.includes("failedToSendEmail")) {
+        return {
+          serverError:
+            "Unable to send verification email. Please check your email address or try again.",
+        };
+      }
+      return { serverError: message };
     }
 
     return { success: true };

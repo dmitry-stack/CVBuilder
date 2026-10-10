@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { SkillsSkeleton } from "./SkillsSkeleton";
-import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 import { SkillDialog } from "./SkillDialog";
 import { DeleteSkillDialog } from "./DeleteSkillDialog";
 import { SkillCategorySection } from "./SkillCategorySection";
@@ -82,18 +81,10 @@ export function UserSkillsView(props: UserSkillsViewProps = {}) {
     await handleSaveSkill(formData, Boolean(dialogState.data));
   };
 
-  const isInitialLoading = Boolean(
-    (!userId && !props.initialProfile) ||
-      (profileLoading && !props.initialProfile && !skills.length),
-  );
-  const showSkeleton = useDelayedLoading(isInitialLoading);
+  const isProfileLoading = Boolean(profileLoading && !props.initialProfile);
 
-  if (showSkeleton) {
+  if (isProfileLoading) {
     return <SkillsSkeleton />;
-  }
-
-  if (isInitialLoading) {
-    return null;
   }
 
   return (
@@ -101,7 +92,7 @@ export function UserSkillsView(props: UserSkillsViewProps = {}) {
       data-slot="user-skills-view"
       className="w-full pt-4 sm:pt-6 pb-16 font-roboto"
     >
-      {(!profileLoading || props.initialProfile) && userId && (
+      {!isProfileLoading && userId && (
         <HeaderSync userName={fullName} entityId={userId} />
       )}
 

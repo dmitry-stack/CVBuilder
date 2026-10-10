@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { HeaderSync } from "@/shared/components/layout/HeaderContext";
 import { LanguagesSkeleton } from "./LanguagesSkeleton";
-import { useDelayedLoading } from "@/shared/lib/hooks/useDelayedLoading";
 import { LanguageDialog } from "./LanguageDialog";
 import { DeleteLanguageDialog } from "./DeleteLanguageDialog";
 import { LanguageListItem } from "./LanguageListItem";
@@ -79,18 +78,10 @@ export function UserLanguagesView(props: UserLanguagesViewProps = {}) {
     await handleSaveLanguage(formData, Boolean(dialogState.data));
   };
 
-  const isInitialLoading = Boolean(
-    (!userId && !props.initialProfile) ||
-      (profileLoading && !props.initialProfile && !languages.length),
-  );
-  const showSkeleton = useDelayedLoading(isInitialLoading);
+  const isProfileLoading = Boolean(profileLoading && !props.initialProfile);
 
-  if (showSkeleton) {
+  if (isProfileLoading) {
     return <LanguagesSkeleton />;
-  }
-
-  if (isInitialLoading) {
-    return null;
   }
 
   return (
@@ -98,7 +89,7 @@ export function UserLanguagesView(props: UserLanguagesViewProps = {}) {
       data-slot="user-languages-view"
       className="w-full pt-4 sm:pt-6 pb-16 font-roboto"
     >
-      {(!profileLoading || props.initialProfile) && userId && (
+      {!isProfileLoading && userId && (
         <HeaderSync userName={fullName} entityId={userId} />
       )}
 

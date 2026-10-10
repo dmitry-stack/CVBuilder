@@ -43,6 +43,12 @@ export async function forgotPasswordAction(
       const message =
         result.errors[0]?.message ||
         "Failed to process password reset request.";
+      if (message.includes("failedToSendEmail")) {
+        return {
+          serverError:
+            "Unable to send password reset email. Please try again later.",
+        };
+      }
       return { serverError: message };
     }
 

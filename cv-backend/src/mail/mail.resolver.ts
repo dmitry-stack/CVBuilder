@@ -13,7 +13,14 @@ export class MailResolver {
   @Public()
   @Mutation("sendVerification")
   async sendVerification(@Args("email") email: string, @GetOrigin() origin: string) {
-    return await this.mailService.sendVerificationEmail(email, `${origin}/verify-email`);
+    try {
+      await this.mailService.sendVerificationEmail(email, `${origin}/verify-email`);
+    } catch (err) {
+      console.warn(
+        `[MailResolver] Verification code saved for ${email}, but email dispatch failed:`,
+        err,
+      );
+    }
   }
 
   @Mutation("verifyMail")
