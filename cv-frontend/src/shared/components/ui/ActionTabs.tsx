@@ -13,7 +13,7 @@ interface ActionTabsProps {
 
 export function ActionTabs({ tabs }: ActionTabsProps) {
   return (
-    <nav className="flex h-12 border-b border-zinc-200 dark:border-zinc-800 ">
+    <nav className="flex w-full h-12 border-b border-zinc-200 dark:border-zinc-800">
       {tabs.map((tab) => (
         <div
           key={tab.label}
