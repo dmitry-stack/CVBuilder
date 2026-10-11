@@ -1,6 +1,7 @@
 export { ProfileForm } from "./ui/ProfileForm";
 export { ProfileAvatar } from "./ui/ProfileAvatar";
 export { ProfileTabs } from "./ui/ProfileTabs";
+export { ProfileTabsSkeleton } from "./ui/ProfileTabsSkeleton";
 export { ProfileSkeleton } from "./ui/ProfileSkeleton";
 
 export { useProfileFormData } from "./hooks/useProfileFormData";

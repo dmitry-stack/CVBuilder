@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { ProfileTabs } from "@/features/profile/ui/ProfileTabs";
 import {
   UserLanguagesView,
   type UserLanguagesViewProps,
@@ -57,11 +56,5 @@ export default async function UserLanguagesPage({ params }: PageProps) {
     }
   }
 
-  return (
-    <div className="w-full max-w-content mx-auto space-y-6">
-      <ProfileTabs userId={id} />
-
-      <UserLanguagesView userId={id} initialProfile={initialProfile} />
-    </div>
-  );
+  return <UserLanguagesView userId={id} initialProfile={initialProfile} />;
 }

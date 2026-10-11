@@ -17,7 +17,9 @@ export function ProfileTabs({ userId, isOwner: propIsOwner }: ProfileTabsProps) 
   const { currentUser, isOwnProfile } = useCurrentUser();
 
   const isOwner =
-    typeof propIsOwner === "boolean" ? propIsOwner : isOwnProfile(userId);
+    typeof propIsOwner === "boolean"
+      ? propIsOwner
+      : pathname === `/users/${userId}/cvs` || isOwnProfile(userId);
 
   const ownerName =
     currentUser
