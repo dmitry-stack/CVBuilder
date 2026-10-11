@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import { cookies } from "next/headers";
-import { ProfileTabs } from "@/features/profile/ui/ProfileTabs";
 import {
   ProfileForm,
   type UserProfileData,
@@ -57,11 +56,8 @@ export default async function UserPage({ params }: PageProps) {
   }
 
   return (
-    <div className="w-full max-w-content mx-auto space-y-6">
-      <ProfileTabs userId={id} />
-      <Suspense fallback={<ProfileSkeleton />}>
-        <ProfileForm userId={id} initialData={initialData} />
-      </Suspense>
-    </div>
+    <Suspense fallback={<ProfileSkeleton />}>
+      <ProfileForm userId={id} initialData={initialData} />
+    </Suspense>
   );
 }

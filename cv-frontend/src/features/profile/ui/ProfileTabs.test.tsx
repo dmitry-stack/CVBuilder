@@ -71,4 +71,14 @@ describe("ProfileTabs Component", () => {
     const cvTab = screen.getByRole("link", { name: /cvs/i });
     expect(cvTab).toHaveAttribute("aria-current", "page");
   });
+
+  it("automatically shows CV tab when on /users/[id]/cvs route even without explicit isOwner prop", () => {
+    mockPathname = "/users/user-1/cvs";
+    mockIsOwnProfile.mockReturnValue(false);
+    render(<ProfileTabs userId="user-1" />);
+
+    const cvTab = screen.getByRole("link", { name: /cvs/i });
+    expect(cvTab).toBeInTheDocument();
+    expect(cvTab).toHaveAttribute("href", "/users/user-1/cvs");
+  });
 });
